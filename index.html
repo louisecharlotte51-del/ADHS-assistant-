@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Fokus Heute</title>
+  <meta name="description" content="ADHS-freundlicher Tagesplaner mit Fokus-Timer">
+  <meta name="theme-color" content="#f7f6f2" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1b1d1f" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Fokus Heute">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="app">
+
+    <!-- 1. Morgenplanung -->
+    <section id="view-plan" class="view" hidden>
+      <h1>☀️ <b>Guten Morgen</b></h1>
+      <p class="lead">Was sind <b>heute</b> deine <b>max. 3 Aufgaben</b>?</p>
+      <form id="plan-form" autocomplete="off">
+        <label class="field"><span>1️⃣</span><input name="t0" maxlength="80" placeholder="Wichtigste Aufgabe" enterkeyhint="next"></label>
+        <label class="field"><span>2️⃣</span><input name="t1" maxlength="80" placeholder="Optional" enterkeyhint="next"></label>
+        <label class="field"><span>3️⃣</span><input name="t2" maxlength="80" placeholder="Optional" enterkeyhint="done"></label>
+        <p id="plan-error" class="error" hidden>✍️ Mindestens <b>eine</b> Aufgabe eintragen.</p>
+        <button class="btn primary" type="submit">Weiter ➡️</button>
+      </form>
+    </section>
+
+    <!-- 2. Mikroschritt festlegen -->
+    <section id="view-step" class="view" hidden>
+      <p class="kicker" id="step-kicker"></p>
+      <h1 id="step-task"></h1>
+      <form id="step-form" autocomplete="off">
+        <label class="block">
+          <span class="label">👣 <b>Nächster Schritt</b> (nur <b>einer</b>, max. 20 Min.)</span>
+          <input name="step" maxlength="120" placeholder="z. B. Datei öffnen und Überschrift schreiben" required>
+        </label>
+        <div class="block">
+          <span class="label">🎯 <b>Fertig, wenn …</b> (max. 3 Punkte)</span>
+          <input name="c0" maxlength="80" placeholder="z. B. Einleitung steht">
+          <input name="c1" maxlength="80" placeholder="Optional">
+          <input name="c2" maxlength="80" placeholder="Optional">
+        </div>
+        <div class="row">
+          <button class="btn ghost" type="button" id="step-cancel">Abbrechen</button>
+          <button class="btn primary" type="submit">Speichern ✅</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 3. Heute -->
+    <section id="view-today" class="view" hidden>
+      <header class="top">
+        <h1>🎯 <b>Heute</b></h1>
+        <p id="progress" class="progress"></p>
+      </header>
+      <ul id="task-list" class="tasks"></ul>
+      <div id="all-done" class="all-done" hidden>
+        <p class="big">🏆</p>
+        <p class="lead"><b>Alles erledigt!</b> Feierabend verdient.</p>
+      </div>
+      <button class="btn ghost small" id="new-day" type="button">🔄 Neu planen</button>
+    </section>
+
+    <!-- 4. Fokus-Timer -->
+    <section id="view-timer" class="view timer" hidden>
+      <p class="kicker" id="timer-phase"></p>
+      <p class="timer-task" id="timer-task"></p>
+      <div class="ring">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="ring-bg" cx="60" cy="60" r="54"/>
+          <circle class="ring-fg" id="ring-fg" cx="60" cy="60" r="54"/>
+        </svg>
+        <p class="clock" id="clock">20:00</p>
+      </div>
+      <p class="timer-hint" id="timer-hint"></p>
+      <div class="row">
+        <button class="btn ghost" id="timer-stop" type="button">⏹️ Abbrechen</button>
+        <button class="btn primary" id="timer-next" type="button" hidden></button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Belohnung -->
+  <div id="reward" class="reward" hidden>
+    <div class="reward-card">
+      <p class="reward-emoji" id="reward-emoji">🎉</p>
+      <p class="reward-text" id="reward-text"></p>
+      <button class="btn primary" id="reward-ok" type="button">Weiter 💪</button>
+    </div>
+  </div>
+  <div id="confetti" aria-hidden="true"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
