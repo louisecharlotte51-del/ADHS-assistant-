@@ -3,8 +3,8 @@
 import readline from "node:readline/promises";
 import { stdin, stdout } from "node:process";
 import { readConfig, storeIcloudPassword, writeConfig } from "./config.js";
-import { SCOPES, createMsalApp } from "./outlook.js";
-import { listCalendars } from "./icloud.js";
+import { SCOPES, createMsalApp } from "./msal.js";
+import { createLocalIcloud } from "./local.js";
 
 const rl = readline.createInterface({ input: stdin, output: stdout });
 const onlyLogin = process.argv.includes("--login");
@@ -32,7 +32,7 @@ async function apple() {
   const password = (await rl.question("App-spezifisches Passwort (xxxx-xxxx-xxxx-xxxx): ")).trim();
   writeConfig({ icloudUser: user });
   storeIcloudPassword(user, password);
-  const calendars = await listCalendars();
+  const calendars = await createLocalIcloud().listCalendars();
   console.log(`✅ ${calendars.length} Kalender gefunden: ${calendars.map((c) => c.name).join(", ")}`);
 }
 

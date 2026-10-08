@@ -1,15 +1,57 @@
 # 🧠 ADHS Assistant Connector
 
-Verbindet **Claude Desktop (Mac)** mit:
+Verbindet **Claude** (iPad, iPhone, Mac, Cowork) mit:
 
 - 📧 **privatem Outlook** (outlook.com, hotmail, live): lesen, suchen, Entwürfe, senden, verschieben, löschen
 - 📅 **Apple iCloud Kalender**: Termine ansehen, anlegen, ändern, löschen
 
-Läuft **lokal auf deinem Mac**. Keine Cloud, keine Kosten. Passwörter liegen im **macOS Schlüsselbund**.
+Zwei Varianten, gleicher Funktionsumfang:
 
-⏱️ **Gesamtzeit: ca. 35 Min.**
+- ☁️ **Cloud (Cloudflare):** funktioniert auf **iPad, iPhone, Mac** und in **Cowork**. Einrichtung komplett im Browser. **ca. 25 Min.**
+- 💻 **Lokal (Mac):** maximale Privatsphäre, nur Claude Desktop. **ca. 35 Min.**
 
 ---
+
+# ☁️ Cloud-Variante (iPad tauglich)
+
+## ✅ Schritt 1: Cloudflare Konto (5 Min.)
+
+1. Öffne **https://dash.cloudflare.com/sign-up** und lege ein **kostenloses Konto** an.
+2. E-Mail bestätigen.
+
+## ✅ Schritt 2: Connector online stellen (7 Min.)
+
+1. In Cloudflare: **Compute (Workers)** → **Workers & Pages** → **Erstellen**.
+2. **Repository importieren** → **GitHub verbinden** → Repo **ADHS-assistant-** wählen.
+3. Einstellungen:
+   - Projektname: **adhs-assistant** (genau so)
+   - **Stammverzeichnis / Root directory:** `connector`
+   - Build-Befehl: leer lassen. Bereitstellungsbefehl: `npx wrangler deploy`
+4. **Bereitstellen** tippen und ca. **2 Min.** warten.
+5. Die Adresse notieren, z. B. `https://adhs-assistant.DEINNAME.workers.dev`
+
+## ✅ Schritt 3: Geheimen Schlüssel setzen (3 Min.)
+
+1. Im Worker: **Einstellungen** → **Variablen und Geheimnisse** → **Hinzufügen**.
+2. Typ **Geheimnis**, Name `ACCESS_KEY`.
+3. Wert: ein **langes Zufallspasswort** (mind. **30 Zeichen**, z. B. aus der iPhone **Passwörter** App).
+4. **Bereitstellen** tippen.
+
+## ✅ Schritt 4: Einrichtungsseite (10 Min.)
+
+Öffne in Safari: `https://adhs-assistant.DEINNAME.workers.dev/setup/DEIN-ACCESS-KEY`
+
+Die Seite führt dich durch 3 Kärtchen:
+
+1. 📅 **Apple Kalender** verbinden (App-Passwort, siehe unten Schritt 4 der lokalen Variante).
+2. 📧 **Outlook** verbinden (Microsoft App, siehe unten Schritt 3 der lokalen Variante).
+3. 🔌 **URL kopieren** und in Claude unter **Einstellungen → Connectors → Eigenen Connector hinzufügen** einfügen.
+
+🔒 Die Connector-URL enthält deinen Schlüssel. **Nicht teilen.**
+
+---
+
+# 💻 Lokale Variante (Mac)
 
 ## ✅ Schritt 1: Node.js installieren (5 Min.)
 
@@ -104,6 +146,14 @@ Lieber Entwürfe als direkt senden.
 - **Zugriff widerrufen** → Apple App-Passwort löschen bzw. Microsoft App-Registrierung löschen.
 
 ## 🔒 Sicherheit
+
+**Cloud:**
+
+- Zugriff nur mit deinem **ACCESS_KEY** in der URL.
+- Apple App-Passwort und Microsoft Token liegen im **Cloudflare KV Speicher** deines Kontos.
+- Neuer Schlüssel = alle alten Links ungültig: einfach `ACCESS_KEY` ändern.
+
+**Lokal:**
 
 - Microsoft Login-Token: `~/.adhs-assistant/msal-cache.json` (nur für dich lesbar)
 - Apple Passwort: **macOS Schlüsselbund** (Eintrag `adhs-assistant-icloud`)
