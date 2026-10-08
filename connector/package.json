@@ -1,0 +1,27 @@
+{
+  "name": "adhs-assistant-connector",
+  "version": "1.0.0",
+  "description": "MCP Connector: privates Outlook + Apple iCloud Kalender für Claude",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "setup": "node src/setup.js",
+    "login": "node src/setup.js --login",
+    "test": "node test/smoke.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@azure/msal-node": "^3.8.10",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "ical.js": "^2.2.1",
+    "tsdav": "^2.4.0",
+    "zod": "^3.25.76"
+  },
+  "type": "module",
+  "bin": {
+    "adhs-assistant": "src/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
