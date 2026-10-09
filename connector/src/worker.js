@@ -194,7 +194,10 @@ export default {
       await env.STORE.put("access_key", newKey);
       return Response.redirect(`${url.origin}/setup/${newKey}`, 303);
     }
+    // Only the start page is HTML. Anything else (e.g. Claude probing /.well-known/oauth-*
+    // to see whether OAuth is needed) must get a plain 404, or the connector fails to connect.
     if (area !== "mcp" && area !== "setup") {
+      if (url.pathname !== "/") return new Response("Not found", { status: 404 });
       return accessKey ? html(claimedPage()) : html(claimPage());
     }
     if (!(await keyMatches(key, accessKey))) return new Response("Nicht erlaubt", { status: 403 });
