@@ -183,7 +183,11 @@ function claimedPage() {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const [, area, key, action] = url.pathname.split("/");
+    // Ignore empty segments so pasted links with "//" or a trailing "/" still work.
+    const segments = url.pathname.split("/").filter(Boolean);
+    const [area, rawKey, action] = segments;
+    // Tolerate stray characters picked up when copying the link on a phone.
+    const key = rawKey && decodeURIComponent(rawKey).trim();
 
     // A dashboard secret wins; otherwise the key is generated once on first visit and kept in KV.
     const accessKey = env.ACCESS_KEY || (await env.STORE.get("access_key"));
@@ -197,7 +201,7 @@ export default {
     // Only the start page is HTML. Anything else (e.g. Claude probing /.well-known/oauth-*
     // to see whether OAuth is needed) must get a plain 404, or the connector fails to connect.
     if (area !== "mcp" && area !== "setup") {
-      if (url.pathname !== "/") return new Response("Not found", { status: 404 });
+      if (segments.length) return new Response("Not found", { status: 404 });
       return accessKey ? html(claimedPage()) : html(claimPage());
     }
     if (!(await keyMatches(key, accessKey))) return new Response("Nicht erlaubt", { status: 403 });
