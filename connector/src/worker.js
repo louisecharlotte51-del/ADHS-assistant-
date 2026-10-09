@@ -142,23 +142,62 @@ async function handleSetupApi(action, request, env) {
   return json({ error: "Unbekannte Aktion" }, 404);
 }
 
+function randomKey() {
+  const bytes = crypto.getRandomValues(new Uint8Array(24));
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+const html = (body, status = 200) =>
+  new Response(body, {
+    status,
+    headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
+  });
+
+const PAGE_STYLE = `<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { margin:0; font:18px/1.5 -apple-system, system-ui, sans-serif; background:#f6f5f2; color:#1d1d1f; }
+  @media (prefers-color-scheme: dark) { body { background:#141416; color:#f2f2f2; } }
+  main { max-width:520px; margin:0 auto; padding:40px 16px; }
+  button { width:100%; padding:16px; font-size:18px; font-weight:600; border:0; border-radius:12px; background:#5b5bd6; color:#fff; }
+</style>`;
+
+function claimPage() {
+  return `<!doctype html><html lang="de"><head><meta charset="utf-8"><title>ADHS Assistant</title>${PAGE_STYLE}</head>
+<body><main>
+  <h1>🧠 ADHS Assistant</h1>
+  <p>👋 Der Connector läuft. Tippe auf den Button, um deinen <b>geheimen Schlüssel</b> zu erzeugen.</p>
+  <p>👉 Danach öffnet sich deine <b>Einrichtungsseite</b>. <b>Speichere dir diese Adresse</b> (Lesezeichen oder Notiz).</p>
+  <form method="post" action="/claim"><button>🔑 Schlüssel erzeugen</button></form>
+</main></body></html>`;
+}
+
+function claimedPage() {
+  return `<!doctype html><html lang="de"><head><meta charset="utf-8"><title>ADHS Assistant</title>${PAGE_STYLE}</head>
+<body><main>
+  <h1>🧠 ADHS Assistant läuft ✅</h1>
+  <p>🔒 Der Schlüssel wurde schon erzeugt. Öffne deine gespeicherte <b>Einrichtungsseite</b> (Adresse mit <b>/setup/</b>).</p>
+  <p>Link verloren? In Cloudflare unter <b>Storage &amp; Databases → KV</b> den Eintrag <b>access_key</b> löschen und diese Seite neu laden.</p>
+</main></body></html>`;
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const [, area, key, action] = url.pathname.split("/");
 
-    if (!env.ACCESS_KEY) {
-      return new Response(
-        "Fast fertig: Bitte in Cloudflare unter Einstellungen > Variablen und Geheimnisse ein Secret ACCESS_KEY anlegen.",
-        { status: 500, headers: { "Content-Type": "text/plain; charset=utf-8" } },
-      );
+    // A dashboard secret wins; otherwise the key is generated once on first visit and kept in KV.
+    const accessKey = env.ACCESS_KEY || (await env.STORE.get("access_key"));
+
+    if (area === "claim" && request.method === "POST") {
+      if (accessKey) return html(claimedPage(), 409);
+      const newKey = randomKey();
+      await env.STORE.put("access_key", newKey);
+      return Response.redirect(`${url.origin}/setup/${newKey}`, 303);
     }
     if (area !== "mcp" && area !== "setup") {
-      return new Response("ADHS Assistant Connector läuft ✅", {
-        headers: { "Content-Type": "text/plain; charset=utf-8" },
-      });
+      return accessKey ? html(claimedPage()) : html(claimPage());
     }
-    if (!(await keyMatches(key, env.ACCESS_KEY))) return new Response("Nicht erlaubt", { status: 403 });
+    if (!(await keyMatches(key, accessKey))) return new Response("Nicht erlaubt", { status: 403 });
 
     if (area === "mcp") {
       // Stateless server: no long-lived SSE stream, only POST requests.

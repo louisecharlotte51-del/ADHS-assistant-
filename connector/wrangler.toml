@@ -2,6 +2,8 @@ name = "adhs-assistant"
 main = "src/worker.js"
 compatibility_date = "2025-09-01"
 compatibility_flags = ["nodejs_compat"]
+# Keep variables set in the Cloudflare dashboard when a new version is deployed.
+keep_vars = true
 
 [vars]
 TIMEZONE = "Europe/Berlin"
