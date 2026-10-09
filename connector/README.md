@@ -25,7 +25,7 @@ Zwei Varianten, gleicher Funktionsumfang:
 2. **Repository importieren** → **GitHub verbinden** → Repo **ADHS-assistant-** wählen.
 3. Einstellungen:
    - Projektname: **adhs-assistant** (genau so)
-   - **Stammverzeichnis / Root directory:** `connector`
+   - Root directory: **leer lassen** (die `wrangler.toml` im Hauptordner zeigt schon auf `connector/`)
    - Build-Befehl: leer lassen. Bereitstellungsbefehl: `npx wrangler deploy`
 4. **Bereitstellen** tippen und ca. **2 Min.** warten.
 5. Die Adresse notieren, z. B. `https://adhs-assistant.DEINNAME.workers.dev`

@@ -1,0 +1,18 @@
+{
+  "name": "adhs-assistant",
+  "private": true,
+  "description": "Cloudflare Worker build for connector/ (the PWA files are static and need no build)",
+  "scripts": {
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@azure/msal-node": "^3.8.10",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "ical.js": "^2.2.1",
+    "tsdav": "^2.4.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "wrangler": "^4.149.0"
+  }
+}
