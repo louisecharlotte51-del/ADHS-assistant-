@@ -1,0 +1,11 @@
+name = "adhs-assistant"
+main = "src/worker.js"
+compatibility_date = "2025-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+TIMEZONE = "Europe/Berlin"
+
+# Wrangler creates this KV store automatically on the first deploy.
+[[kv_namespaces]]
+binding = "STORE"

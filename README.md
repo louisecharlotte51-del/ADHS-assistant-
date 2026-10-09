@@ -13,3 +13,7 @@ ADHS-freundliche Web-App (PWA) für iPhone und iPad. Läuft komplett im Browser,
 3. **Teilen-Symbol → Zum Home-Bildschirm**
 
 🔈 Ton: Stummschalter am Gerät aus, Lautstärke an.
+
+## 🔌 Outlook + Apple Kalender für Claude
+
+👉 Connector für **privates Outlook + Apple iCloud Kalender**: siehe [connector/README.md](connector/README.md)
