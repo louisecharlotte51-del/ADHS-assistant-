@@ -30,16 +30,15 @@ Zwei Varianten, gleicher Funktionsumfang:
 4. **Bereitstellen** tippen und ca. **2 Min.** warten.
 5. Die Adresse notieren, z. B. `https://adhs-assistant.DEINNAME.workers.dev`
 
-## ✅ Schritt 3: Geheimen Schlüssel setzen (3 Min.)
+## ✅ Schritt 3: Schlüssel erzeugen (1 Min.)
 
-1. Im Worker: **Einstellungen** → **Variablen und Geheimnisse** → **Hinzufügen**.
-2. Typ **Geheimnis**, Name `ACCESS_KEY`.
-3. Wert: ein **langes Zufallspasswort** (mind. **30 Zeichen**, z. B. aus der iPhone **Passwörter** App).
-4. **Bereitstellen** tippen.
+1. Öffne deine Adresse `https://adhs-assistant.DEINNAME.workers.dev` in Safari.
+2. Tippe auf **🔑 Schlüssel erzeugen**.
+3. Es öffnet sich deine **Einrichtungsseite** (Adresse mit `/setup/`). **Diese Adresse speichern** (Lesezeichen oder Notiz).
+
+💡 Alternativ geht auch ein Secret `ACCESS_KEY` in Cloudflare unter **Settings → Variables and Secrets** (Typ **Secret**).
 
 ## ✅ Schritt 4: Einrichtungsseite (10 Min.)
-
-Öffne in Safari: `https://adhs-assistant.DEINNAME.workers.dev/setup/DEIN-ACCESS-KEY`
 
 Die Seite führt dich durch 3 Kärtchen:
 
@@ -151,7 +150,7 @@ Lieber Entwürfe als direkt senden.
 
 - Zugriff nur mit deinem **ACCESS_KEY** in der URL.
 - Apple App-Passwort und Microsoft Token liegen im **Cloudflare KV Speicher** deines Kontos.
-- Neuer Schlüssel = alle alten Links ungültig: einfach `ACCESS_KEY` ändern.
+- Neuer Schlüssel = alle alten Links ungültig: in Cloudflare unter **Storage & Databases → KV** den Eintrag `access_key` löschen und neu erzeugen.
 
 **Lokal:**
 
