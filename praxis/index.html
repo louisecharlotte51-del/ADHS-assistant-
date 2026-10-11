@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Praxis-Cockpit</title>
+  <meta name="description" content="Praxis-Cockpit für das Sinologikum: Buchhaltung, Lohn, Social Media und Fristen an einem Ort">
+  <meta name="theme-color" content="#f6f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1b1d1f" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Praxis">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="shell">
+    <nav class="nav" id="nav" aria-label="Bereiche">
+      <p class="brand"><span aria-hidden="true">☯️</span> <b id="brand-name">Praxis-Cockpit</b></p>
+      <button type="button" data-view="start"><i>🏠</i><span class="long">Übersicht</span><span class="short">Start</span></button>
+      <button type="button" data-view="book"><i>📒</i><span class="long">Buchhaltung</span><span class="short">Bücher</span></button>
+      <button type="button" data-view="pay"><i>💶</i><span class="long">Lohn</span><span class="short">Lohn</span></button>
+      <button type="button" data-view="social"><i>📣</i><span class="long">Social Media</span><span class="short">Social</span></button>
+      <button type="button" data-view="tasks"><i>✅</i><span class="long">Aufgaben + Fristen</span><span class="short">Fristen</span></button>
+      <button type="button" data-view="settings"><i>⚙️</i><span class="long">Einstellungen</span><span class="short">Setup</span></button>
+    </nav>
+    <main id="main" tabindex="-1"></main>
+  </div>
+
+  <div id="sheet" class="sheet" hidden>
+    <div class="sheet-card" id="sheet-card" role="dialog" aria-modal="true"></div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
