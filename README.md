@@ -17,3 +17,18 @@ ADHS-freundliche Web-App (PWA) für iPhone und iPad. Läuft komplett im Browser,
 ## 🔌 Outlook + Apple Kalender für Claude
 
 👉 Connector für **privates Outlook + Apple iCloud Kalender**: siehe [connector/README.md](connector/README.md)
+
+## 🏥 Praxis-Cockpit (Sinologikum)
+
+Zweite App im Ordner [`praxis/`](praxis/): **Buchhaltung, Lohn, Social Media, Fristen** an einem Ort.
+
+- 📒 **Monats-Checkliste** Buchhaltung (TCM Soft, Kontoabgleich, DATEV Unternehmen online)
+- 💶 **Lohn:** Stunden, Urlaub, Krank pro Person + Text zum Kopieren für den Steuerberater
+- 📣 **Social Media:** Idee → Entwurf → Geplant → Live, TCM-Jahreszeiten-Ideen, HWG-Check
+- ✅ **Fristen** mit Wiederholung (monatlich, vierteljährlich …)
+- 💾 **Team-Austausch** per Backup-Datei (iCloud Drive), Import führt zusammen
+
+📲 Öffnen: `https://<benutzername>.github.io/<repo>/praxis/` → **Teilen → Zum Home-Bildschirm**
+💻 Mac (Safari): **Ablage → Zum Dock hinzufügen**
+
+🔒 Daten bleiben **nur auf dem Gerät**. **Keine Patientendaten** eintragen.
