@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stadtquartier Bergfrieden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE work: städtebauliches Konzeptdokument, Fazit zuerst, ruhig und präzise
+   IDEA eine Rahmenplan-Tafel nach Planzeichenverordnung: Farbfelder MU/WA/Grün/Wasser
+   PICTURE der generierte Rahmenplan, groß, mit nummerierter Legende daneben
+   COLOUR Weiß, Tinte #1d1d1b, MU-Ziegel #c4553b, WA-Ocker #e3b448, Grün #6fae5c, Kanal #3f7fb0
+   TYPE Barlow Semi Condensed (DIN-artig, Berliner Beschilderung) + Barlow
+   LAYOUT Titel quer, darunter Plan 60 % + Legende/Kennzahlen 40 %; unter 600px gestapelt */
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#121513);--ink:light-dark(#1d1d1b,#ecebe6);--soft:light-dark(#5b5d58,#a9aba4);
+--rule:light-dark(#d9d6cc,#33372f);--panel:light-dark(#f6f4ee,#1a1e1a);
+--land:light-dark(#efe9dc,#23271f);--wasser:light-dark(#3f7fb0,#2f6a96);--gruen:light-dark(#6fae5c,#4f8a40);
+--gruen2:light-dark(#9cc58a,#3f6b35);--parzelle:light-dark(#b9d98f,#6f9a4f);--hof:light-dark(#cfe3b8,#38492e);
+--strasse:light-dark(#d8d0c0,#3a3a33);--mu:light-dark(#c4553b,#b14a33);--wa:light-dark(#e3b448,#c99b33);
+--gb:light-dark(#5a6fa8,#5568a0);--baum:light-dark(#3f7d3a,#2c5a28);--platz:light-dark(#f4efe3,#4a4a40);
+--stufe:light-dark(#e9e4d6,#6b6a5d);--weg:light-dark(#ffffff,#d9d6cc);--marker:light-dark(#ffffff,#f3f1ea)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.6 Barlow,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:"Barlow Semi Condensed",Barlow,sans-serif;line-height:1.05;letter-spacing:-.01em;text-wrap:balance;margin:0}
+h1{font-size:clamp(36px,5.4vw,52px)}
+h2{font-size:clamp(26px,3.2vw,34px);margin-bottom:14px}
+h3{font-size:20px;margin:0 0 6px}
+p{margin:0 0 12px;max-width:70ch}
+.band{padding-block:clamp(28px,4vw,56px);padding-inline:max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+.top{border-top:14px solid var(--mu)}
+.lead{font-size:19px;max-width:62ch;margin-top:14px}
+.note{display:inline-block;margin-top:14px;padding:6px 12px;background:var(--panel);border-left:4px solid var(--wa);font-size:14px}
+nav.scroll{display:flex;gap:6px;padding:10px max(5vw,16px);border-block:1px solid var(--rule);background:var(--bg);white-space:nowrap}
+nav.scroll a{flex:none;color:var(--ink);text-decoration:none;padding:8px 12px;border-radius:6px;font-weight:600;font-size:15px}
+nav.scroll a:hover,nav.scroll a:focus-visible{background:var(--panel);outline:2px solid var(--mu)}
+@media(min-width:900px){nav.scroll{position:sticky;top:0;z-index:5}}
+.hero{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
+.plan svg{width:100%;height:auto;display:block;border-radius:6px}
+.plan .g{font:700 20px "Barlow Semi Condensed",sans-serif;fill:#fff}
+.plan .hp{font:700 12px Barlow,sans-serif;fill:#fff}
+.plan .m{font:700 15px Barlow,sans-serif;fill:#1d1d1b}
+.plan text{font:600 14px Barlow,sans-serif;fill:var(--ink)}
+.cap{font-size:14px;color:var(--soft);margin-top:8px}
+.figs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;background:var(--rule);border:1px solid var(--rule)}
+.head{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:end}
+.figs div{background:var(--bg);padding:12px 14px}
+.figs b{display:block;font:700 clamp(26px,3vw,32px)/1 "Barlow Semi Condensed",sans-serif;white-space:nowrap}
+.figs span{font-size:14px;color:var(--soft)}
+ol.leg{list-style:none;padding:0;margin:0 0 18px;display:grid;gap:8px}
+ol.leg li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;align-items:start;font-size:15.5px;line-height:1.4}
+ol.leg i{font-style:normal;width:26px;height:26px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;font-weight:700;font-size:14px}
+.zones{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:14px}
+.zones span{display:inline-flex;align-items:center;gap:6px}
+.zones s{width:16px;height:16px;display:inline-block;border-radius:3px;text-decoration:none}
+.alt{background:var(--panel)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(15em,1fr));gap:22px 32px}
+.cols>div{border-top:5px solid var(--c,var(--ink));padding-top:12px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:600;color:var(--soft);font-size:14px}
+td.n,th.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto}
+.rule td:first-child{font-weight:700;white-space:nowrap}
+.grp td{background:var(--panel);font-family:"Barlow Semi Condensed",sans-serif;font-weight:700;font-size:17px;padding-top:14px}
+.chart{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px;align-items:start}
+.fig{position:relative;min-height:360px;border:1px solid var(--rule);border-radius:6px}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+.fig text{font:13px Barlow,sans-serif;fill:var(--soft);paint-order:stroke;stroke:var(--bg);stroke-width:4px}
+.fig .k{fill:var(--ink);font-weight:700}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(15em,1fr));gap:18px}
+.steps div{background:var(--bg);border:1px solid var(--rule);border-radius:6px;padding:16px}
+.steps b{font:700 22px "Barlow Semi Condensed",sans-serif}
+ul{padding-left:20px;margin:0 0 12px}li{margin-bottom:5px}
+a{color:var(--wasser)}
+pre{overflow-x:auto;background:var(--panel);padding:12px;border-radius:6px;font-size:13.5px}
+.btn{font:600 15px Barlow,sans-serif;min-height:44px;padding:0 16px;border:1px solid var(--ink);background:var(--bg);color:var(--ink);border-radius:6px;cursor:pointer}
+.btn:focus-visible{outline:3px solid var(--mu)}
+footer{font-size:14px;color:var(--soft)}
+@media(max-width:860px){.hero,.chart,.head{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){table{font-size:13.5px}th,td{padding:7px 5px}.stack thead{display:none}.stack tr{display:grid;padding-block:8px;border-bottom:1px solid var(--rule)}.stack td{display:flex;justify-content:space-between;gap:12px;border:0;padding:3px 0;text-align:right}.stack td::before{content:attr(data-l);font-weight:600;color:var(--soft);text-align:left}.stack .grp td{display:block;text-align:left}.stack .grp td::before{content:none}}
+@media(prefers-reduced-motion:no-preference){.dot{transition:r .2s}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+<header class="band top"><div class="wrap head"><div>
+<h1>Bergfrieden: Gartenstadt am Teltowkanal</h1>
+<p class="lead">Empfehlung: Auf der Kolonie Bergfrieden und dem Gewerbegürtel bis zum Kanal entsteht ein gemischtes Quartier für rund 6.500 Menschen und 1.600 Arbeitsplätze. Die Gärten verschwinden nicht, sie werden zur 90 Meter breiten Gartenfuge, die vom Tempelhofer Feld bis ans Wasser führt.</p>
+<span class="note">Konzeptstudie. Gebietsgrenze schematisch (560 × 430 m, ca. 24 ha); vor Weiterarbeit mit Flurstücken aus dem Geoportal Berlin ersetzen.</span>
+</div>
+<div class="figs">
+<div><b>3.509</b><span>Wohnungen</span></div>
+<div><b>6.491</b><span>Einwohner</span></div>
+<div><b>1,64</b><span>GFZ brutto</span></div>
+<div><b>7,1 m²</b><span>öff. Grün je EW</span></div>
+</div>
+</div></header>
+
+<nav class="scroll" aria-label="Abschnitte">
+<a href="#plan">Plan</a><a href="#konzept">Konzept</a><a href="#geruest">Gerüst</a><a href="#regeln">Regeln</a><a href="#modell">Rechenmodell</a><a href="#umsetzung">Umsetzung</a><a href="#offen">Offene Punkte</a>
+</nav>
+
+<section class="band" id="plan"><div class="wrap hero">
+<div class="plan"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 620" role="img" aria-label="Rahmenplan Bergfrieden">
+<rect width="680.0" height="620.0" fill="var(--land,#efe9dc)"/>
+<rect x="0" y="498" width="680.0" height="46" fill="var(--wasser,#3f7fb0)"/>
+<rect x="60" y="460" width="560.0" height="30.0" fill="var(--gruen2,#9cc58a)"/>
+<rect x="278" y="82" width="90" height="378" fill="var(--gruen,#6fae5c)"/>
+<rect x="284" y="90" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="298" y="90" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="312" y="90" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="326" y="90" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="340" y="90" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="284" y="106" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="298" y="106" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="312" y="106" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="326" y="106" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="340" y="106" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="284" y="122" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="298" y="122" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="312" y="122" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="326" y="122" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="340" y="122" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="284" y="138" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="298" y="138" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="312" y="138" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="326" y="138" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="340" y="138" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="284" y="154" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="298" y="154" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="312" y="154" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="326" y="154" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="340" y="154" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="284" y="170" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="298" y="170" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="312" y="170" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="326" y="170" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="340" y="170" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="284" y="186" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="298" y="186" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="312" y="186" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="326" y="186" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="340" y="186" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="284" y="202" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="298" y="202" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="312" y="202" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="326" y="202" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="340" y="202" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="284" y="218" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="298" y="218" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="312" y="218" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="326" y="218" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="340" y="218" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="284" y="234" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="298" y="234" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="312" y="234" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="326" y="234" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="340" y="234" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="284" y="250" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="298" y="250" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="312" y="250" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="326" y="250" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="340" y="250" width="11" height="13" fill="var(--parzelle,#b9d98f)" stroke="var(--gruen,#6fae5c)"/>
+<rect x="60" y="60" width="560.0" height="22.0" fill="var(--strasse,#d8d0c0)"/>
+<rect x="60" y="269" width="560.0" height="20.0" fill="var(--strasse,#d8d0c0)"/>
+<rect x="60.0" y="383.3" width="60.7" height="76.7" fill="var(--mu,#c4553b)"/>
+<rect x="73.0" y="396.3" width="34.7" height="50.7" fill="var(--hof,#cfe3b8)"/>
+<rect x="86.4" y="383.3" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="90" y="429" text-anchor="middle" class="g">6</text>
+<rect x="60.0" y="288.6" width="60.7" height="76.7" fill="var(--wa,#e3b448)"/>
+<rect x="73.0" y="301.6" width="34.7" height="50.7" fill="var(--hof,#cfe3b8)"/>
+<rect x="86.4" y="288.6" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="90" y="334" text-anchor="middle" class="g">6</text>
+<rect x="138.7" y="383.3" width="60.7" height="76.7" fill="var(--mu,#c4553b)"/>
+<rect x="151.7" y="396.3" width="34.7" height="50.7" fill="var(--hof,#cfe3b8)"/>
+<rect x="165.1" y="383.3" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="169" y="429" text-anchor="middle" class="g">6</text>
+<rect x="138.7" y="288.6" width="60.7" height="76.7" fill="var(--wa,#e3b448)"/>
+<rect x="151.7" y="301.6" width="34.7" height="50.7" fill="var(--hof,#cfe3b8)"/>
+<rect x="165.1" y="288.6" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="169" y="334" text-anchor="middle" class="g">6</text>
+<rect x="217.5" y="383.3" width="60.7" height="76.7" fill="var(--mu,#c4553b)"/>
+<rect x="230.5" y="396.3" width="34.7" height="50.7" fill="var(--hof,#cfe3b8)"/>
+<rect x="243.8" y="383.3" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="248" y="429" text-anchor="middle" class="g">6</text>
+<rect x="217.5" y="288.6" width="60.7" height="76.7" fill="var(--wa,#e3b448)"/>
+<rect x="230.5" y="301.6" width="34.7" height="50.7" fill="var(--hof,#cfe3b8)"/>
+<rect x="243.8" y="288.6" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="248" y="334" text-anchor="middle" class="g">6</text>
+<rect x="60.0" y="184.3" width="60.7" height="84.3" fill="var(--wa,#e3b448)"/>
+<rect x="73.0" y="197.3" width="34.7" height="58.3" fill="var(--hof,#cfe3b8)"/>
+<rect x="86.4" y="184.3" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="90" y="233" text-anchor="middle" class="g">6</text>
+<rect x="60.0" y="82.0" width="60.7" height="84.3" fill="var(--mu,#c4553b)"/>
+<rect x="73.0" y="95.0" width="34.7" height="58.3" fill="var(--hof,#cfe3b8)"/>
+<rect x="86.4" y="82.0" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="90" y="131" text-anchor="middle" class="g">5</text>
+<rect x="138.7" y="184.3" width="60.7" height="84.3" fill="var(--wa,#e3b448)"/>
+<rect x="151.7" y="197.3" width="34.7" height="58.3" fill="var(--hof,#cfe3b8)"/>
+<rect x="165.1" y="184.3" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="169" y="233" text-anchor="middle" class="g">6</text>
+<rect x="138.7" y="82.0" width="60.7" height="84.3" fill="var(--mu,#c4553b)"/>
+<rect x="151.7" y="95.0" width="34.7" height="58.3" fill="var(--hof,#cfe3b8)"/>
+<rect x="165.1" y="82.0" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="169" y="131" text-anchor="middle" class="g">5</text>
+<rect x="217.5" y="184.3" width="60.7" height="84.3" fill="var(--gb,#5a6fa8)"/>
+<rect x="231.5" y="198.3" width="32.7" height="56.3" fill="var(--hof,#cfe3b8)"/>
+<text x="248" y="233" text-anchor="middle" class="g"></text>
+<rect x="217.5" y="82.0" width="60.7" height="84.3" fill="var(--mu,#c4553b)"/>
+<rect x="230.5" y="95.0" width="34.7" height="58.3" fill="var(--hof,#cfe3b8)"/>
+<rect x="243.8" y="82.0" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="248" y="131" text-anchor="middle" class="g">5</text>
+<rect x="368.2" y="383.3" width="71.9" height="76.7" fill="var(--mu,#c4553b)"/>
+<rect x="381.2" y="396.3" width="45.9" height="50.7" fill="var(--hof,#cfe3b8)"/>
+<rect x="400.2" y="383.3" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="404" y="429" text-anchor="middle" class="g">6</text>
+<rect x="372" y="434" width="22" height="22" fill="var(--ink,#1d1d1b)"/>
+<text x="383" y="451" text-anchor="middle" class="hp">15</text>
+<rect x="368.2" y="288.6" width="71.9" height="76.7" fill="var(--wa,#e3b448)"/>
+<rect x="381.2" y="301.6" width="45.9" height="50.7" fill="var(--hof,#cfe3b8)"/>
+<rect x="400.2" y="288.6" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="404" y="334" text-anchor="middle" class="g">6</text>
+<rect x="458.1" y="383.3" width="71.9" height="76.7" fill="var(--mu,#c4553b)"/>
+<rect x="471.1" y="396.3" width="45.9" height="50.7" fill="var(--hof,#cfe3b8)"/>
+<rect x="490.1" y="383.3" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="494" y="429" text-anchor="middle" class="g">6</text>
+<rect x="458.1" y="288.6" width="71.9" height="76.7" fill="var(--wa,#e3b448)"/>
+<rect x="471.1" y="301.6" width="45.9" height="50.7" fill="var(--hof,#cfe3b8)"/>
+<rect x="490.1" y="288.6" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="494" y="334" text-anchor="middle" class="g">6</text>
+<rect x="548.1" y="383.3" width="71.9" height="76.7" fill="var(--mu,#c4553b)"/>
+<rect x="561.1" y="396.3" width="45.9" height="50.7" fill="var(--hof,#cfe3b8)"/>
+<rect x="580.0" y="383.3" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="584" y="429" text-anchor="middle" class="g">6</text>
+<rect x="548.1" y="288.6" width="71.9" height="76.7" fill="var(--wa,#e3b448)"/>
+<rect x="561.1" y="301.6" width="45.9" height="50.7" fill="var(--hof,#cfe3b8)"/>
+<rect x="580.0" y="288.6" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="584" y="334" text-anchor="middle" class="g">6</text>
+<rect x="368.2" y="184.3" width="71.9" height="84.3" fill="var(--wa,#e3b448)"/>
+<rect x="381.2" y="197.3" width="45.9" height="58.3" fill="var(--hof,#cfe3b8)"/>
+<rect x="400.2" y="184.3" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="404" y="233" text-anchor="middle" class="g">6</text>
+<rect x="368.2" y="82.0" width="71.9" height="84.3" fill="var(--mu,#c4553b)"/>
+<rect x="381.2" y="95.0" width="45.9" height="58.3" fill="var(--hof,#cfe3b8)"/>
+<rect x="400.2" y="82.0" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="404" y="131" text-anchor="middle" class="g">5</text>
+<rect x="458.1" y="184.3" width="71.9" height="84.3" fill="var(--wa,#e3b448)"/>
+<rect x="471.1" y="197.3" width="45.9" height="58.3" fill="var(--hof,#cfe3b8)"/>
+<rect x="490.1" y="184.3" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="494" y="233" text-anchor="middle" class="g">6</text>
+<rect x="458.1" y="82.0" width="71.9" height="84.3" fill="var(--mu,#c4553b)"/>
+<rect x="471.1" y="95.0" width="45.9" height="58.3" fill="var(--hof,#cfe3b8)"/>
+<rect x="490.1" y="82.0" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="494" y="131" text-anchor="middle" class="g">5</text>
+<rect x="548.1" y="184.3" width="71.9" height="84.3" fill="var(--wa,#e3b448)"/>
+<rect x="561.1" y="197.3" width="45.9" height="58.3" fill="var(--hof,#cfe3b8)"/>
+<rect x="580.0" y="184.3" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="584" y="233" text-anchor="middle" class="g">6</text>
+<rect x="548.1" y="82.0" width="71.9" height="84.3" fill="var(--mu,#c4553b)"/>
+<rect x="561.1" y="95.0" width="45.9" height="58.3" fill="var(--hof,#cfe3b8)"/>
+<rect x="580.0" y="82.0" width="8" height="13.0" fill="var(--hof,#cfe3b8)"/>
+<text x="584" y="131" text-anchor="middle" class="g">5</text>
+<rect x="284" y="468" width="78" height="5" fill="var(--stufe,#e9e4d6)"/>
+<rect x="284" y="475" width="78" height="5" fill="var(--stufe,#e9e4d6)"/>
+<rect x="284" y="482" width="78" height="5" fill="var(--stufe,#e9e4d6)"/>
+<polyline points="309,456 337,436 309,416 337,395 309,375 337,355 309,335 337,315 309,295" fill="none" stroke="var(--wasser,#3f7fb0)" stroke-width="9" stroke-linejoin="round" opacity=".85"/>
+<defs><circle id="t" r="5" fill="var(--baum,#3f7d3a)"/></defs>
+<use href="#t" x="68" y="274"/>
+<use href="#t" x="68" y="284"/>
+<use href="#t" x="68" y="71"/>
+<use href="#t" x="68" y="464"/>
+<use href="#t" x="84" y="274"/>
+<use href="#t" x="84" y="284"/>
+<use href="#t" x="84" y="71"/>
+<use href="#t" x="84" y="464"/>
+<use href="#t" x="100" y="274"/>
+<use href="#t" x="100" y="284"/>
+<use href="#t" x="100" y="71"/>
+<use href="#t" x="100" y="464"/>
+<use href="#t" x="116" y="274"/>
+<use href="#t" x="116" y="284"/>
+<use href="#t" x="116" y="71"/>
+<use href="#t" x="116" y="464"/>
+<use href="#t" x="132" y="274"/>
+<use href="#t" x="132" y="284"/>
+<use href="#t" x="132" y="71"/>
+<use href="#t" x="132" y="464"/>
+<use href="#t" x="148" y="274"/>
+<use href="#t" x="148" y="284"/>
+<use href="#t" x="148" y="71"/>
+<use href="#t" x="148" y="464"/>
+<use href="#t" x="164" y="274"/>
+<use href="#t" x="164" y="284"/>
+<use href="#t" x="164" y="71"/>
+<use href="#t" x="164" y="464"/>
+<use href="#t" x="180" y="274"/>
+<use href="#t" x="180" y="284"/>
+<use href="#t" x="180" y="71"/>
+<use href="#t" x="180" y="464"/>
+<use href="#t" x="196" y="274"/>
+<use href="#t" x="196" y="284"/>
+<use href="#t" x="196" y="71"/>
+<use href="#t" x="196" y="464"/>
+<use href="#t" x="212" y="274"/>
+<use href="#t" x="212" y="284"/>
+<use href="#t" x="212" y="71"/>
+<use href="#t" x="212" y="464"/>
+<use href="#t" x="228" y="274"/>
+<use href="#t" x="228" y="284"/>
+<use href="#t" x="228" y="71"/>
+<use href="#t" x="228" y="464"/>
+<use href="#t" x="244" y="274"/>
+<use href="#t" x="244" y="284"/>
+<use href="#t" x="244" y="71"/>
+<use href="#t" x="244" y="464"/>
+<use href="#t" x="260" y="274"/>
+<use href="#t" x="260" y="284"/>
+<use href="#t" x="260" y="71"/>
+<use href="#t" x="260" y="464"/>
+<use href="#t" x="276" y="274"/>
+<use href="#t" x="276" y="284"/>
+<use href="#t" x="276" y="71"/>
+<use href="#t" x="276" y="464"/>
+<use href="#t" x="292" y="274"/>
+<use href="#t" x="292" y="284"/>
+<use href="#t" x="292" y="71"/>
+<use href="#t" x="308" y="274"/>
+<use href="#t" x="308" y="284"/>
+<use href="#t" x="308" y="71"/>
+<use href="#t" x="324" y="274"/>
+<use href="#t" x="324" y="284"/>
+<use href="#t" x="324" y="71"/>
+<use href="#t" x="340" y="274"/>
+<use href="#t" x="340" y="284"/>
+<use href="#t" x="340" y="71"/>
+<use href="#t" x="356" y="274"/>
+<use href="#t" x="356" y="284"/>
+<use href="#t" x="356" y="71"/>
+<use href="#t" x="372" y="274"/>
+<use href="#t" x="372" y="284"/>
+<use href="#t" x="372" y="71"/>
+<use href="#t" x="372" y="464"/>
+<use href="#t" x="388" y="274"/>
+<use href="#t" x="388" y="284"/>
+<use href="#t" x="388" y="71"/>
+<use href="#t" x="388" y="464"/>
+<use href="#t" x="404" y="274"/>
+<use href="#t" x="404" y="284"/>
+<use href="#t" x="404" y="71"/>
+<use href="#t" x="404" y="464"/>
+<use href="#t" x="420" y="274"/>
+<use href="#t" x="420" y="284"/>
+<use href="#t" x="420" y="71"/>
+<use href="#t" x="420" y="464"/>
+<use href="#t" x="436" y="274"/>
+<use href="#t" x="436" y="284"/>
+<use href="#t" x="436" y="71"/>
+<use href="#t" x="436" y="464"/>
+<use href="#t" x="452" y="274"/>
+<use href="#t" x="452" y="284"/>
+<use href="#t" x="452" y="71"/>
+<use href="#t" x="452" y="464"/>
+<use href="#t" x="468" y="274"/>
+<use href="#t" x="468" y="284"/>
+<use href="#t" x="468" y="71"/>
+<use href="#t" x="468" y="464"/>
+<use href="#t" x="484" y="274"/>
+<use href="#t" x="484" y="284"/>
+<use href="#t" x="484" y="71"/>
+<use href="#t" x="484" y="464"/>
+<use href="#t" x="500" y="274"/>
+<use href="#t" x="500" y="284"/>
+<use href="#t" x="500" y="71"/>
+<use href="#t" x="500" y="464"/>
+<use href="#t" x="516" y="274"/>
+<use href="#t" x="516" y="284"/>
+<use href="#t" x="516" y="71"/>
+<use href="#t" x="516" y="464"/>
+<use href="#t" x="532" y="274"/>
+<use href="#t" x="532" y="284"/>
+<use href="#t" x="532" y="71"/>
+<use href="#t" x="532" y="464"/>
+<use href="#t" x="548" y="274"/>
+<use href="#t" x="548" y="284"/>
+<use href="#t" x="548" y="71"/>
+<use href="#t" x="548" y="464"/>
+<use href="#t" x="564" y="274"/>
+<use href="#t" x="564" y="284"/>
+<use href="#t" x="564" y="71"/>
+<use href="#t" x="564" y="464"/>
+<use href="#t" x="580" y="274"/>
+<use href="#t" x="580" y="284"/>
+<use href="#t" x="580" y="71"/>
+<use href="#t" x="580" y="464"/>
+<use href="#t" x="596" y="274"/>
+<use href="#t" x="596" y="284"/>
+<use href="#t" x="596" y="71"/>
+<use href="#t" x="596" y="464"/>
+<use href="#t" x="612" y="274"/>
+<use href="#t" x="612" y="284"/>
+<use href="#t" x="612" y="71"/>
+<use href="#t" x="612" y="464"/>
+<use href="#t" x="332" y="313"/>
+<use href="#t" x="344" y="417"/>
+<use href="#t" x="308" y="316"/>
+<use href="#t" x="287" y="324"/>
+<use href="#t" x="345" y="379"/>
+<use href="#t" x="309" y="409"/>
+<use href="#t" x="305" y="383"/>
+<use href="#t" x="324" y="366"/>
+<use href="#t" x="360" y="329"/>
+<use href="#t" x="332" y="298"/>
+<use href="#t" x="302" y="427"/>
+<use href="#t" x="332" y="445"/>
+<use href="#t" x="289" y="372"/>
+<use href="#t" x="321" y="309"/>
+<use href="#t" x="333" y="372"/>
+<use href="#t" x="323" y="414"/>
+<use href="#t" x="287" y="422"/>
+<use href="#t" x="337" y="421"/>
+<use href="#t" x="314" y="451"/>
+<use href="#t" x="348" y="428"/>
+<use href="#t" x="306" y="315"/>
+<use href="#t" x="324" y="320"/>
+<use href="#t" x="334" y="337"/>
+<use href="#t" x="293" y="368"/>
+<use href="#t" x="324" y="317"/>
+<use href="#t" x="313" y="359"/>
+<rect x="278" y="263" width="90" height="32.0" fill="var(--platz,#f4efe3)" stroke="var(--ink,#1d1d1b)" stroke-width="1.5"/>
+<rect x="378" y="490" width="9" height="56" fill="var(--weg,#fff)" stroke="var(--ink,#1d1d1b)" stroke-width="1"/>
+<rect x="62" y="84" width="22" height="22" rx="4" fill="var(--ink,#1d1d1b)"/><text x="73" y="101" text-anchor="middle" class="hp">P</text>
+<rect x="596" y="84" width="22" height="22" rx="4" fill="var(--ink,#1d1d1b)"/><text x="607" y="101" text-anchor="middle" class="hp">P</text>
+<circle cx="323" cy="122" r="13" fill="var(--marker,#fff)" stroke="var(--ink,#1d1d1b)" stroke-width="2"/><text x="323" y="127" text-anchor="middle" class="m">1</text>
+<circle cx="323" cy="279" r="13" fill="var(--marker,#fff)" stroke="var(--ink,#1d1d1b)" stroke-width="2"/><text x="323" y="284" text-anchor="middle" class="m">2</text>
+<circle cx="323" cy="420" r="13" fill="var(--marker,#fff)" stroke="var(--ink,#1d1d1b)" stroke-width="2"/><text x="323" y="425" text-anchor="middle" class="m">3</text>
+<circle cx="382" cy="514" r="13" fill="var(--marker,#fff)" stroke="var(--ink,#1d1d1b)" stroke-width="2"/><text x="382" y="519" text-anchor="middle" class="m">4</text>
+<circle cx="100" cy="475" r="13" fill="var(--marker,#fff)" stroke="var(--ink,#1d1d1b)" stroke-width="2"/><text x="100" y="480" text-anchor="middle" class="m">8</text>
+<circle cx="248" cy="221" r="13" fill="var(--marker,#fff)" stroke="var(--ink,#1d1d1b)" stroke-width="2"/><text x="248" y="226" text-anchor="middle" class="m">5</text>
+<circle cx="418" cy="475" r="13" fill="var(--marker,#fff)" stroke="var(--ink,#1d1d1b)" stroke-width="2"/><text x="418" y="480" text-anchor="middle" class="m">6</text>
+<circle cx="602" cy="148" r="13" fill="var(--marker,#fff)" stroke="var(--ink,#1d1d1b)" stroke-width="2"/><text x="602" y="153" text-anchor="middle" class="m">7</text>
+<g class="nord"><path d="M646.0 46 l10 26 l-10 -7 l-10 7z" fill="var(--ink,#1d1d1b)"/><text x="646.0" y="36" text-anchor="middle">N</text></g>
+<g><rect x="60" y="586.0" width="100" height="6" fill="var(--ink,#1d1d1b)"/><text x="170" y="594.0">100 m</text></g>
+</svg>
+<p class="cap">Generierter Rahmenplan (Kompromisslösung aus 80 Pareto-Varianten). Zahl im Block = Geschosse. Norden oben. Komturstraße oben, Teltowkanal unten, U6 Kaiserin-Augusta-Straße östlich.</p></div>
+<div>
+<ol class="leg">
+<li><i>1</i><span><b>Gartenfuge Nord:</b> erhaltene und neu geordnete Kolonie-Gärten als Gemeinschaftsgärten.</span></li>
+<li><i>2</i><span><b>Quartiersplatz</b> an der Kreuzung von Fuge und Ost-West-Achse: Markt, Café, Nachbarschaftshaus.</span></li>
+<li><i>3</i><span><b>Gartenfuge Süd:</b> Park mit Regenwassermulde (Schwammstadt) und Spielwiesen.</span></li>
+<li><i>4</i><span><b>Fuß- und Radbrücke</b> über den Teltowkanal nach Mariendorf.</span></li>
+<li><i>5</i><span><b>Bildungscampus:</b> Grundschule und Kita an der Fuge.</span></li>
+<li><i>6</i><span><b>Hafenplatz</b> mit Hochpunkt (15 Geschosse) als Landmarke am Wasser.</span></li>
+<li><i>7</i><span><b>Werkhofkante Komturstraße:</b> Gewerbe im Erdgeschoss als Lärmschutz.</span></li>
+<li><i>8</i><span><b>Uferpromenade</b> mit Sitzstufen, durchgehend öffentlich.</span></li>
+</ol>
+<div class="zones">
+<span><s style="background:var(--mu)"></s>Urbanes Gebiet (MU)</span>
+<span><s style="background:var(--wa)"></s>Allgemeines Wohngebiet (WA)</span>
+<span><s style="background:var(--gb)"></s>Gemeinbedarf</span>
+<span><s style="background:var(--gruen)"></s>Grün / Gärten</span>
+<span><s style="background:var(--ink)"></s>Mobilitätshub (P)</span>
+</div>
+</div>
+</div></section>
+
+<section class="band alt" id="konzept"><div class="wrap">
+<h2>Konzept: Vom Feld zum Wasser, durch die Gärten</h2>
+<p>Der Ort hat zwei Stärken, die heute nicht zusammenhängen: das Garten-Gen der Kolonie Bergfrieden und die Wasserkante des Teltowkanals. Dazwischen liegen Gewerbeflächen mit geringer Dichte. Das Konzept verbindet beides über ein grünes Rückgrat und legt die Stadt als ruhige Hofblöcke links und rechts daneben.</p>
+<div class="cols" style="margin-top:20px">
+<div style="--c:var(--gruen)"><h3>Gärten bleiben das Gesicht</h3><p>Rund 3,4 ha Gartenfuge statt Verdrängung. Parzellen werden kleiner, gemeinschaftlich und öffentlich durchwegbar. Neue Pächter aus dem Quartier.</p></div>
+<div style="--c:var(--wasser)"><h3>Der Kanal wird Adresse</h3><p>Uferpromenade, Hafenplatz und Brücke machen den Teltowkanal zum Freiraum für ganz Tempelhof, nicht zum Hinterhof der Gewerbebauten.</p></div>
+<div style="--c:var(--mu)"><h3>Produktive Ränder, ruhige Mitte</h3><p>An Komturstraße und Kanal stehen urbane Mischblöcke mit Werkstätten und Läden. Sie schirmen die Wohnhöfe innen gegen Lärm ab.</p></div>
+<div style="--c:var(--wa)"><h3>Berliner Block, neu gemischt</h3><p>Hofblöcke mit 5 bis 6 Geschossen, offenen Ecken und Durchgängen. Dichte wie im Gründerzeit-Kiez, aber mit grünen Höfen und Sonne.</p></div>
+</div>
+</div></section>
+
+<section class="band" id="geruest"><div class="wrap">
+<h2>Gerüst: vier Schichten, die alles Weitere festlegen</h2>
+<p>Das Gerüst ist der Teil, der über Jahrzehnte bleibt, auch wenn sich Gebäude und Nutzungen ändern. Jede Schicht ist im Plan ablesbar.</p>
+<div class="cols" style="margin:18px 0 26px">
+<div style="--c:var(--gruen)"><h3>Freiraum</h3><ul><li>Gartenfuge 90 m breit, Nord–Süd</li><li>Uferpromenade 30 m</li><li>Je Block ein Hof von mind. 22 m</li><li>Baumreihen an allen Straßen</li></ul></div>
+<div style="--c:var(--wasser)"><h3>Bewegung</h3><ul><li>Ost-West-Achse als Fahrradstraße</li><li>Wohnstraßen 18 m, Tempo 20</li><li>Brücke über den Kanal</li><li>2 Mobilitätshubs, sonst autofrei</li></ul></div>
+<div style="--c:var(--wa)"><h3>Bebauung</h3><ul><li>24 Blöcke, ca. 61 × 77 m</li><li>Blockumfang max. 310 m</li><li>Traufhöhe 17–20 m</li><li>Ein Hochpunkt am Hafenplatz</li></ul></div>
+<div style="--c:var(--mu)"><h3>Nutzung</h3><ul><li>Ränder: Urbanes Gebiet (§ 6a BauNVO)</li><li>Mitte: Allgemeines Wohngebiet</li><li>Schule + Kita am Platz</li><li>Erdgeschosse 4,5 m hoch</li></ul></div>
+</div>
+<h3>Straßenräume</h3>
+<div class="scroll"><table class="stack">
+<thead><tr><th>Straße</th><th class="n">Breite</th><th>Aufteilung</th><th>Charakter</th></tr></thead>
+<tbody>
+<tr><td>Komturstraße (Bestand)</td><td class="n">22 m</td><td>Gehweg 3,5 · Radweg 2,3 · Baumstreifen 2,5 · Fahrbahn 6,5 · Baumstreifen 2,5 · Radweg 2,3 · Gehweg 2,4</td><td>Allee, Läden und Werkstätten</td></tr>
+<tr><td>Quartiersachse</td><td class="n">20 m</td><td>Gehweg 4 · Baumreihe/Parken 2,5 · Fahrradstraße 7 · Baumreihe 2,5 · Gehweg 4</td><td>Rad hat Vorrang, Kfz nur Anlieger</td></tr>
+<tr><td>Wohnstraße</td><td class="n">18 m</td><td>Vorzone 2 · Gehweg 2,5 · Mulde/Bäume 3 · Mischfläche 5 · Gehweg 2,5 · Vorzone 3</td><td>Tempo 20, Spielstraße möglich</td></tr>
+<tr><td>Uferpromenade</td><td class="n">30 m</td><td>Vorzone 3 · Rad 3 · Baumhain 10 · Fußweg 6 · Sitzstufen 8</td><td>Autofrei, durchgehend öffentlich</td></tr>
+</tbody></table></div>
+</div></section>
+
+<section class="band alt" id="regeln"><div class="wrap">
+<h2>Regeln: was jedes Baufeld einhalten muss</h2>
+<p>Die Regeln sind so formuliert, dass sie sich in einen Bebauungsplan (Festsetzungen) und ein Gestaltungshandbuch (Empfehlungen) übersetzen lassen.</p>
+<h3 style="margin-top:18px">Zonen</h3>
+<div class="scroll"><table class="stack">
+<thead><tr><th>Zone</th><th>Gebietsart</th><th class="n">Geschosse</th><th class="n">GRZ</th><th class="n">GFZ</th><th>Erdgeschoss</th></tr></thead>
+<tbody>
+<tr><td>Kanalkante</td><td>MU § 6a</td><td class="n">6 (Hochpunkt 15)</td><td class="n">0,55</td><td class="n">3,4</td><td>Gastronomie, Läden, Werkstatt</td></tr>
+<tr><td>Werkhofkante Komturstraße</td><td>MU § 6a</td><td class="n">5</td><td class="n">0,53</td><td class="n">2,7</td><td>Gewerbe, Mobilitätshub</td></tr>
+<tr><td>Gartenhöfe</td><td>WA § 4</td><td class="n">6</td><td class="n">0,54</td><td class="n">3,2</td><td>Wohnen, Hochparterre; Ecken gewerblich</td></tr>
+<tr><td>Bildungscampus</td><td>Gemeinbedarf</td><td class="n">3</td><td class="n">0,56</td><td class="n">1,7</td><td>Schule, Kita, Sporthalle</td></tr>
+<tr><td>Gartenfuge, Promenade</td><td>Öff. Grün / Dauerkleingarten</td><td class="n">1</td><td class="n">0,05</td><td class="n">–</td><td>Lauben, Gartenhaus, Kiosk</td></tr>
+</tbody></table></div>
+<h3 style="margin-top:26px">Regelwerk</h3>
+<div class="scroll"><table class="rule stack">
+<thead><tr><th>Regel</th><th>Festsetzung</th><th>Warum</th></tr></thead>
+<tbody>
+<tr class="grp"><td colspan="3">Stadtraum</td></tr>
+<tr><td>R1 Blockrand</td><td>Bauflucht an der Straße auf mind. 80 % der Länge; Vorzone 2–3 m bei Wohnen.</td><td>Klare Straßenräume, ruhige Höfe.</td></tr>
+<tr><td>R2 Offene Ecken</td><td>Je Block 2 öffentliche Durchgänge, mind. 6 m breit.</td><td>Kurze Wege, Hofeinblicke, Belüftung.</td></tr>
+<tr><td>R3 Parzelle</td><td>Hauslänge 15–30 m; jedes Haus eigener Eingang an der Straße.</td><td>Vielfalt statt Riegel; viele Bauherren.</td></tr>
+<tr class="grp"><td colspan="3">Gebäude</td></tr>
+<tr><td>R4 Höhe</td><td>Traufe 17–20 m; Südflügel je Block 1 Geschoss niedriger.</td><td>Sonne im Hof (siehe Rechenmodell).</td></tr>
+<tr><td>R5 Abstand</td><td>Abstandsfläche 0,4 H, mind. 3 m (§ 6 BauO Bln); Hof mind. 22 m. Hochpunkt: Hochhausrichtlinie (über 22 m).</td><td>Belichtung, Brandschutz, Privatheit.</td></tr>
+<tr><td>R6 Erdgeschoss</td><td>In MU lichte Höhe 4,5 m, mind. 60 % Glas zur Straße.</td><td>Läden heute, Umnutzung morgen.</td></tr>
+<tr><td>R7 Material</td><td>Holz- oder Holzhybridbau als Regel; Dächer mind. 60 % begrünt, Rest Solar.</td><td>Graue Energie, Hitze, Regenwasser.</td></tr>
+<tr class="grp"><td colspan="3">Freiraum und Klima</td></tr>
+<tr><td>R8 Schwammstadt</td><td>100 % Regenwasser im Gebiet bewirtschaften; Biotopflächenfaktor mind. 0,6.</td><td>Starkregen, Kühlung, Grundwasser.</td></tr>
+<tr><td>R9 Bäume</td><td>Bestandsbäume der Kolonie zuerst einmessen und erhalten; Straßenbaum alle 10–12 m.</td><td>Schatten ab Tag eins.</td></tr>
+<tr class="grp"><td colspan="3">Nutzung und Soziales</td></tr>
+<tr><td>R10 Bezahlbar</td><td>Mind. 30 % mietpreis- und belegungsgebunden (Berliner Modell); Anteil Genossenschaften.</td><td>Mischung, nicht Verdrängung.</td></tr>
+<tr><td>R11 Gärten</td><td>Jede wegfallende Parzelle bekommt Ersatz in der Fuge oder nahebei.</td><td>Bundeskleingartengesetz § 14, Akzeptanz.</td></tr>
+<tr class="grp"><td colspan="3">Mobilität</td></tr>
+<tr><td>R12 Parken</td><td>0,3 Stellplätze je Wohnung, nur in 2 Hubs; 2 Radstellplätze je Wohnung.</td><td>U6 und Bus nah, Straßen frei für Menschen.</td></tr>
+</tbody></table></div>
+</div></section>
+
+<section class="band" id="modell"><div class="wrap">
+<h2>Rechenmodell: drei Ziele, 80 beste Kompromisse</h2>
+<div class="chart">
+<div><div class="fig" id="pf" role="img" aria-label="Pareto-Front: Wohnungen gegen Grün je Einwohner"></div>
+<p class="cap">Jeder Punkt ist eine Variante ohne Regelverstoß. Farbe = sonnige Hoffläche am 21. März um 12 Uhr: Ocker viel (bis 74 %), Blau wenig (ab 22 %). Ring = gewählte Kompromisslösung.</p></div>
+<div>
+<p>Ein NSGA-II-Algorithmus variiert 7 Parameter und bewertet jede Variante nach drei Zielen. 80 Varianten pro Generation, 60 Generationen, 9.600 Bewertungen. Gewählt wurde die Lösung mit dem kleinsten Abstand zum Idealpunkt.</p>
+<ul>
+<li>Mehr Wohnungen kosten Grün je Einwohner und Hofsonne: von 2.028 bis 4.561 Wohnungen reicht die Spanne.</li>
+<li>Strafterme: Abstandsflächen nach BauO Bln, Hof mind. 22 m, Blockumfang max. 450 m.</li>
+<li>Sonnenhöhe Tag-und-Nacht-Gleiche Berlin: 37,5°, Schattenlänge = 1,3 × Höhe.</li>
+</ul>
+<div class="scroll"><table>
+<thead><tr><th>Parameter der gewählten Lösung</th><th class="n">Wert</th></tr></thead>
+<tbody id="genom"></tbody></table></div>
+</div></div>
+<h3 style="margin-top:28px">Kennzahlen der gewählten Lösung</h3>
+<div class="scroll"><table>
+<thead><tr><th>Kennzahl</th><th class="n">Wert</th><th>Einordnung</th></tr></thead>
+<tbody>
+<tr><td>Bruttobauland</td><td class="n">24,1 ha</td><td>Annahme</td></tr>
+<tr><td>Wohnungen / Einwohner</td><td class="n">3.509 / 6.491</td><td>1,85 Personen je Haushalt</td></tr>
+<tr><td>BGF Wohnen</td><td class="n">322.809 m²</td><td>92 m² BGF je Wohnung</td></tr>
+<tr><td>BGF Gewerbe und Gemeinbedarf</td><td class="n">71.330 m²</td><td>ca. 1.630 Arbeitsplätze</td></tr>
+<tr><td>GFZ / GRZ brutto</td><td class="n">1,64 / 0,29</td><td>Kiez-Dichte; netto je Baufeld siehe Zonen</td></tr>
+<tr><td>Öffentliches Grün je Einwohner</td><td class="n">7,1 m²</td><td>Berliner Richtwert wohnungsnah: 6 m²</td></tr>
+<tr><td>Sonnige Hoffläche (21.3., 12 Uhr)</td><td class="n">61 %</td><td>Durch niedrigere Südflügel</td></tr>
+<tr><td>Bedarf Kita / Grundschule</td><td class="n">292 / 325 Plätze</td><td>Grobwert; Campus + Kitas im Erdgeschoss</td></tr>
+<tr><td>Stellplätze in Hubs</td><td class="n">1.053</td><td>0,3 je Wohnung</td></tr>
+</tbody></table></div>
+<p class="cap">Quellcode: <code>stadtquartier-bergfrieden/generativ_bergfrieden.py</code> im Repository, Aufruf <code>python3 generativ_bergfrieden.py</code>.</p>
+</div></section>
+
+<section class="band alt" id="umsetzung"><div class="wrap">
+<h2>Umsetzung in drei Phasen, Gärten zuletzt</h2>
+<div class="steps">
+<div><b>Phase 1 · Kanal</b><p>Gewerbebrachen an der Ordensmeisterstraße zuerst. Promenade, Hafenplatz, Brücke. Kein Garten fällt weg. Ca. 800 Wohnungen.</p></div>
+<div><b>Phase 2 · Komturstraße</b><p>Werkhofkante und Mobilitätshubs. Bestandsbetriebe ziehen in die neuen Gewerbe-Erdgeschosse um. Ca. 700 Wohnungen.</p></div>
+<div><b>Phase 3 · Gartenhöfe</b><p>Erst wenn die Gartenfuge angelegt ist, ziehen Pächter um. Danach Wohnhöfe und Bildungscampus. Ca. 2.000 Wohnungen.</p></div>
+</div>
+<p style="margin-top:18px">Verfahren: Städtebauliches Werkstattverfahren mit Kleingartenverein und Bezirk, dann Bebauungsplan im Bezirk Tempelhof-Schöneberg, städtebaulicher Vertrag nach Berliner Modell der kooperativen Baulandentwicklung. Die laufende Planung „Neue Mitte Tempelhof“ nördlich ist als Anschluss mitzudenken.</p>
+</div></section>
+
+<section class="band" id="offen"><div class="wrap">
+<h2>Offene Punkte, bevor gezeichnet wird</h2>
+<ul>
+<li><b>Schutzstatus der Kolonie:</b> Einstufung im Berliner Kleingartenentwicklungsplan prüfen. Ist Bergfrieden dauerhaft gesichert, bleibt die Kolonie ganz erhalten und das Quartier schrumpft auf den Gewerbegürtel.</li>
+<li><b>Gebietsgrenze:</b> Flurstücke, Eigentum und genaue Fläche der Kolonie aus dem Geoportal Berlin übernehmen. Das Modell rechnet dann neu.</li>
+<li><b>Gewerbe:</b> Bebauungsplan 7-80 setzt am Kanal Gewerbe fest. Umwandlung in MU braucht Bezirksbeschluss und ein Konzept für die Betriebe.</li>
+<li><b>Dichte:</b> Die Gartenhöfe liegen netto bei GFZ 3,2, über dem Orientierungswert 1,2 für WA (§ 17 BauNVO). Entweder städtebaulich begründen (Gartenfuge als Ausgleich, U6 nah) oder ebenfalls als Urbanes Gebiet festsetzen.</li>
+<li><b>Lärm und Altlasten:</b> Gutachten für Komturstraße, A100-Anschluss und Gewerbeböden.</li>
+<li><b>Schifffahrt:</b> Brückenhöhe und Ufergestaltung mit der Wasserstraßenverwaltung abstimmen.</li>
+</ul>
+<footer style="margin-top:24px">
+<p>Quellen: <a href="https://berlin.kauperts.de/Strassen/Kolonie-Bergfrieden-12099-Berlin">Kauperts: Kolonie Bergfrieden, 12099 Berlin</a> · <a href="https://www.berlin.de/neue-mitte-tempelhof/stadtquartier/downloads/nmt-aufgabenstellung-werkstattverfahren.pdf">Neue Mitte Tempelhof, Aufgabenstellung Werkstattverfahren</a> · <a href="https://www.berlin.de/ba-tempelhof-schoeneberg/_assets/politik-und-verwaltung/aemter/stadtentwicklungsamt/stadtplanung/bebauungsplanung/festgesetzte-bebauungsplaene/tempelhof-schoeneberg/7-80_begruendung.pdf">Bebauungsplan 7-80, Begründung</a>. Methodik: Urban-Design-, Architektur- und Computational-Design-Skills (Lynch, Gehl, Bentley, BauNVO, BauO Bln, NSGA-II).</p>
+</footer>
+</div></section>
+
+<script>
+{
+const D={"genom": {"Blocklänge bx": 74.6, "Blocktiefe by": 66.8, "Breite Gartenfuge": 90.0, "Geschosse Kanalkante": 6, "Geschosse Gartenhöfe": 6, "Geschosse Werkhofkante": 5, "Hochpunkt Hafen": 15}, "kennzahlen": {"WE": 3509, "EW": 6491, "BGF_Wohnen": 322809, "BGF_Gewerbe_Gemeinbedarf": 71330, "GFZ_brutto": 1.64, "GRZ_brutto": 0.29, "Gruen_oeffentlich_m2": 45780, "Gruen_je_EW": 7.1, "Hofbesonnung_pct": 61, "Bloecke": 24, "Arbeitsplaetze": 1630, "Stellplaetze": 1053, "Kita_Plaetze_Bedarf": 292, "Grundschulplaetze_Bedarf": 325, "Strafe": 0.0}, "pareto": [{"WE": 2028, "Gruen": 12.2, "Sonne": 74}, {"WE": 4541, "Gruen": 2.8, "Sonne": 22}, {"WE": 2028, "Gruen": 12.2, "Sonne": 74}, {"WE": 4561, "Gruen": 2.7, "Sonne": 22}, {"WE": 2400, "Gruen": 8.0, "Sonne": 74}, {"WE": 4166, "Gruen": 3.2, "Sonne": 53}, {"WE": 3422, "Gruen": 7.2, "Sonne": 38}, {"WE": 4399, "Gruen": 3.5, "Sonne": 26}, {"WE": 3572, "Gruen": 6.9, "Sonne": 37}, {"WE": 2044, "Gruen": 12.1, "Sonne": 74}, {"WE": 4041, "Gruen": 3.6, "Sonne": 34}, {"WE": 3246, "Gruen": 6.7, "Sonne": 65}, {"WE": 4504, "Gruen": 3.1, "Sonne": 22}, {"WE": 4147, "Gruen": 3.7, "Sonne": 30}, {"WE": 4197, "Gruen": 2.9, "Sonne": 53}, {"WE": 3422, "Gruen": 7.2, "Sonne": 59}, {"WE": 3932, "Gruen": 4.7, "Sonne": 56}, {"WE": 2891, "Gruen": 7.3, "Sonne": 69}, {"WE": 4014, "Gruen": 3.8, "Sonne": 34}, {"WE": 4428, "Gruen": 3.1, "Sonne": 25}, {"WE": 4236, "Gruen": 4.2, "Sonne": 29}, {"WE": 3922, "Gruen": 4.8, "Sonne": 56}, {"WE": 3047, "Gruen": 7.6, "Sonne": 67}, {"WE": 4326, "Gruen": 3.2, "Sonne": 29}, {"WE": 4197, "Gruen": 4.5, "Sonne": 29}, {"WE": 3640, "Gruen": 5.4, "Sonne": 61}, {"WE": 3607, "Gruen": 5.9, "Sonne": 61}, {"WE": 3922, "Gruen": 3.7, "Sonne": 59}, {"WE": 3023, "Gruen": 7.9, "Sonne": 67}, {"WE": 4118, "Gruen": 4.0, "Sonne": 30}, {"WE": 3561, "Gruen": 6.5, "Sonne": 61}, {"WE": 2796, "Gruen": 8.8, "Sonne": 68}, {"WE": 2053, "Gruen": 11.6, "Sonne": 74}, {"WE": 2162, "Gruen": 11.1, "Sonne": 74}, {"WE": 3509, "Gruen": 7.1, "Sonne": 61}, {"WE": 3373, "Gruen": 7.1, "Sonne": 63}, {"WE": 2147, "Gruen": 11.5, "Sonne": 74}, {"WE": 2174, "Gruen": 10.9, "Sonne": 74}, {"WE": 3267, "Gruen": 6.4, "Sonne": 65}, {"WE": 2497, "Gruen": 9.6, "Sonne": 68}, {"WE": 2889, "Gruen": 7.3, "Sonne": 69}, {"WE": 2535, "Gruen": 8.3, "Sonne": 72}, {"WE": 3096, "Gruen": 7.9, "Sonne": 63}, {"WE": 2529, "Gruen": 8.5, "Sonne": 72}, {"WE": 2687, "Gruen": 8.5, "Sonne": 70}, {"WE": 2349, "Gruen": 10.2, "Sonne": 70}, {"WE": 3826, "Gruen": 4.9, "Sonne": 59}, {"WE": 4269, "Gruen": 3.9, "Sonne": 29}, {"WE": 2542, "Gruen": 8.1, "Sonne": 72}, {"WE": 3422, "Gruen": 7.2, "Sonne": 38}, {"WE": 2843, "Gruen": 8.0, "Sonne": 68}, {"WE": 2217, "Gruen": 10.3, "Sonne": 72}, {"WE": 2463, "Gruen": 10.0, "Sonne": 70}, {"WE": 3953, "Gruen": 4.4, "Sonne": 56}, {"WE": 2617, "Gruen": 9.3, "Sonne": 68}, {"WE": 2054, "Gruen": 11.5, "Sonne": 74}, {"WE": 2616, "Gruen": 9.4, "Sonne": 68}, {"WE": 3865, "Gruen": 6.4, "Sonne": 30}, {"WE": 3433, "Gruen": 7.1, "Sonne": 37}, {"WE": 2174, "Gruen": 11.4, "Sonne": 72}, {"WE": 3036, "Gruen": 7.8, "Sonne": 67}, {"WE": 3479, "Gruen": 5.6, "Sonne": 63}, {"WE": 2663, "Gruen": 8.9, "Sonne": 70}, {"WE": 3163, "Gruen": 7.8, "Sonne": 65}, {"WE": 3655, "Gruen": 5.3, "Sonne": 61}, {"WE": 2222, "Gruen": 10.3, "Sonne": 72}, {"WE": 3343, "Gruen": 5.1, "Sonne": 65}, {"WE": 2801, "Gruen": 8.7, "Sonne": 68}, {"WE": 2625, "Gruen": 9.2, "Sonne": 68}, {"WE": 3761, "Gruen": 5.7, "Sonne": 59}, {"WE": 3751, "Gruen": 5.8, "Sonne": 59}, {"WE": 2630, "Gruen": 9.0, "Sonne": 68}, {"WE": 3289, "Gruen": 5.9, "Sonne": 65}, {"WE": 3397, "Gruen": 6.8, "Sonne": 63}, {"WE": 4136, "Gruen": 3.8, "Sonne": 30}, {"WE": 2619, "Gruen": 9.4, "Sonne": 66}, {"WE": 2289, "Gruen": 10.8, "Sonne": 72}, {"WE": 3796, "Gruen": 5.2, "Sonne": 59}, {"WE": 2340, "Gruen": 10.5, "Sonne": 70}, {"WE": 2619, "Gruen": 9.4, "Sonne": 66}], "knie": 34, "annahmen": {"Gebiet_m": [560.0, 430.0], "Breitengrad": 52.46, "Sonnenhoehe_TNG": 37.54, "WE_BGF": 92.0, "EW_WE": 1.85}};
+const names=Object.keys(D.genom);
+document.getElementById('genom').innerHTML=names.map(n=>`<tr><td>${n}</td><td class="n">${String(D.genom[n]).replace('.',',')}${n.startsWith('Geschosse')||n.startsWith('Hoch')?' G':' m'}</td></tr>`).join('');
+const s=document.getElementById('pf');
+const P=D.pareto, kn=P[D.knie];
+const col=v=>{const t=Math.max(0,Math.min(1,(v-20)/55));return `color-mix(in srgb, var(--wa) ${Math.round(t*100)}%, var(--wasser))`};
+const draw=()=>{
+ const W=s.clientWidth,H=s.clientHeight,ml=W<520?44:56,mr=16,mt=18,mb=44;
+ const xs=P.map(p=>p.WE),ys=P.map(p=>p.Gruen);
+ const x0=Math.floor(Math.min(...xs)/500)*500,x1=Math.ceil(Math.max(...xs)/500)*500;
+ const y0=0,y1=Math.ceil(Math.max(...ys)/2)*2;
+ const X=v=>ml+(v-x0)/(x1-x0)*(W-ml-mr),Y=v=>H-mb-(v-y0)/(y1-y0)*(H-mt-mb);
+ let o='';
+ for(let v=y0;v<=y1;v+=2){o+=`<line x1="${ml}" x2="${W-mr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${ml-8}" y="${Y(v)+4}" text-anchor="end">${v}</text>`}
+ const st=W<520?1000:500;
+ for(let v=x0;v<=x1;v+=st){o+=`<text x="${X(v)}" y="${H-mb+20}" text-anchor="middle">${v.toLocaleString('de-DE')}</text>`}
+ o+=`<text x="${(ml+W-mr)/2}" y="${H-6}" text-anchor="middle">Wohnungen</text>`;
+ o+=`<text x="14" y="${(mt+H-mb)/2}" text-anchor="middle" transform="rotate(-90 14 ${(mt+H-mb)/2})">m² Grün je EW</text>`;
+ o+=`<line x1="${ml}" x2="${W-mr}" y1="${Y(6)}" y2="${Y(6)}" stroke="var(--gruen)" stroke-width="2" stroke-dasharray="6 4"/><text x="${W-mr-4}" y="${Y(6)-6}" text-anchor="end">Richtwert 6 m²</text>`;
+ o+=P.map(p=>`<circle class="dot" cx="${X(p.WE)}" cy="${Y(p.Gruen)}" r="5.5" style="fill:${col(p.Sonne)}" opacity=".9"><title>${p.WE} WE · ${p.Gruen} m²/EW · Hofsonne ${p.Sonne} %</title></circle>`).join('');
+ o+=`<circle cx="${X(kn.WE)}" cy="${Y(kn.Gruen)}" r="11" fill="none" stroke="var(--ink)" stroke-width="2.5"/>`;
+ const lx=X(kn.WE)+16, anchor=lx>W-170?'end':'start', tx=anchor==='end'?X(kn.WE)-16:lx;
+ o+=`<text class="k" x="${tx}" y="${Y(kn.Gruen)-12}" text-anchor="${anchor}">Gewählt: ${kn.WE.toLocaleString('de-DE')} WE</text>`;
+ s.innerHTML=`<svg aria-hidden="true">${o}</svg>`;
+};
+const ro=new ResizeObserver(draw);ro.observe(s);
+}
+</script>
+</body>
+</html>

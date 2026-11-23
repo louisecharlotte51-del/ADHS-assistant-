@@ -1,0 +1,441 @@
+{
+ "genom": {
+  "Blocklänge bx": 74.6,
+  "Blocktiefe by": 66.8,
+  "Breite Gartenfuge": 90.0,
+  "Geschosse Kanalkante": 6,
+  "Geschosse Gartenhöfe": 6,
+  "Geschosse Werkhofkante": 5,
+  "Hochpunkt Hafen": 15
+ },
+ "kennzahlen": {
+  "WE": 3509,
+  "EW": 6491,
+  "BGF_Wohnen": 322809,
+  "BGF_Gewerbe_Gemeinbedarf": 71330,
+  "GFZ_brutto": 1.64,
+  "GRZ_brutto": 0.29,
+  "Gruen_oeffentlich_m2": 45780,
+  "Gruen_je_EW": 7.1,
+  "Hofbesonnung_pct": 61,
+  "Bloecke": 24,
+  "Arbeitsplaetze": 1630,
+  "Stellplaetze": 1053,
+  "Kita_Plaetze_Bedarf": 292,
+  "Grundschulplaetze_Bedarf": 325,
+  "Strafe": 0.0
+ },
+ "pareto": [
+  {
+   "WE": 2028,
+   "Gruen": 12.2,
+   "Sonne": 74
+  },
+  {
+   "WE": 4541,
+   "Gruen": 2.8,
+   "Sonne": 22
+  },
+  {
+   "WE": 2028,
+   "Gruen": 12.2,
+   "Sonne": 74
+  },
+  {
+   "WE": 4561,
+   "Gruen": 2.7,
+   "Sonne": 22
+  },
+  {
+   "WE": 2400,
+   "Gruen": 8.0,
+   "Sonne": 74
+  },
+  {
+   "WE": 4166,
+   "Gruen": 3.2,
+   "Sonne": 53
+  },
+  {
+   "WE": 3422,
+   "Gruen": 7.2,
+   "Sonne": 38
+  },
+  {
+   "WE": 4399,
+   "Gruen": 3.5,
+   "Sonne": 26
+  },
+  {
+   "WE": 3572,
+   "Gruen": 6.9,
+   "Sonne": 37
+  },
+  {
+   "WE": 2044,
+   "Gruen": 12.1,
+   "Sonne": 74
+  },
+  {
+   "WE": 4041,
+   "Gruen": 3.6,
+   "Sonne": 34
+  },
+  {
+   "WE": 3246,
+   "Gruen": 6.7,
+   "Sonne": 65
+  },
+  {
+   "WE": 4504,
+   "Gruen": 3.1,
+   "Sonne": 22
+  },
+  {
+   "WE": 4147,
+   "Gruen": 3.7,
+   "Sonne": 30
+  },
+  {
+   "WE": 4197,
+   "Gruen": 2.9,
+   "Sonne": 53
+  },
+  {
+   "WE": 3422,
+   "Gruen": 7.2,
+   "Sonne": 59
+  },
+  {
+   "WE": 3932,
+   "Gruen": 4.7,
+   "Sonne": 56
+  },
+  {
+   "WE": 2891,
+   "Gruen": 7.3,
+   "Sonne": 69
+  },
+  {
+   "WE": 4014,
+   "Gruen": 3.8,
+   "Sonne": 34
+  },
+  {
+   "WE": 4428,
+   "Gruen": 3.1,
+   "Sonne": 25
+  },
+  {
+   "WE": 4236,
+   "Gruen": 4.2,
+   "Sonne": 29
+  },
+  {
+   "WE": 3922,
+   "Gruen": 4.8,
+   "Sonne": 56
+  },
+  {
+   "WE": 3047,
+   "Gruen": 7.6,
+   "Sonne": 67
+  },
+  {
+   "WE": 4326,
+   "Gruen": 3.2,
+   "Sonne": 29
+  },
+  {
+   "WE": 4197,
+   "Gruen": 4.5,
+   "Sonne": 29
+  },
+  {
+   "WE": 3640,
+   "Gruen": 5.4,
+   "Sonne": 61
+  },
+  {
+   "WE": 3607,
+   "Gruen": 5.9,
+   "Sonne": 61
+  },
+  {
+   "WE": 3922,
+   "Gruen": 3.7,
+   "Sonne": 59
+  },
+  {
+   "WE": 3023,
+   "Gruen": 7.9,
+   "Sonne": 67
+  },
+  {
+   "WE": 4118,
+   "Gruen": 4.0,
+   "Sonne": 30
+  },
+  {
+   "WE": 3561,
+   "Gruen": 6.5,
+   "Sonne": 61
+  },
+  {
+   "WE": 2796,
+   "Gruen": 8.8,
+   "Sonne": 68
+  },
+  {
+   "WE": 2053,
+   "Gruen": 11.6,
+   "Sonne": 74
+  },
+  {
+   "WE": 2162,
+   "Gruen": 11.1,
+   "Sonne": 74
+  },
+  {
+   "WE": 3509,
+   "Gruen": 7.1,
+   "Sonne": 61
+  },
+  {
+   "WE": 3373,
+   "Gruen": 7.1,
+   "Sonne": 63
+  },
+  {
+   "WE": 2147,
+   "Gruen": 11.5,
+   "Sonne": 74
+  },
+  {
+   "WE": 2174,
+   "Gruen": 10.9,
+   "Sonne": 74
+  },
+  {
+   "WE": 3267,
+   "Gruen": 6.4,
+   "Sonne": 65
+  },
+  {
+   "WE": 2497,
+   "Gruen": 9.6,
+   "Sonne": 68
+  },
+  {
+   "WE": 2889,
+   "Gruen": 7.3,
+   "Sonne": 69
+  },
+  {
+   "WE": 2535,
+   "Gruen": 8.3,
+   "Sonne": 72
+  },
+  {
+   "WE": 3096,
+   "Gruen": 7.9,
+   "Sonne": 63
+  },
+  {
+   "WE": 2529,
+   "Gruen": 8.5,
+   "Sonne": 72
+  },
+  {
+   "WE": 2687,
+   "Gruen": 8.5,
+   "Sonne": 70
+  },
+  {
+   "WE": 2349,
+   "Gruen": 10.2,
+   "Sonne": 70
+  },
+  {
+   "WE": 3826,
+   "Gruen": 4.9,
+   "Sonne": 59
+  },
+  {
+   "WE": 4269,
+   "Gruen": 3.9,
+   "Sonne": 29
+  },
+  {
+   "WE": 2542,
+   "Gruen": 8.1,
+   "Sonne": 72
+  },
+  {
+   "WE": 3422,
+   "Gruen": 7.2,
+   "Sonne": 38
+  },
+  {
+   "WE": 2843,
+   "Gruen": 8.0,
+   "Sonne": 68
+  },
+  {
+   "WE": 2217,
+   "Gruen": 10.3,
+   "Sonne": 72
+  },
+  {
+   "WE": 2463,
+   "Gruen": 10.0,
+   "Sonne": 70
+  },
+  {
+   "WE": 3953,
+   "Gruen": 4.4,
+   "Sonne": 56
+  },
+  {
+   "WE": 2617,
+   "Gruen": 9.3,
+   "Sonne": 68
+  },
+  {
+   "WE": 2054,
+   "Gruen": 11.5,
+   "Sonne": 74
+  },
+  {
+   "WE": 2616,
+   "Gruen": 9.4,
+   "Sonne": 68
+  },
+  {
+   "WE": 3865,
+   "Gruen": 6.4,
+   "Sonne": 30
+  },
+  {
+   "WE": 3433,
+   "Gruen": 7.1,
+   "Sonne": 37
+  },
+  {
+   "WE": 2174,
+   "Gruen": 11.4,
+   "Sonne": 72
+  },
+  {
+   "WE": 3036,
+   "Gruen": 7.8,
+   "Sonne": 67
+  },
+  {
+   "WE": 3479,
+   "Gruen": 5.6,
+   "Sonne": 63
+  },
+  {
+   "WE": 2663,
+   "Gruen": 8.9,
+   "Sonne": 70
+  },
+  {
+   "WE": 3163,
+   "Gruen": 7.8,
+   "Sonne": 65
+  },
+  {
+   "WE": 3655,
+   "Gruen": 5.3,
+   "Sonne": 61
+  },
+  {
+   "WE": 2222,
+   "Gruen": 10.3,
+   "Sonne": 72
+  },
+  {
+   "WE": 3343,
+   "Gruen": 5.1,
+   "Sonne": 65
+  },
+  {
+   "WE": 2801,
+   "Gruen": 8.7,
+   "Sonne": 68
+  },
+  {
+   "WE": 2625,
+   "Gruen": 9.2,
+   "Sonne": 68
+  },
+  {
+   "WE": 3761,
+   "Gruen": 5.7,
+   "Sonne": 59
+  },
+  {
+   "WE": 3751,
+   "Gruen": 5.8,
+   "Sonne": 59
+  },
+  {
+   "WE": 2630,
+   "Gruen": 9.0,
+   "Sonne": 68
+  },
+  {
+   "WE": 3289,
+   "Gruen": 5.9,
+   "Sonne": 65
+  },
+  {
+   "WE": 3397,
+   "Gruen": 6.8,
+   "Sonne": 63
+  },
+  {
+   "WE": 4136,
+   "Gruen": 3.8,
+   "Sonne": 30
+  },
+  {
+   "WE": 2619,
+   "Gruen": 9.4,
+   "Sonne": 66
+  },
+  {
+   "WE": 2289,
+   "Gruen": 10.8,
+   "Sonne": 72
+  },
+  {
+   "WE": 3796,
+   "Gruen": 5.2,
+   "Sonne": 59
+  },
+  {
+   "WE": 2340,
+   "Gruen": 10.5,
+   "Sonne": 70
+  },
+  {
+   "WE": 2619,
+   "Gruen": 9.4,
+   "Sonne": 66
+  }
+ ],
+ "knie": 34,
+ "annahmen": {
+  "Gebiet_m": [
+   560.0,
+   430.0
+  ],
+  "Breitengrad": 52.46,
+  "Sonnenhoehe_TNG": 37.54,
+  "WE_BGF": 92.0,
+  "EW_WE": 1.85
+ }
+}
