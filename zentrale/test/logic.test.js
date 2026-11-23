@@ -71,3 +71,16 @@ test('mergeData: kaputte Datei wirft, lokale Daten bleiben unverändert', () => 
   assert.throws(() => L.mergeData(local, null));
   assert.equal(local.tasks.length, 1);
 });
+
+test('splitEndpoint: leitet die Zerlegen-Adresse aus Connector-/Einrichtungs-Link ab', () => {
+  assert.equal(L.splitEndpoint('https://adhs-assistant.x.workers.dev/mcp/abc123'), 'https://adhs-assistant.x.workers.dev/split/abc123');
+  assert.equal(L.splitEndpoint(' https://a.dev//setup/abc123/ '), 'https://a.dev/split/abc123');
+  assert.equal(L.splitEndpoint('https://a.dev/split/k'), 'https://a.dev/split/k');
+});
+
+test('splitEndpoint: ungültige Eingaben ergeben null', () => {
+  assert.equal(L.splitEndpoint(''), null);
+  assert.equal(L.splitEndpoint('kein link'), null);
+  assert.equal(L.splitEndpoint('https://a.dev/'), null);
+  assert.equal(L.splitEndpoint('http://a.dev/mcp/k'), null);
+});
