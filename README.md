@@ -32,3 +32,15 @@ Zweite App im Ordner [`praxis/`](praxis/): **Buchhaltung, Lohn, Social Media, Fr
 💻 Mac (Safari): **Ablage → Zum Dock hinzufügen**
 
 🔒 Daten bleiben **nur auf dem Gerät**. **Keine Patientendaten** eintragen.
+
+## 🎯 Zentrale (ADHS-Kommandozentrale)
+
+Dritte App im Ordner [`zentrale/`](zentrale/): **Uni, Arbeit, Privat, Partei und ADHS-Projekt** an einem Ort.
+
+- 🎯 **Jetzt:** genau **ein** nächster Schritt (überfällig → nächste Frist → „Dran" → älteste)
+- ⛰️ **Berg zerlegen:** geführter Dialog in Mini-Schritte mit Zeitschätzung
+- 📅 **Woche:** Fristen im Überblick, Mo + Do als Dresden-Sommer-Tage markiert
+- 🔁 Fristen mit Wiederholung, 💾 Backup/Import per Datei (führt zusammen)
+
+📲 Öffnen: `https://<benutzername>.github.io/<repo>/zentrale/` → **Teilen → Zum Home-Bildschirm**
+🧪 Logik-Tests: `node --test zentrale/test/logic.test.js`
