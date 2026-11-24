@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gartenquartier Bergfrieden – Phase 1 und Nutzungen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE work: Wettbewerbstafel, Fazit zuerst, ruhig und genau
+   IDEA Handblatt der Entwerferin + Nutzungsfarben als zweite Ebene: was passiert in welchem Geschoss, ab wann
+   COLOUR Papier #fbfaf6, Tinte #1d1d1b, Grün führt; Nutzungen in der validierten Dataviz-Palette (Läden rot, Gastro gelb,
+   Bildung violett, Gesundheit rosa, Arbeiten blau, Mobilität aqua, Wohnen creme) – überall direkt beschriftet
+   TYPE Archivo 800/500 + Caveat für Notizen
+   MOTION Emil-Kowalski-Kurven, nur transform/opacity, reduzierte Bewegung respektiert */
+:root{color-scheme:light dark;
+--bg:light-dark(#fbfaf6,#141613);--ink:light-dark(#1d1d1b,#ecebe4);--soft:light-dark(#5d5f58,#a7aaa1);--rule:light-dark(#dcd8cd,#30342d);
+--panel:light-dark(#f2efe6,#1b1e1a);--gruen:light-dark(#2e8b3a,#4fae5a);--wasser:light-dark(#1f7fc4,#4a9fe0);--orange:#f39c34;
+--laden:#e34948;--gastro:#eda100;--bildung:#6250d6;--gesundheit:#e87ba4;--arbeiten:#2a78d6;--mobilitaet:#1baf7a;--wohnen:#efe8d6;
+--ease-out:cubic-bezier(0.23,1,0.32,1)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.55 Archivo,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-weight:800;line-height:1.05;letter-spacing:-.02em;text-wrap:balance;margin:0}
+h1{font-size:clamp(32px,4.6vw,50px)}h2{font-size:clamp(26px,3.2vw,36px);margin-bottom:12px}h3{font-size:19px;margin:0 0 6px}
+p{margin:0 0 12px;max-width:68ch}
+.hand{font-family:Caveat,cursive;font-size:1.35em;line-height:1.1}
+.band{padding-block:clamp(28px,4vw,56px);padding-left:max(5vw,16px,env(safe-area-inset-left,0px));padding-right:max(5vw,16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1240px;margin:0 auto}
+.alt{background:var(--panel)}
+.top{border-top:12px solid var(--gruen)}
+.head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(18px,3vw,40px);align-items:start}
+.lead{font-size:18.5px;margin-top:12px;max-width:62ch}
+.note{margin-top:12px;padding:8px 12px;border-left:4px solid var(--orange);background:var(--panel);font-size:14px;max-width:72ch}
+.figs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--ink)}
+.figs div{padding:10px 10px 6px 0}
+.figs b{display:block;font:800 clamp(22px,2.5vw,30px)/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.figs span{font-size:13.5px;color:var(--soft)}
+nav.scroll{display:flex;gap:4px;padding:8px max(5vw,16px);border-block:1px solid var(--rule);background:var(--bg);white-space:nowrap;overflow-x:auto}
+nav.scroll a{flex:none;color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;padding:10px 12px;border-radius:8px}
+nav.scroll a:hover{background:var(--panel)}nav.scroll a:focus-visible{outline:3px solid var(--wasser)}
+@media(min-width:900px){nav.scroll{position:sticky;top:0;z-index:20}}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tab{font:600 15px Archivo,sans-serif;min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--rule);background:var(--bg);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform 140ms var(--ease-out),background-color 160ms ease}
+.tab:active{transform:scale(.97)}.tab:focus-visible{outline:3px solid var(--wasser);outline-offset:2px}
+.tab[aria-selected=true],.tab[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+@media(hover:hover) and (pointer:fine){.tab:hover{border-color:var(--ink)}}
+.vwahl{background:var(--bg);padding-block:10px;border-bottom:1px solid var(--rule)}
+@media(min-width:900px){.vwahl{position:sticky;top:59px;z-index:15}}
+.vwahl .wrap{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+.vwahl .klein{margin:0}
+.buehne{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:clamp(16px,2.4vw,32px);align-items:start}
+.bild{position:relative;aspect-ratio:16/10;border-radius:10px;overflow:hidden;background:#e9e6dc;border:1px solid var(--rule)}
+.bild img,.bild canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.bild img{transition:opacity 260ms var(--ease-out),filter 260ms var(--ease-out)}
+.bild img.weg{opacity:0;filter:blur(3px)}
+.bild canvas{opacity:0;transition:opacity 300ms var(--ease-out)}
+.bild.drei canvas{opacity:1}.bild.drei img{opacity:0}
+.laden{position:absolute;left:12px;bottom:12px;background:rgba(251,250,246,.92);color:#1d1d1b;font-size:13px;padding:6px 10px;border-radius:6px}
+.steuer{display:grid;gap:12px;margin-top:14px}
+.phase{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center}
+.phase label{font-weight:600;font-size:15px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--gruen) var(--p,100%),var(--rule) var(--p,100%))}
+input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:var(--rule)}
+input[type=range]::-moz-range-progress{height:6px;border-radius:3px;background:var(--gruen)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--bg);border:3px solid var(--gruen);margin-top:-9px}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--bg);border:3px solid var(--gruen)}
+input[type=range]:focus-visible{outline:3px solid var(--wasser);outline-offset:2px;border-radius:6px}
+.jahr{font:800 20px Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap;min-width:6.5em;text-align:right}
+.reihe2{display:flex;flex-wrap:wrap;gap:6px}
+.legende{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px;margin-top:10px}
+.legende span{display:inline-flex;align-items:center;gap:6px}
+.legende i,.chip i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid rgba(0,0,0,.25)}
+.karte{border-top:6px solid var(--gruen);padding-top:12px}
+.karte .hand{color:var(--gruen)}
+.kz{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;background:var(--rule);border:1px solid var(--rule);margin:12px 0}
+.kz div{background:var(--bg);padding:9px 10px}
+.kz b{display:block;font:800 22px/1.1 Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.kz span{font-size:13px;color:var(--soft)}
+ul,ol{padding-left:20px;margin:0 0 10px}li{margin-bottom:5px}
+.zwei{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(16px,2.4vw,32px);align-items:start}
+.plan svg,.schnitt svg,.multi svg{width:100%;height:auto;display:block;border-radius:8px;border:1px solid var(--rule);background:#fbfaf6}
+.schnitt svg{margin-bottom:10px}
+.multi{overflow-x:auto}.multi svg{min-width:760px}
+figure{margin:0}
+figcaption{font-size:14px;margin-top:8px;color:var(--soft)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;white-space:nowrap}
+.ph{display:inline-block;font:700 12px Archivo,sans-serif;padding:2px 7px;border-radius:999px;background:var(--panel);border:1px solid var(--rule);font-variant-numeric:tabular-nums}
+.nr{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;color:#fff;font:700 11.5px Archivo,sans-serif}
+.nr.hell{color:#1d1d1b}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:600;color:var(--soft);font-size:13.5px}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.filter{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}
+.zeitleiste{list-style:none;padding:0;margin:0;display:grid;gap:0}
+.zeitleiste li{display:grid;grid-template-columns:6.5em minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--rule);margin:0}
+.zeitleiste b{font-variant-numeric:tabular-nums}
+.zeitleiste .hand{color:var(--gruen);font-size:20px;display:block}
+.mix{display:grid;gap:10px;margin:8px 0 6px}
+.mixz{display:grid;grid-template-columns:9.5em minmax(0,1fr);gap:10px;align-items:center}
+.mixz .lbl{font-weight:600;font-size:14.5px}
+.mixz .lbl small{display:block;font-weight:400;color:var(--soft);font-size:12.5px}
+.stapel{display:flex;height:30px;border-radius:5px;overflow:hidden;border:1px solid var(--rule);background:var(--panel)}
+.stapel div{display:flex;align-items:center;justify-content:center;font:600 12px Archivo,sans-serif;font-variant-numeric:tabular-nums;color:#fff;transform-origin:left;transition:transform 420ms var(--ease-out);white-space:nowrap;overflow:hidden}
+.stapel div.hell{color:#1d1d1b}
+.stapel div+div{border-left:2px solid var(--bg)}
+.versorgung td.n{min-width:5.5em}
+.vbar{display:inline-block;width:42px;height:8px;border-radius:4px;background:var(--rule);vertical-align:middle;margin-left:6px;overflow:hidden}
+.vbar i{display:block;height:100%;background:var(--gruen)}
+.uhr{display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5em,1fr));gap:2px;background:var(--rule);border:1px solid var(--rule)}
+.uhr div{background:var(--bg);padding:10px}
+.uhr b{display:block;font-variant-numeric:tabular-nums;margin-bottom:6px}
+.uhr .chip{margin:0 6px 4px 0}
+.drei{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 26px}
+.regel{border-top:4px solid var(--c,var(--gruen));padding-top:10px}
+.regel ol{font-size:15px}
+.renders{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:14px 0 0}
+.renders button{padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;cursor:pointer;background:none;display:block;transition:transform 140ms var(--ease-out)}
+.renders button:active{transform:scale(.97)}
+.renders button[aria-pressed=true]{border-color:var(--ink)}
+.renders img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+.renders span{display:block;font:600 13px Archivo,sans-serif;padding:5px 2px;color:var(--ink);text-align:left}
+details{margin-top:8px}summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
+.klein{font-size:14px;color:var(--soft)}
+a{color:var(--wasser)}
+footer{font-size:14px;color:var(--soft)}
+@media(max-width:860px){.head,.buehne,.zwei,.drei{grid-template-columns:minmax(0,1fr)}.renders{grid-template-columns:repeat(3,minmax(0,1fr))}.mixz{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){table{font-size:13.5px}th,td{padding:6px 5px}.phase{grid-template-columns:minmax(0,1fr) auto}.phase label{grid-column:1/-1}.zeitleiste li{grid-template-columns:minmax(0,1fr)}
+ .stack thead{display:none}.stack tr{display:grid;padding-block:8px;border-bottom:1px solid var(--rule)}.stack td{display:flex;justify-content:space-between;gap:12px;border:0;padding:3px 0;text-align:right}.stack td::before{content:attr(data-l);font-weight:600;color:var(--soft);text-align:left}}
+@media(prefers-reduced-motion:reduce){*{transition-duration:0ms!important}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<header class="band top"><div class="wrap head">
+<div>
+<h1>Gartenquartier Bergfrieden: Phase 1 und Nutzungen</h1>
+<p class="lead">Drei neue Varianten ohne Höfe. Dazu der Plan, was das Quartier außer Wohnen bietet, wo diese Nutzungen liegen und in welcher Phase sie kommen.</p>
+<p class="note">Fortsetzung der Seite mit den Varianten V1–V5. Gerüst, Baufelder und Phasen bleiben gleich. Neu sind die Typologien V6–V8, das Nutzungskonzept und Phase 1 im Detail.</p>
+</div>
+<div><div class="figs" id="figs"></div><p class="klein" id="figsnote"></p></div>
+</div></header>
+
+<nav class="scroll" aria-label="Abschnitte"><a href="#modell">Modell</a><a href="#phase1">Phase 1</a><a href="#nutzungen">Nutzungen</a><a href="#orte">Wo und wann</a><a href="#versorgung">Versorgung</a><a href="#regeln">Regeln</a><a href="#methode">Methode</a></nav>
+
+<div class="vwahl band" style="padding-block:10px"><div class="wrap">
+<div class="tabs" role="tablist" aria-label="Variante" id="vtabs"></div>
+<p class="klein" id="vkurz"></p>
+</div></div>
+
+<section class="band" id="modell"><div class="wrap buehne">
+<div>
+<div class="bild" id="bild" role="img" aria-label="Modell des Gartenquartiers mit Nutzungsfarben">
+<img id="imgA" alt=""><img id="imgB" alt="" class="weg">
+<canvas id="c3d" aria-label="Drehbares 3D-Modell. Ziehen zum Drehen, Scrollen zum Zoomen."></canvas>
+<div class="laden" id="laden" hidden>3D-Modell lädt …</div>
+</div>
+<div class="legende" id="legende"></div>
+<div class="steuer">
+<div class="phase"><label for="pr">Bauphase</label><input type="range" id="pr" min="0" max="4" step="1" value="4" aria-describedby="jahr"><span class="jahr" id="jahr"></span></div>
+<div class="reihe2">
+<div class="tabs" role="group" aria-label="Darstellung"><button class="tab" id="mBild" aria-pressed="true">Rendering</button><button class="tab" id="m3d" aria-pressed="false">3D drehen</button></div>
+<div class="tabs" role="group" aria-label="Ausschnitt"><button class="tab" id="aGanz" aria-pressed="true">Ganzes Quartier</button><button class="tab" id="aP1" aria-pressed="false">Phase 1 nah</button></div>
+</div>
+</div>
+</div>
+<aside class="karte" id="karte"></aside>
+</div></section>
+
+<section class="band alt" id="phase1"><div class="wrap">
+<h2>Phase 1 im Detail: Ankunft an der S-Bahn</h2>
+<p>Phase 1 baut die Baufelder 1 und 2, den Bahnhofsplatz und den Mobilitätshub. Der Werkhof im Bestand startet schon vorher. Versorgung kommt vor dem ersten Bezug.</p>
+<div class="zwei">
+<figure class="plan" id="p1plan"></figure>
+<div>
+<div class="kz" id="p1kz"></div>
+<h3>Reihenfolge in Phase 1</h3>
+<ol class="zeitleiste" id="p1zeit"></ol>
+</div>
+</div>
+<div class="zwei" style="margin-top:22px">
+<div>
+<h3>Nutzungsschnitt durch Phase 1</h3>
+<figure class="schnitt" id="p1schnitt"></figure>
+<p class="klein">Jedes Geschoss in der Farbe seiner Nutzung. Unten Läden, Café, Kita und Praxis, darüber Büros, oben Wohnungen.</p>
+</div>
+<div>
+<h3>Freiräume in Phase 1</h3>
+<ul id="p1frei"></ul>
+<figure><img id="p1render" alt="" style="width:100%;border-radius:8px;border:1px solid var(--rule);display:block"><figcaption id="p1cap"></figcaption></figure>
+</div>
+</div>
+</div></section>
+
+<section class="band" id="nutzungen"><div class="wrap">
+<h2>Mehr als Wohnen: was das Quartier bietet</h2>
+<p>Das Quartier versorgt seine Bewohnerinnen und Bewohner und die Nachbarschaft. Zum Einzugsbereich zählen die Bewohner im Quartier und rund 6.000 Menschen im 800-m-Umkreis.</p>
+<div class="zwei">
+<div>
+<h3>Nutzungsplan</h3>
+<figure class="plan" id="nplan"></figure>
+<figcaption>Füllung = Erdgeschoss · gestrichelter Rand = andere Nutzung im Obergeschoss · Nummern siehe Tabelle „Wo und wann“</figcaption>
+</div>
+<div>
+<h3>Mischung der drei Varianten</h3>
+<p class="klein">Anteil an der Bruttogeschossfläche. Richtwert für ein Wohnquartier mit Zentrum: 60–80 % Wohnen.</p>
+<div class="mix" id="mix"></div>
+<details><summary>Als Tabelle (m² BGF)</summary><div class="scroll"><table class="stack" id="mixtab"></table></div></details>
+<h3 style="margin-top:22px">24-Stunden-Test</h3>
+<p class="klein">Wer belebt das Quartier wann? Keine Tageszeit bleibt leer.</p>
+<div class="uhr" id="uhr"></div>
+</div>
+</div>
+</div></section>
+
+<section class="band alt" id="orte"><div class="wrap">
+<h2>Wo und wann: Nutzungen im Zuge der Phasen</h2>
+<p>Von der S-Bahn zum Kanal. Jede Phase bringt die Nutzungen mit, die ihre neuen Bewohner brauchen. Größere Einrichtungen kommen dann, wenn genug Menschen da sind.</p>
+<figure class="multi" id="nphasen"></figure>
+<figcaption>Kräftiger Rand = neu in dieser Phase · gestrichelt = spätere Phasen · Bestand wird farbig, sobald er umgenutzt ist</figcaption>
+<h3 style="margin-top:22px">Mischung je Phase</h3>
+<div class="mix" id="phmix"></div>
+<h3 style="margin-top:22px">Alle Bausteine</h3>
+<div class="filter tabs" role="group" aria-label="Phase filtern" id="ofilter"></div>
+<div class="scroll"><table class="stack" id="otab"></table></div>
+<h3 style="margin-top:22px">Nutzungsschnitt Nord → Süd</h3>
+<figure class="schnitt" id="nsschnitt"></figure>
+</div></section>
+
+<section class="band" id="versorgung"><div class="wrap zwei">
+<div>
+<h2>Versorgung in jeder Phase</h2>
+<p>Anteil der Wohnfläche, die eine Einrichtung in kurzer Distanz erreicht (Luftlinie). Das Quartier ist kompakt: Ab Phase 3 erreichen alle Wohnungen alles zu Fuß in unter 5 Minuten.</p>
+<div class="scroll"><table class="versorgung" id="vtab"></table></div>
+<p class="klein" id="vnote"></p>
+</div>
+<div>
+<h2>Bedarf und Angebot</h2>
+<div class="scroll"><table class="stack" id="btab"></table></div>
+<h3 style="margin-top:18px">Mittlere Wege</h3>
+<div class="scroll"><table class="stack" id="wtab"></table></div>
+</div>
+</div></section>
+
+<section class="band alt" id="regeln"><div class="wrap">
+<h2>Regeln für die Nutzungen</h2>
+<p>Gelten für alle drei Varianten. Ergänzen das Regelwerk der ersten Seite.</p>
+<div class="drei" id="nregeln"></div>
+<h2 style="margin-top:34px">Regeln der drei Typologien</h2>
+<div class="drei" id="tregeln"></div>
+</div></section>
+
+<section class="band" id="methode"><div class="wrap zwei">
+<div>
+<h2>Methode und Annahmen</h2>
+<ul>
+<li>Geometrie: Gerüst und Baufelder aus deiner Skizze, auf Geoportal-Berlin-Daten (EPSG:25833). Abstandsflächen nach § 6 BauO Bln (0,4 H, mind. 3 m) automatisch geprüft.</li>
+<li>Kennwerte: 88 m² BGF je Wohnung, 1,9 Menschen je Wohnung, Kita-Bedarf 4,5 % der Einwohner, Grundschule 5 %.</li>
+<li>Arbeitsplätze: Läden 40 m², Gastro 25 m², Bildung/Gesundheit 30 m², Büro/Werkstatt 25 m² BGF je Arbeitsplatz.</li>
+<li>Nachbarschaft: Einwohner im 600- und 800-m-Umkreis aus ALKIS-Wohngebäuden, konservativ geschätzt.</li>
+<li>Schwellen (Mixed-Use-Programming): Supermarkt ab 3.000–5.000 Menschen, Arztzentrum je 5.000–10.000, Kita je 3.000–5.000, Treffpunkt je 10.000–15.000.</li>
+</ul>
+</div>
+<div>
+<h2>Offene Punkte</h2>
+<ul>
+<li>S-Bahn-Halt Komturstraße und Steg über die A100: Entscheidung von DB und Senat. Bis dahin Bus und Rad zu den Bahnhöfen Tempelhof und Hermannstraße.</li>
+<li>Grundschule erst in Phase 3. In Phase 1 und 2 Schulplätze mit dem Bezirk klären.</li>
+<li>Kleingärten: KEP 2030 Kategorie 1. Ersatzflächen und FNP-Änderung bleiben Voraussetzung.</li>
+<li>Werte sind Luftlinien und Richtwerte für den Entwurf, keine Planung im rechtlichen Sinn.</li>
+</ul>
+<p><a href="https://claude.ai/artifact/7XSSdVs4tovei1V22WfnYk">Zur ersten Seite: Varianten V1–V5, Regelwerk, Phasen</a></p>
+</div>
+</div></section>
+
+<footer class="band alt"><div class="wrap"><p>Gartenquartier Bergfrieden · Entwurfsstudie · Daten: Geoportal Berlin (dl-de/by-2-0) · Modell: Blender, three.js</p></div></footer>
+
+<script>
+const D={"nutzung": {"kategorien": {"laden": "Nahversorgung und Läden", "gastro": "Gastronomie", "bildung": "Bildung, Soziales, Kultur", "gesundheit": "Gesundheit und Pflege", "arbeiten": "Arbeiten: Büro, Werkstatt", "mobilitaet": "Mobilität", "wohnen": "Wohnen"}, "varianten": [{"code": "V6", "name": "Wassermäander", "text": "Ein durchlaufender Baukörper schwingt im Zickzack durch jedes Feld. Die offenen Taschen wechseln die Seite: eine zur Wasserader, eine zur Straße. So entstehen Gärten, aber keine Höfe.", "kennzahlen": {"bgf": {"laden": 3240, "gastro": 1824, "bildung": 11629, "gesundheit": 3287, "arbeiten": 5690, "mobilitaet": 4247, "wohnen": 106079}, "bgf_gesamt": 135995, "anteil_nicht_wohnen": 22, "we": 1205, "ew": 2290, "arbeitsplaetze": 889, "gfz_brutto": 0.59, "kita_bedarf": 118, "kita_plaetze": 140, "grundschul_bedarf": 115, "einzugsbereich_supermarkt": 8342, "supermarkt_tragfaehig": true, "dachgaerten_m2": 0, "ersatzparzellen_dach": 0, "phasen": {"P1": {"laden": 1416, "gastro": 269, "bildung": 1939, "gesundheit": 468, "arbeiten": 1634, "mobilitaet": 4247, "wohnen": 24202, "we": 275}, "P2": {"laden": 2219, "gastro": 605, "bildung": 2589, "gesundheit": 3287, "arbeiten": 1634, "mobilitaet": 4247, "wohnen": 60047, "we": 682}, "P3": {"laden": 2512, "gastro": 1203, "bildung": 11629, "gesundheit": 3287, "arbeiten": 3414, "mobilitaet": 4247, "wohnen": 83809, "we": 952}, "P4": {"laden": 3240, "gastro": 1824, "bildung": 11629, "gesundheit": 3287, "arbeiten": 5690, "mobilitaet": 4247, "wohnen": 106079, "we": 1205}}, "versorgung": {"P1": {"nahversorgung": 100, "kita": 100, "schule": 0, "arzt": 100, "kiez": 100}, "P2": {"nahversorgung": 100, "kita": 100, "schule": 0, "arzt": 100, "kiez": 100}, "P3": {"nahversorgung": 100, "kita": 100, "schule": 100, "arzt": 100, "kiez": 100}, "P4": {"nahversorgung": 100, "kita": 100, "schule": 100, "arzt": 100, "kiez": 100}}, "wege": {"supermarkt": 274, "kita": 176, "schule": 329, "arzt": 151, "sbahn": 488}, "gebaeude": 77, "geschosse_max": 8}, "orte": [{"name": "Supermarkt + Drogerie", "kat": "laden", "phase": "P1", "bgf": 1416, "soll": 1400, "grund": "Anker an der S-Bahn; Einzugsbereich Quartier + Nachbarschaft + Pendler; im EG des Mobilitätshubs (kein Baufeldhaus groß genug)", "x": 391388.1, "y": 5813785.6, "felder": [], "geschosse": [1]}, {"name": "Bäckerei-Café am Bahnhofsplatz", "kat": "gastro", "phase": "P1", "bgf": 269, "soll": 180, "grund": "Morgens die ersten, abends die letzten", "x": 391239.2, "y": 5813821.4, "felder": [1], "geschosse": [1]}, {"name": "Coworking und Büros", "kat": "arbeiten", "phase": "P1", "bgf": 1634, "soll": 1600, "grund": "Arbeitsplätze an der Station, Tagbelebung", "x": 391239.2, "y": 5813821.4, "felder": [1], "geschosse": [2, 3]}, {"name": "Kita „Am Feld“ (80 Plätze)", "kat": "bildung", "phase": "P1", "bgf": 775, "soll": 700, "grund": "Bedarf ab dem ersten Bezug; Garten an der Wasserader", "x": 391136.8, "y": 5813756.5, "felder": [1, 2], "geschosse": [1, 2]}, {"name": "Kiezzentrum „Gartenhaus“", "kat": "bildung", "phase": "P1", "bgf": 1164, "soll": 900, "grund": "Nachbarschaftshaus, Gartenwerkstatt, Vereinsraum der Kleingärtner", "x": 391277.2, "y": 5813729.5, "felder": [1], "geschosse": [1, 2]}, {"name": "Hausarztpraxis + Apotheke", "kat": "gesundheit", "phase": "P1", "bgf": 468, "soll": 450, "grund": "Grundversorgung ab Phase 1", "x": 391168.0, "y": 5813807.0, "felder": [1], "geschosse": [1, 2]}, {"name": "Gesundheitshaus (MVZ, Physio)", "kat": "gesundheit", "phase": "P2", "bgf": 1535, "soll": 1400, "grund": "1 je 5.000–10.000 Menschen; an der Bewegungsader", "x": 391287.3, "y": 5813654.8, "felder": [4], "geschosse": [1, 2, 3]}, {"name": "Tagespflege + Pflege-WG", "kat": "gesundheit", "phase": "P2", "bgf": 1284, "soll": 900, "grund": "Ruhige Lage an der Wasserader", "x": 391096.9, "y": 5813642.9, "felder": [5], "geschosse": [1, 2]}, {"name": "Kita „Grünraum Ost“ (60 Plätze)", "kat": "bildung", "phase": "P2", "bgf": 650, "soll": 520, "grund": "Bedarf wächst mit Phase 2", "x": 391464.9, "y": 5813652.7, "felder": [3], "geschosse": [1, 2]}, {"name": "Läden an der Komturstraße", "kat": "laden", "phase": "P2", "bgf": 803, "soll": 600, "grund": "Friseur, Paketshop, Bioladen", "x": 391246.4, "y": 5813652.2, "felder": [3, 4], "geschosse": [1]}, {"name": "Café an der Wasserader", "kat": "gastro", "phase": "P2", "bgf": 336, "soll": 250, "grund": "Am Schwammknoten, Terrasse zum Wasser", "x": 391229.8, "y": 5813678.4, "felder": [4], "geschosse": [1]}, {"name": "Jugendclub", "kat": "bildung", "phase": "P3", "bgf": 452, "soll": 400, "grund": "Nah an Schule und Sport", "x": 391223.7, "y": 5813513.5, "felder": [8, 10], "geschosse": [1]}, {"name": "Gastronomie an der Kreuzung", "kat": "gastro", "phase": "P3", "bgf": 547, "soll": 450, "grund": "Wo Bewegungs- und Erholungsader sich kreuzen", "x": 391363.7, "y": 5813503.3, "felder": [8, 9], "geschosse": [1]}, {"name": "Werkstätten an der Erholungsader", "kat": "arbeiten", "phase": "P3", "bgf": 1313, "soll": 1200, "grund": "Handwerk, Ateliers, Reparatur", "x": 391158.4, "y": 5813550.1, "felder": [7], "geschosse": [1, 2]}, {"name": "Läden und Gastro an der Albrechtstraße", "kat": "laden", "phase": "P4", "bgf": 727, "soll": 500, "grund": "Weg zum Quartiershauptplatz", "x": 391193.5, "y": 5813395.9, "felder": [11, 13], "geschosse": [1]}, {"name": "Werkstätten an der Albrechtstraße", "kat": "arbeiten", "phase": "P4", "bgf": 1118, "soll": 900, "grund": "Übergang zum Gewerbe am Kanal", "x": 391193.5, "y": 5813395.9, "felder": [13], "geschosse": [1, 2]}, {"name": "Mobilitätshub Nord", "kat": "mobilitaet", "phase": "P1", "bgf": 4247, "soll": 4247, "grund": "Fahrradparken (600 Räder), Carsharing, Lastenräder, ca. 110 Stellplätze auf 3 Ebenen", "x": 391388.1, "y": 5813785.6, "felder": [], "geschosse": [], "bestand": false}, {"name": "Werkhof Nord (Bestand)", "kat": "arbeiten", "phase": "P1", "bgf": 2665, "soll": 2665, "grund": "Werkstatt und Fabrik bleiben: Makerspace, Repair-Café, Handwerk", "x": 391450.6, "y": 5813699.1, "felder": [], "geschosse": [], "bestand": true}, {"name": "Bildungscampus: Grundschule + Sporthalle", "kat": "bildung", "phase": "P3", "bgf": 8588, "soll": 8588, "grund": "3-zügig, Halle abends für Vereine; Baufeld 6", "x": 391527.4, "y": 5813554.3, "felder": [6], "geschosse": [], "bestand": false}, {"name": "Sport- und Kulturhaus (Bestand)", "kat": "bildung", "phase": "P3", "bgf": 12842, "soll": 12842, "grund": "Geschäftshaus umgenutzt: Kletterhalle, Bibliothek, Probenräume", "x": 391379.3, "y": 5813362.9, "felder": [], "geschosse": [], "bestand": true}, {"name": "Mobilitätshub Süd (Bestand-Tiefgarage)", "kat": "mobilitaet", "phase": "P4", "bgf": 5718, "soll": 5718, "grund": "Vorhandene Tiefgarage, 2 Ebenen, ca. 230 Stellplätze", "x": 391376.8, "y": 5813368.1, "felder": [], "geschosse": [], "bestand": true}, {"name": "Markthalle am Quartiershauptplatz", "kat": "gastro", "phase": "P4", "bgf": 690, "soll": 690, "grund": "Bestandshalle am Kanal umgebaut: Markt, Gastro, Events", "x": 391251.8, "y": 5813202.9, "felder": [], "geschosse": [], "bestand": true}], "eingriffe": 24}, {"code": "V7", "name": "Gartendeck", "text": "Ein eingeschossiger Sockel trägt Läden, Werkstätten und Kitas. Sein Dach ist ein Gartendeck mit Ersatzparzellen für die Kleingärtner. Darauf stehen schlanke Punkthäuser.", "kennzahlen": {"bgf": {"laden": 3878, "gastro": 1695, "bildung": 11973, "gesundheit": 3531, "arbeiten": 6011, "mobilitaet": 5662, "wohnen": 81576}, "bgf_gesamt": 114327, "anteil_nicht_wohnen": 29, "we": 927, "ew": 1761, "arbeitsplaetze": 936, "gfz_brutto": 0.49, "kita_bedarf": 81, "kita_plaetze": 140, "grundschul_bedarf": 88, "einzugsbereich_supermarkt": 7813, "supermarkt_tragfaehig": true, "dachgaerten_m2": 7987, "ersatzparzellen_dach": 53, "phasen": {"P1": {"laden": 1656, "gastro": 420, "bildung": 1957, "gesundheit": 837, "arbeiten": 1728, "mobilitaet": 5662, "wohnen": 26054, "we": 296}, "P2": {"laden": 2331, "gastro": 999, "bildung": 2917, "gesundheit": 3531, "arbeiten": 1728, "mobilitaet": 5662, "wohnen": 51006, "we": 580}, "P3": {"laden": 2331, "gastro": 1695, "bildung": 11973, "gesundheit": 3531, "arbeiten": 3702, "mobilitaet": 5662, "wohnen": 68830, "we": 782}, "P4": {"laden": 3878, "gastro": 1695, "bildung": 11973, "gesundheit": 3531, "arbeiten": 6011, "mobilitaet": 5662, "wohnen": 81576, "we": 927}}, "versorgung": {"P1": {"nahversorgung": 100, "kita": 100, "schule": 0, "arzt": 100, "kiez": 100}, "P2": {"nahversorgung": 100, "kita": 100, "schule": 0, "arzt": 100, "kiez": 100}, "P3": {"nahversorgung": 100, "kita": 100, "schule": 100, "arzt": 100, "kiez": 100}, "P4": {"nahversorgung": 100, "kita": 100, "schule": 100, "arzt": 100, "kiez": 100}}, "wege": {"supermarkt": 220, "kita": 158, "schule": 324, "arzt": 159, "sbahn": 467}, "gebaeude": 115, "geschosse_max": 9}, "orte": [{"name": "Supermarkt + Drogerie", "kat": "laden", "phase": "P1", "bgf": 1656, "soll": 1400, "grund": "Anker an der S-Bahn; Einzugsbereich Quartier + Nachbarschaft + Pendler; unter dem Gartendeck, eine Ebene", "x": 391228.5, "y": 5813805.5, "felder": [1], "geschosse": [1]}, {"name": "Bäckerei-Café am Bahnhofsplatz", "kat": "gastro", "phase": "P1", "bgf": 420, "soll": 180, "grund": "Morgens die ersten, abends die letzten", "x": 391298.7, "y": 5813757.2, "felder": [1], "geschosse": [1]}, {"name": "Coworking und Büros", "kat": "arbeiten", "phase": "P1", "bgf": 1728, "soll": 1600, "grund": "Arbeitsplätze an der Station, Tagbelebung", "x": 391228.5, "y": 5813805.5, "felder": [1], "geschosse": [2, 3]}, {"name": "Kita „Am Feld“ (80 Plätze)", "kat": "bildung", "phase": "P1", "bgf": 741, "soll": 700, "grund": "Bedarf ab dem ersten Bezug; Garten an der Wasserader", "x": 391125.8, "y": 5813784.7, "felder": [1, 2], "geschosse": [1, 2]}, {"name": "Kiezzentrum „Gartenhaus“", "kat": "bildung", "phase": "P1", "bgf": 1217, "soll": 900, "grund": "Nachbarschaftshaus, Gartenwerkstatt, Vereinsraum der Kleingärtner", "x": 391213.9, "y": 5813718.6, "felder": [1], "geschosse": [1, 2]}, {"name": "Hausarztpraxis + Apotheke", "kat": "gesundheit", "phase": "P1", "bgf": 837, "soll": 450, "grund": "Grundversorgung ab Phase 1", "x": 391296.2, "y": 5813737.3, "felder": [1], "geschosse": [1, 2]}, {"name": "Gesundheitshaus (MVZ, Physio)", "kat": "gesundheit", "phase": "P2", "bgf": 1698, "soll": 1400, "grund": "1 je 5.000–10.000 Menschen; an der Bewegungsader", "x": 391283.3, "y": 5813677.2, "felder": [4], "geschosse": [1, 2, 3]}, {"name": "Tagespflege + Pflege-WG", "kat": "gesundheit", "phase": "P2", "bgf": 996, "soll": 900, "grund": "Ruhige Lage an der Wasserader", "x": 391114.0, "y": 5813642.3, "felder": [5], "geschosse": [1, 2]}, {"name": "Kita „Grünraum Ost“ (60 Plätze)", "kat": "bildung", "phase": "P2", "bgf": 959, "soll": 520, "grund": "Bedarf wächst mit Phase 2", "x": 391456.1, "y": 5813646.8, "felder": [3], "geschosse": [1, 2]}, {"name": "Läden an der Komturstraße", "kat": "laden", "phase": "P2", "bgf": 674, "soll": 600, "grund": "Friseur, Paketshop, Bioladen", "x": 391250.7, "y": 5813655.3, "felder": [4], "geschosse": [1]}, {"name": "Café an der Wasserader", "kat": "gastro", "phase": "P2", "bgf": 579, "soll": 250, "grund": "Am Schwammknoten, Terrasse zum Wasser", "x": 391204.5, "y": 5813670.4, "felder": [4], "geschosse": [1]}, {"name": "Jugendclub", "kat": "bildung", "phase": "P3", "bgf": 469, "soll": 400, "grund": "Nah an Schule und Sport", "x": 391355.3, "y": 5813508.6, "felder": [9], "geschosse": [1]}, {"name": "Gastronomie an der Kreuzung", "kat": "gastro", "phase": "P3", "bgf": 696, "soll": 450, "grund": "Wo Bewegungs- und Erholungsader sich kreuzen", "x": 391229.9, "y": 5813512.7, "felder": [9, 10], "geschosse": [1]}, {"name": "Werkstätten an der Erholungsader", "kat": "arbeiten", "phase": "P3", "bgf": 1631, "soll": 1200, "grund": "Handwerk, Ateliers, Reparatur", "x": 391109.7, "y": 5813533.0, "felder": [7, 10], "geschosse": [1, 2]}, {"name": "Läden und Gastro an der Albrechtstraße", "kat": "laden", "phase": "P4", "bgf": 840, "soll": 500, "grund": "Weg zum Quartiershauptplatz", "x": 391194.7, "y": 5813412.0, "felder": [13], "geschosse": [1]}, {"name": "Werkstätten an der Albrechtstraße", "kat": "arbeiten", "phase": "P4", "bgf": 904, "soll": 900, "grund": "Übergang zum Gewerbe am Kanal", "x": 391189.3, "y": 5813427.9, "felder": [13], "geschosse": [1, 2]}, {"name": "Mobilitätshub Nord", "kat": "mobilitaet", "phase": "P1", "bgf": 5662, "soll": 5662, "grund": "Fahrradparken (600 Räder), Carsharing, Lastenräder, ca. 110 Stellplätze auf 3 Ebenen", "x": 391388.1, "y": 5813785.6, "felder": [], "geschosse": [], "bestand": false}, {"name": "Werkhof Nord (Bestand)", "kat": "arbeiten", "phase": "P1", "bgf": 2665, "soll": 2665, "grund": "Werkstatt und Fabrik bleiben: Makerspace, Repair-Café, Handwerk", "x": 391450.6, "y": 5813699.1, "felder": [], "geschosse": [], "bestand": true}, {"name": "Bildungscampus: Grundschule + Sporthalle", "kat": "bildung", "phase": "P3", "bgf": 8588, "soll": 8588, "grund": "3-zügig, Halle abends für Vereine; Baufeld 6", "x": 391527.4, "y": 5813554.3, "felder": [6], "geschosse": [], "bestand": false}, {"name": "Sport- und Kulturhaus (Bestand)", "kat": "bildung", "phase": "P3", "bgf": 12842, "soll": 12842, "grund": "Geschäftshaus umgenutzt: Kletterhalle, Bibliothek, Probenräume", "x": 391379.3, "y": 5813362.9, "felder": [], "geschosse": [], "bestand": true}, {"name": "Mobilitätshub Süd (Bestand-Tiefgarage)", "kat": "mobilitaet", "phase": "P4", "bgf": 5718, "soll": 5718, "grund": "Vorhandene Tiefgarage, 2 Ebenen, ca. 230 Stellplätze", "x": 391376.8, "y": 5813368.1, "felder": [], "geschosse": [], "bestand": true}, {"name": "Markthalle am Quartiershauptplatz", "kat": "gastro", "phase": "P4", "bgf": 690, "soll": 690, "grund": "Bestandshalle am Kanal umgebaut: Markt, Gastro, Events", "x": 391251.8, "y": 5813202.9, "felder": [], "geschosse": [], "bestand": true}], "eingriffe": 8}, {"code": "V8", "name": "Nachbarschaftsinseln", "text": "Fünf Häuser gruppieren sich jeweils um einen kleinen öffentlichen Platz mit Café oder Kita. Dazwischen stehen Stadthäuser im Garten. Die Plätze sind offen, nicht umbaut.", "kennzahlen": {"bgf": {"laden": 3142, "gastro": 2543, "bildung": 12821, "gesundheit": 3029, "arbeiten": 4196, "mobilitaet": 4247, "wohnen": 50069}, "bgf_gesamt": 80046, "anteil_nicht_wohnen": 37, "we": 569, "ew": 1081, "arbeitsplaetze": 887, "gfz_brutto": 0.34, "kita_bedarf": 64, "kita_plaetze": 80, "grundschul_bedarf": 54, "einzugsbereich_supermarkt": 7133, "supermarkt_tragfaehig": true, "dachgaerten_m2": 0, "ersatzparzellen_dach": 0, "phasen": {"P1": {"laden": 1416, "gastro": 694, "bildung": 2026, "gesundheit": 520, "arbeiten": 1643, "mobilitaet": 4247, "wohnen": 12323, "we": 140}, "P2": {"laden": 2312, "gastro": 1049, "bildung": 2764, "gesundheit": 3029, "arbeiten": 1643, "mobilitaet": 4247, "wohnen": 27691, "we": 315}, "P3": {"laden": 2312, "gastro": 1793, "bildung": 12293, "gesundheit": 3029, "arbeiten": 2853, "mobilitaet": 4247, "wohnen": 37850, "we": 430}, "P4": {"laden": 3142, "gastro": 2543, "bildung": 12821, "gesundheit": 3029, "arbeiten": 4196, "mobilitaet": 4247, "wohnen": 50069, "we": 569}}, "versorgung": {"P1": {"nahversorgung": 100, "kita": 100, "schule": 0, "arzt": 100, "kiez": 100}, "P2": {"nahversorgung": 100, "kita": 100, "schule": 0, "arzt": 100, "kiez": 100}, "P3": {"nahversorgung": 100, "kita": 100, "schule": 100, "arzt": 100, "kiez": 100}, "P4": {"nahversorgung": 98, "kita": 100, "schule": 100, "arzt": 100, "kiez": 100}}, "wege": {"supermarkt": 281, "kita": 218, "schule": 340, "arzt": 150, "sbahn": 491}, "gebaeude": 48, "geschosse_max": 7}, "orte": [{"name": "Supermarkt + Drogerie", "kat": "laden", "phase": "P1", "bgf": 1416, "soll": 1400, "grund": "Anker an der S-Bahn; Einzugsbereich Quartier + Nachbarschaft + Pendler; im EG des Mobilitätshubs (kein Baufeldhaus groß genug)", "x": 391388.1, "y": 5813785.6, "felder": [], "geschosse": [1]}, {"name": "Bäckerei-Café am Bahnhofsplatz", "kat": "gastro", "phase": "P1", "bgf": 208, "soll": 180, "grund": "Morgens die ersten, abends die letzten", "x": 391310.8, "y": 5813778.8, "felder": [1], "geschosse": [1]}, {"name": "Coworking und Büros", "kat": "arbeiten", "phase": "P1", "bgf": 1643, "soll": 1600, "grund": "Arbeitsplätze an der Station, Tagbelebung", "x": 391215.0, "y": 5813810.0, "felder": [1, 2], "geschosse": [2, 3]}, {"name": "Kita „Am Feld“ (80 Plätze)", "kat": "bildung", "phase": "P1", "bgf": 830, "soll": 700, "grund": "Bedarf ab dem ersten Bezug; Garten an der Wasserader", "x": 391140.1, "y": 5813759.5, "felder": [1, 2], "geschosse": [1, 2]}, {"name": "Kiezzentrum „Gartenhaus“", "kat": "bildung", "phase": "P1", "bgf": 1196, "soll": 900, "grund": "Nachbarschaftshaus, Gartenwerkstatt, Vereinsraum der Kleingärtner", "x": 391259.0, "y": 5813746.3, "felder": [1], "geschosse": [1, 2]}, {"name": "Hausarztpraxis + Apotheke", "kat": "gesundheit", "phase": "P1", "bgf": 520, "soll": 450, "grund": "Grundversorgung ab Phase 1", "x": 391215.0, "y": 5813810.0, "felder": [1], "geschosse": [1, 2]}, {"name": "Gesundheitshaus (MVZ, Physio)", "kat": "gesundheit", "phase": "P2", "bgf": 1599, "soll": 1400, "grund": "1 je 5.000–10.000 Menschen; an der Bewegungsader", "x": 391247.5, "y": 5813659.0, "felder": [4], "geschosse": [1, 2, 3]}, {"name": "Tagespflege + Pflege-WG", "kat": "gesundheit", "phase": "P2", "bgf": 910, "soll": 900, "grund": "Ruhige Lage an der Wasserader", "x": 391097.9, "y": 5813622.6, "felder": [3, 5], "geschosse": [1, 2]}, {"name": "Läden an der Komturstraße", "kat": "laden", "phase": "P2", "bgf": 896, "soll": 600, "grund": "Friseur, Paketshop, Bioladen", "x": 391205.1, "y": 5813658.5, "felder": [3, 4], "geschosse": [1]}, {"name": "Café an der Wasserader", "kat": "gastro", "phase": "P2", "bgf": 355, "soll": 250, "grund": "Am Schwammknoten, Terrasse zum Wasser", "x": 391144.3, "y": 5813662.0, "felder": [5], "geschosse": [1]}, {"name": "Jugendclub", "kat": "bildung", "phase": "P3", "bgf": 663, "soll": 400, "grund": "Nah an Schule und Sport", "x": 391229.5, "y": 5813521.4, "felder": [9, 10], "geschosse": [1]}, {"name": "Gastronomie an der Kreuzung", "kat": "gastro", "phase": "P3", "bgf": 744, "soll": 450, "grund": "Wo Bewegungs- und Erholungsader sich kreuzen", "x": 391188.1, "y": 5813577.7, "felder": [7, 8, 9], "geschosse": [1]}, {"name": "Werkstätten an der Erholungsader", "kat": "arbeiten", "phase": "P3", "bgf": 1210, "soll": 1200, "grund": "Handwerk, Ateliers, Reparatur", "x": 391128.3, "y": 5813538.6, "felder": [7], "geschosse": [1, 2]}, {"name": "Läden und Gastro an der Albrechtstraße", "kat": "laden", "phase": "P4", "bgf": 518, "soll": 500, "grund": "Weg zum Quartiershauptplatz", "x": 391203.9, "y": 5813383.2, "felder": [13], "geschosse": [1]}, {"name": "Werkstätten an der Albrechtstraße", "kat": "arbeiten", "phase": "P4", "bgf": 936, "soll": 900, "grund": "Übergang zum Gewerbe am Kanal", "x": 391168.7, "y": 5813426.4, "felder": [13], "geschosse": [1, 2]}, {"name": "Mobilitätshub Nord", "kat": "mobilitaet", "phase": "P1", "bgf": 4247, "soll": 4247, "grund": "Fahrradparken (600 Räder), Carsharing, Lastenräder, ca. 110 Stellplätze auf 3 Ebenen", "x": 391388.1, "y": 5813785.6, "felder": [], "geschosse": [], "bestand": false}, {"name": "Werkhof Nord (Bestand)", "kat": "arbeiten", "phase": "P1", "bgf": 2665, "soll": 2665, "grund": "Werkstatt und Fabrik bleiben: Makerspace, Repair-Café, Handwerk", "x": 391450.6, "y": 5813699.1, "felder": [], "geschosse": [], "bestand": true}, {"name": "Bildungscampus: Grundschule + Sporthalle", "kat": "bildung", "phase": "P3", "bgf": 8588, "soll": 8588, "grund": "3-zügig, Halle abends für Vereine; Baufeld 6", "x": 391527.4, "y": 5813554.3, "felder": [6], "geschosse": [], "bestand": false}, {"name": "Sport- und Kulturhaus (Bestand)", "kat": "bildung", "phase": "P3", "bgf": 12842, "soll": 12842, "grund": "Geschäftshaus umgenutzt: Kletterhalle, Bibliothek, Probenräume", "x": 391379.3, "y": 5813362.9, "felder": [], "geschosse": [], "bestand": true}, {"name": "Mobilitätshub Süd (Bestand-Tiefgarage)", "kat": "mobilitaet", "phase": "P4", "bgf": 5718, "soll": 5718, "grund": "Vorhandene Tiefgarage, 2 Ebenen, ca. 230 Stellplätze", "x": 391376.8, "y": 5813368.1, "felder": [], "geschosse": [], "bestand": true}, {"name": "Markthalle am Quartiershauptplatz", "kat": "gastro", "phase": "P4", "bgf": 690, "soll": 690, "grund": "Bestandshalle am Kanal umgebaut: Markt, Gastro, Events", "x": 391251.8, "y": 5813202.9, "felder": [], "geschosse": [], "bestand": true}], "eingriffe": 0}], "nachbarn_600": 2834, "tageszeit": [["6–9 Uhr", ["wohnen", "laden", "gastro", "mobilitaet"]], ["9–12 Uhr", ["arbeiten", "bildung", "gesundheit"]], ["12–14 Uhr", ["gastro", "arbeiten", "laden"]], ["14–17 Uhr", ["bildung", "laden", "gesundheit"]], ["17–20 Uhr", ["wohnen", "laden", "gastro", "bildung"]], ["20–23 Uhr", ["wohnen", "gastro", "bildung"]], ["Wochenende", ["gastro", "laden", "bildung", "wohnen"]]]}, "farben": {"laden": "#e34948", "gastro": "#eda100", "bildung": "#6250d6", "gesundheit": "#e87ba4", "arbeiten": "#2a78d6", "mobilitaet": "#1baf7a", "wohnen": "#f3eee1"}, "kurz": {"laden": "Läden", "gastro": "Gastro", "bildung": "Bildung/Soziales", "gesundheit": "Gesundheit", "arbeiten": "Arbeiten", "mobilitaet": "Mobilität", "wohnen": "Wohnen"}, "phasen": [["P0", 2027, 2029, "Vorlauf: S-Bahn, Adern, Gärten verlagern"], ["P1", 2029, 2032, "Ankunft an der S-Bahn"], ["P2", 2032, 2035, "Gartenmitte"], ["P3", 2035, 2038, "Erholungsader"], ["P4", 2038, 2042, "Ankunft am Kanal"]], "qm_ap": {"laden": 40, "gastro": 25, "bildung": 30, "gesundheit": 30, "arbeiten": 25, "mobilitaet": 400}};
+const $=id=>document.getElementById(id);
+const fmt=n=>Math.round(n).toLocaleString('de-DE');
+const KAT=Object.keys(D.nutzung.kategorien),F=D.farben,K=D.kurz;
+const HELL=new Set(['gastro','gesundheit','mobilitaet','wohnen']);
+const PH=D.phasen; // [[P0,2027,2029,titel],...]
+const V=Object.fromEntries(D.nutzung.varianten.map(v=>[v.code,v]));
+const S={v:'V6',p:4,modus:'bild',ansicht:'ganz',filter:'alle'};
+const chip=k=>`<span class="chip"><i style="background:${F[k]}"></i>${K[k]}</span>`;
+const nr=(o)=>`<span class="nr${HELL.has(o.kat)?' hell':''}" style="background:${F[o.kat]}">${o.nr}</span>`;
+function orte(code){const v=V[code];const o=[...v.orte].sort((a,b)=>(a.phase<b.phase?-1:a.phase>b.phase?1:b.y-a.y));o.forEach((x,i)=>x.nr=i+1);return o}
+const cache={};
+async function svg(url){if(!cache[url])cache[url]=fetch(url).then(r=>r.ok?r.text():Promise.reject());return cache[url]}
+async function setzeSvg(el,url){try{el.innerHTML=await svg(url)}catch(e){el.textContent='Zeichnung nicht geladen.'}}
+
+// Legende
+$('legende').innerHTML=KAT.map(k=>`<span><i style="background:${F[k]}"></i>${K[k]}</span>`).join('')+'<span class="klein">Dach grün = Gründach / Gartendeck</span>';
+
+// Tabs
+$('vtabs').innerHTML=D.nutzung.varianten.map(v=>`<button class="tab" role="tab" aria-selected="false" data-v="${v.code}">${v.code} ${v.name}</button>`).join('');
+$('vtabs').addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(b){S.v=b.dataset.v;alles()}});
+$('vtabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight'].includes(e.key))return;const c=Object.keys(V);let i=c.indexOf(S.v)+(e.key==='ArrowRight'?1:-1);S.v=c[(i+c.length)%c.length];alles();$('vtabs').querySelector(`[data-v=${S.v}]`).focus()});
+
+// Kopfzahlen
+function kopf(){const k=V[S.v].kennzahlen;
+ $('figs').innerHTML=[[fmt(k.we),'Wohnungen'],[fmt(k.ew),'Menschen'],[fmt(k.arbeitsplaetze),'Arbeitsplätze'],[k.anteil_nicht_wohnen+' %','Fläche ohne Wohnen'],[`${k.kita_plaetze}`,`Kita-Plätze (Bedarf ${k.kita_bedarf})`],[k.gfz_brutto.toFixed(2).replace('.',','),'GFZ brutto']].map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('');
+ $('figsnote').textContent=`${S.v} ${V[S.v].name} · Endzustand 2042 · alle Zahlen gerechnet, nicht geschätzt`;}
+
+// Modell: Rendering / 3D
+const IMG=(code,p,ans)=>ans==='p1'?`r/p1_${code}.jpg`:p>=4?`r/render_${code}.jpg`:`r/phase_${code}_P${p}.jpg`;
+let vorne='imgA';
+function bild(){const url=IMG(S.v,S.p,S.ansicht);const a=$(vorne),b=$(vorne==='imgA'?'imgB':'imgA');if(a.getAttribute('src')===url)return;
+ b.onload=()=>{b.classList.remove('weg');a.classList.add('weg');vorne=b.id};b.src=url;b.alt=`Rendering ${S.v}, ${S.ansicht==='p1'?'Phase 1 nah':PH[S.p][3]}`}
+function modell(){const p=S.p;$('pr').value=p;$('pr').style.setProperty('--p',(p/4*100)+'%');
+ $('jahr').textContent=`${PH[p][0]} · ${PH[p][1]}–${PH[p][2]}`;$('pr').setAttribute('aria-valuetext',`${PH[p][0]}, ${PH[p][3]}`);
+ $('mBild').setAttribute('aria-pressed',S.modus==='bild');$('m3d').setAttribute('aria-pressed',S.modus==='3d');
+ $('aGanz').setAttribute('aria-pressed',S.ansicht==='ganz');$('aP1').setAttribute('aria-pressed',S.ansicht==='p1');
+ if(S.modus==='bild'){$('bild').classList.remove('drei');bild()}
+ window.__ZUSTAND={v:S.v,p,ansicht:S.ansicht};window.dispatchEvent(new CustomEvent('zustand',{detail:window.__ZUSTAND}))}
+$('pr').addEventListener('input',e=>{S.p=+e.target.value;if(S.ansicht==='p1'&&S.p!==1&&S.modus==='bild')S.ansicht='ganz';modell()});
+$('mBild').onclick=()=>{S.modus='bild';modell()};
+$('m3d').onclick=()=>{S.modus='3d';modell();window.dispatchEvent(new Event('starte3d'))};
+$('aGanz').onclick=()=>{S.ansicht='ganz';modell()};
+$('aP1').onclick=()=>{S.ansicht='p1';if(S.modus==='bild')S.p=1;modell()};
+
+// Variantenkarte
+const NOTIZ={V6:'schwingt, aber schließt nie',V7:'Gärten aufs Dach, Läden darunter',V8:'jede Insel hat ihren Platz'};
+function karte(){const v=V[S.v],k=v.kennzahlen;
+ $('karte').innerHTML=`<p class="hand">${NOTIZ[S.v]}</p><h3>${v.code} ${v.name}</h3><p>${v.text}</p>
+ <div class="kz"><div><b>${k.geschosse_max}</b><span>Geschosse max.</span></div><div><b>${fmt(k.gebaeude)}</b><span>Baukörper</span></div>
+ <div><b>${fmt(k.bgf.wohnen)}</b><span>m² Wohnen</span></div><div><b>${fmt(k.bgf_gesamt-k.bgf.wohnen)}</b><span>m² andere Nutzungen</span></div>
+ ${k.dachgaerten_m2?`<div><b>${fmt(k.dachgaerten_m2)}</b><span>m² Gartendeck</span></div><div><b>≈ ${k.ersatzparzellen_dach}</b><span>Ersatzparzellen à 150 m²</span></div>`:''}
+ <div><b>${v.eingriffe}</b><span>Korrekturen § 6 BauO</span></div><div><b>${fmt(k.einzugsbereich_supermarkt)}</b><span>Menschen im Einzug</span></div></div>`;
+ $('vkurz').textContent=NOTIZ[S.v];}
+
+// Phase 1
+function phase1(){const v=V[S.v],k=v.kennzahlen,p1=k.phasen.P1;const tot=KAT.reduce((s,c)=>s+p1[c],0);
+ const ap=Math.round(KAT.filter(c=>D.qm_ap[c]).reduce((s,c)=>s+p1[c]/D.qm_ap[c],0));
+ const sm=v.orte.find(o=>o.name.startsWith('Supermarkt'));
+ setzeSvg($('p1plan'),`z/phase1_${S.v}.svg`);setzeSvg($('p1schnitt'),`z/nutzschnitt1_${S.v}.svg`);
+ $('p1kz').innerHTML=`<div><b>${p1.we}</b><span>Wohnungen</span></div><div><b>≈ ${fmt(p1.we*1.9)}</b><span>Menschen</span></div>
+  <div><b>≈ ${ap}</b><span>Arbeitsplätze</span></div><div><b>${Math.round(100*(1-p1.wohnen/tot))} %</b><span>Fläche ohne Wohnen</span></div>
+  <div><b>80</b><span>Kita-Plätze (Bedarf P1 ≈ ${Math.round(p1.we*1.9*0.045)}, bis P2 ≈ ${Math.round(k.phasen.P2.we*1.9*0.045)})</span></div><div><b>${fmt(sm.bgf)}</b><span>m² Supermarkt</span></div>`;
+ const wo=sm.grund.includes('Mobilitätshub')?'im Erdgeschoss des Mobilitätshubs':sm.grund.includes('Gartendeck')?'unter dem Gartendeck':'im Baufeld 1';
+ $('p1zeit').innerHTML=[
+  ['2027–28','Vorlauf','Gärten verlagern, Quellgarten und Wasserader Nord anlegen. Werkhof Nord öffnet als Zwischennutzung: Makerspace und Repair-Café.'],
+  ['2029','Ankommen',`Bahnhofsplatz und Mobilitätshub. Der Supermarkt öffnet ${wo}, bevor jemand einzieht.`],
+  ['2030','Erster Bezug Baufeld 1','Kita „Am Feld“ mit 80 Plätzen, Bäckerei-Café am Bahnhofsplatz, Hausarztpraxis und Apotheke.'],
+  ['2031','Baufeld 2','Kiezzentrum „Gartenhaus“ mit Vereinsraum für die Kleingärtner, Coworking und Büros.'],
+  ['2032','S-Bahn','Ziel: Steg zum S-Bahn-Halt Komturstraße. Bis dahin Bus und Rad zu den Bahnhöfen Tempelhof und Hermannstraße.']]
+  .map(([j,t,x])=>`<li><b>${j}</b><div><span class="hand">${t}</span>${x}</div></li>`).join('');
+ $('p1frei').innerHTML=['<b>Bahnhofsplatz</b>: Ankommen, 600 Radstellplätze im Hub, Wochenmarkt.',
+  '<b>Quellgarten</b>: hier kommt das Wasser vom Tempelhofer Feld ins Quartier.',
+  '<b>Kita-Garten</b>: 7 m² je Kind, also rund 560 m², an der Wasserader.',
+  '<b>Gemeinschaftsgärten</b> im Randstreifen für Pächterinnen und Pächter, die bleiben wollen.'+(S.v==='V7'?' Dazu das Gartendeck auf dem Sockel.':''),
+  '<b>Lieferzone</b> an der Straße, nie durch die Gärten.'].map(x=>`<li>${x}</li>`).join('');
+ $('p1render').src=`r/p1_${S.v}.jpg`;$('p1render').alt=`Rendering Phase 1, ${S.v} ${v.name}`;
+ $('p1cap').textContent=`${S.v} ${v.name}: Phase 1 aus Südwesten, S-Bahn im Hintergrund`;}
+
+// Mischung (100 %-Balken)
+function stapel(bgf,abs,max){const tot=KAT.reduce((s,c)=>s+bgf[c],0);const schwelle=abs?7*max/tot:7;
+ return `<div class="stapel" style="${abs?`width:${(100*tot/max).toFixed(1)}%`:''}">`+KAT.map(c=>{const a=bgf[c]/tot*100;if(a<0.3)return'';
+ return `<div class="${HELL.has(c)?'hell':''}" style="flex:${bgf[c]} 0 0;background:${F[c]}" title="${K[c]}: ${fmt(bgf[c])} m²">${a>=schwelle?Math.round(a)+' %':''}</div>`}).join('')+'</div>'}
+function mix(){
+ $('mix').innerHTML=D.nutzung.varianten.map(v=>`<div class="mixz"><div class="lbl">${v.code} ${v.name}<small>${fmt(v.kennzahlen.bgf_gesamt)} m² BGF</small></div>${stapel(v.kennzahlen.bgf)}</div>`).join('');
+ $('mixtab').innerHTML=`<thead><tr><th>Nutzung</th>${D.nutzung.varianten.map(v=>`<th class="n">${v.code}</th>`).join('')}</tr></thead><tbody>`+
+  KAT.map(c=>`<tr><td>${chip(c)}</td>${D.nutzung.varianten.map(v=>`<td class="n">${fmt(v.kennzahlen.bgf[c])}</td>`).join('')}</tr>`).join('')+'</tbody>';
+ $('uhr').innerHTML=D.nutzung.tageszeit.map(([t,ks])=>`<div><b>${t}</b>${ks.map(chip).join('')}</div>`).join('');}
+function phmix(){const k=V[S.v].kennzahlen;const max=Math.max(...Object.values(k.phasen).map(b=>KAT.reduce((s,c)=>s+b[c],0)));
+ $('phmix').innerHTML=Object.entries(k.phasen).map(([p,b])=>{const i=+p[1];const tot=KAT.reduce((s,c)=>s+b[c],0);
+  return `<div class="mixz"><div class="lbl">${p} · bis ${PH[i][2]}<small>${b.we} WE · ${Math.round(100*(1-b.wohnen/tot))} % ohne Wohnen</small></div>${stapel(b,true,max)}</div>`}).join('');}
+
+// Orte-Tabelle
+function ortetab(){const o=orte(S.v);
+ $('ofilter').innerHTML=['alle','P1','P2','P3','P4'].map(f=>`<button class="tab" aria-pressed="${S.filter===f}" data-f="${f}">${f==='alle'?'Alle Phasen':f+' · '+PH[+f[1]][1]+'–'+PH[+f[1]][2]}</button>`).join('');
+ $('otab').innerHTML=`<thead><tr><th>Nr.</th><th>Baustein</th><th>Nutzung</th><th>Phase</th><th class="n">m² BGF</th><th>Ort</th><th>Warum hier</th></tr></thead><tbody>`+
+  o.filter(x=>S.filter==='alle'||x.phase===S.filter).map(x=>`<tr><td>${nr(x)}</td><td><b>${x.name}</b></td><td>${chip(x.kat)}</td><td><span class="ph">${x.phase}</span></td>
+  <td class="n">${fmt(x.bgf)}</td><td>${x.bestand?'Bestand':x.felder&&x.felder.length&&x.felder[0]?'Baufeld '+x.felder.join(', '):'Nordost, am Bahnhofsplatz'}</td><td class="klein">${x.grund}</td></tr>`).join('')+'</tbody>';
+ setzeSvg($('nphasen'),`z/nutzphasen_${S.v}.svg`);setzeSvg($('nplan'),`z/nutzplan_${S.v}.svg`);setzeSvg($('nsschnitt'),`z/nutzschnitt_ns_${S.v}.svg`);}
+$('ofilter').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(b){S.filter=b.dataset.f;ortetab()}});
+
+// Versorgung
+function versorgung(){const k=V[S.v].kennzahlen;const R=[['nahversorgung','Supermarkt ≤ 500 m'],['kita','Kita ≤ 400 m'],['schule','Grundschule ≤ 700 m'],['arzt','Arzt ≤ 600 m'],['kiez','Treffpunkt ≤ 600 m']];
+ $('vtab').innerHTML=`<thead><tr><th>Erreichbar</th>${['P1','P2','P3','P4'].map(p=>`<th class="n">${p}</th>`).join('')}</tr></thead><tbody>`+
+  R.map(([key,l])=>`<tr><td>${l}</td>${['P1','P2','P3','P4'].map(p=>{const w=k.versorgung[p][key];return `<td class="n">${w} %<span class="vbar"><i style="width:${w}%"></i></span></td>`}).join('')}</tr>`).join('')+'</tbody>';
+ $('vnote').textContent=k.versorgung.P1.schule<100?'Grundschule: bis Phase 3 über Schulen der Nachbarschaft. Plätze mit dem Bezirk klären.':'';
+ const ein=k.einzugsbereich_supermarkt;
+ $('btab').innerHTML=`<thead><tr><th>Einrichtung</th><th class="n">Bedarf</th><th class="n">Angebot</th><th>Urteil</th></tr></thead><tbody>
+ <tr><td>Kita-Plätze</td><td class="n">${k.kita_bedarf}</td><td class="n">${k.kita_plaetze}</td><td>${k.kita_plaetze>=k.kita_bedarf?'gedeckt, Rest für Nachbarschaft':'zu wenig'}</td></tr>
+ <tr><td>Grundschulplätze</td><td class="n">${k.grundschul_bedarf}</td><td class="n">≈ 430</td><td>3-zügig, versorgt auch die Nachbarschaft</td></tr>
+ <tr><td>Supermarkt (ab 5.000 Menschen)</td><td class="n">5.000</td><td class="n">${fmt(ein)}</td><td>${ein>=5000?'tragfähig':'zu klein'}</td></tr>
+ <tr><td>Arztzentrum (je 5.000–10.000)</td><td class="n">1</td><td class="n">1 + Praxis</td><td>gedeckt</td></tr>
+ <tr><td>Treffpunkt (je 10.000–15.000)</td><td class="n">1</td><td class="n">3</td><td>Kiezzentrum, Jugendclub, Sport- und Kulturhaus</td></tr></tbody>`;
+ $('wtab').innerHTML=`<thead><tr><th>Ziel</th>${D.nutzung.varianten.map(v=>`<th class="n">${v.code}</th>`).join('')}</tr></thead><tbody>`+
+  [['supermarkt','Supermarkt'],['kita','Kita'],['schule','Grundschule'],['arzt','Arzt'],['sbahn','S-Bahn']].map(([k2,l])=>`<tr><td>${l}</td>${D.nutzung.varianten.map(v=>{const m=v.kennzahlen.wege[k2];return `<td class="n">${m} m · ${Math.max(1,Math.round(m/80))} min</td>`}).join('')}</tr>`).join('')+'</tbody>';}
+
+// Regeln
+const NR=[['Erdgeschoss','var(--laden)',['An Adern, Trichtern und Plätzen hat jedes Erdgeschoss 4,2 m Geschosshöhe. So können Laden, Werkstatt oder Kita auch später einziehen.','Läden 8–15 m tief, Front mind. 6 m, alle 15 m ein Eingang, mind. 60 % Glas, keine Rollläden an Hauptfronten.','Wohnen im Erdgeschoss nur abseits der Adern: 0,5–1 m erhöht oder hinter 2–3 m Vorgarten.']],
+ ['Zugang und Anlieferung','var(--arbeiten)',['Wohnungen und Gewerbe haben getrennte Eingänge und Treppenhäuser.','Anlieferung nur von Komtur-, Oberland- und Albrechtstraße. Nie durch Gärten oder über die Wasserader.','Jeder Großnutzer bekommt eine Lieferzone an der Straße.']],
+ ['Lage','var(--bildung)',['Flächen ab 1.000 m² nur in einem Haus auf einer Ebene: unter dem Gartendeck oder im Mobilitätshub.','Publikumsstarke Nutzungen (Supermarkt, Arzt, Coworking) im 400-m-Kreis der S-Bahn. Ruhige (Pflege, Kita) an der Wasserader.','Gastronomie mit Außenfläche nur an Adern und Plätzen. Werkstätten nur im EG und 1. OG, Tore zur Straße.']],
+ ['Reihenfolge','var(--gruen)',['Versorgung vor Bezug: Supermarkt, Kita und Arztpraxis einer Phase öffnen spätestens mit dem ersten Bezug.','Bestand zuerst: Werkhof ab 2028, Geschäftshaus wird in Phase 3 Sport- und Kulturhaus, Halle am Kanal in Phase 4 Markthalle.','Kitas nach Bedarf: zweite Kita ab 80 Plätzen Bedarf, dritte ab 140 Plätzen.']],
+ ['Mischung','var(--gesundheit)',['Phase 1 mind. 20 % der Fläche ohne Wohnen, jede spätere Phase mind. 10 %.','Im Endzustand 60–80 % Wohnen. So bleibt es ein Wohnquartier mit Zentrum.','Bei Leerstand im EG: zuerst Gemeinschaftsraum, Atelier oder Werkstatt, nie Garage.']],
+ ['Freiraum','var(--mobilitaet)',['Jede Kita hat ihren Garten: 7 m² je Kind, direkt am Haus.','Gärten bleiben öffentlich durchlässig. Private Gärten nur als 2–3 m Vorgarten.','Autos parken nur in den Hubs. In den Baufeldern nur Rettung, Umzug und Lieferung.']]];
+const TR={V6:['Ein Baukörper je Feld, Zickzack mit Schenkeln von rund 44 m, 12,5 m tief.','Taschen öffnen sich abwechselnd zur Wasserader und zur Straße. Jede Tasche hat eine offene Seite von mind. 20 m. Kein Hof.','Gliederung alle 26 m: Haus, Treppenhaus, Fuge.','6 Geschosse, 7 an Ecken nahe der S-Bahn, eines weniger an der Wasserader.'],
+ V7:['Sockel mit einem Geschoss (4,2 m), in Einheiten von rund 21 × 20 m: Läden, Kita, Werkstatt, Gartenwohnungen.','Deck als Gemeinschaftsgarten, mind. 70 % begrünt, mit Ersatzparzellen für die Kleingärtner.','Punkthäuser 24 × 24 m, Abstand mind. 46 m, 6–11 Geschosse, höher zur S-Bahn.','Supermarkt nur unter einem Deck, Anlieferung von der Straße.'],
+ V8:['Je rund 5.200 m² Feld eine Insel: runder Platz mit 34 m Durchmesser, vier Arme, 24–30 m lang, 13 m tief.','Arme 5–6 Geschosse. Ecken bleiben offen (§ 6 Abs. 3 BauO: Winkel über 75°).','Am Platz ein Platzhaus mit Café oder Kita-Gruppe im Erdgeschoss.','Dazwischen Stadthäuser 16 × 13 m mit 4 Geschossen.']};
+$('nregeln').innerHTML=NR.map(([t,c,l])=>`<div class="regel" style="--c:${c}"><h3>${t}</h3><ol>${l.map(x=>`<li>${x}</li>`).join('')}</ol></div>`).join('');
+$('tregeln').innerHTML=D.nutzung.varianten.map(v=>`<div class="regel"><h3>${v.code} ${v.name}</h3><p class="hand" style="color:var(--gruen)">${NOTIZ[v.code]}</p><ol>${TR[v.code].map(x=>`<li>${x}</li>`).join('')}</ol></div>`).join('');
+
+function alles(){for(const b of $('vtabs').children){b.setAttribute('aria-selected',b.dataset.v===S.v);b.tabIndex=b.dataset.v===S.v?0:-1}
+ kopf();karte();modell();phase1();phmix();ortetab();versorgung()}
+mix();alles();
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+const bild=document.getElementById('bild'),cv=document.getElementById('c3d'),laden=document.getElementById('laden');
+let renderer,scene,cam,ctl,gestartet=false;const loader=new GLTFLoader();const varianten={};let aktiv=null;
+const reduziert=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ease=t=>1-Math.pow(1-t,4);
+const anim=[];
+const BLICK={ganz:{pos:[-470,640,960],ziel:[30,0,-10]},p1:{pos:[-265,180,0],ziel:[30,0,-290]}};
+let flug=null;
+function blick(name,sofort){const b=BLICK[name];if(!cam)return;
+  if(sofort||reduziert){cam.position.set(...b.pos);ctl.target.set(...b.ziel);return}
+  flug={t0:performance.now(),d:700,p0:cam.position.clone(),z0:ctl.target.clone(),p1:new THREE.Vector3(...b.pos),z1:new THREE.Vector3(...b.ziel)}}
+function start(){
+  if(gestartet){bild.classList.add('drei');return}gestartet=true;laden.hidden=false;
+  try{renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true})}catch(e){laden.textContent='3D wird von diesem Gerät nicht unterstützt.';return}
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+  scene=new THREE.Scene();scene.background=new THREE.Color('#e8eef2');scene.fog=new THREE.Fog('#e8eef2',1400,3200);
+  cam=new THREE.PerspectiveCamera(32,1,5,6000);
+  ctl=new OrbitControls(cam,cv);ctl.enableDamping=true;ctl.maxPolarAngle=Math.PI*0.47;ctl.minDistance=80;ctl.maxDistance=2200;
+  blick(window.__ZUSTAND.ansicht==='p1'?'p1':'ganz',true);
+  scene.add(new THREE.HemisphereLight('#f4f7ff','#cbbfa8',1.25));
+  const sun=new THREE.DirectionalLight('#fff4e0',2.2);sun.position.set(-500,700,500);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+  Object.assign(sun.shadow.camera,{left:-700,right:700,top:700,bottom:-700,near:10,far:2500});sun.shadow.bias=-0.0006;sun.shadow.normalBias=0.8;scene.add(sun);
+  const ro=new ResizeObserver(()=>{const w=cv.clientWidth,h=cv.clientHeight;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()});ro.observe(cv);
+  loader.load('3d/kontext.json',g=>{g.scene.traverse(o=>{if(o.isMesh){o.receiveShadow=true;o.castShadow=/kontext|bestand|baeume/.test(o.name)}});scene.add(g.scene);
+    zeigeVariante(window.__ZUSTAND.v,window.__ZUSTAND.p,true);bild.classList.add('drei')},undefined,()=>{laden.textContent='3D-Modell konnte nicht laden.'});
+  renderer.setAnimationLoop(t=>{if(flug){const k=Math.min(1,(t-flug.t0)/flug.d),e=ease(k);cam.position.lerpVectors(flug.p0,flug.p1,e);ctl.target.lerpVectors(flug.z0,flug.z1,e);if(k>=1)flug=null}
+    ctl.update();for(let i=anim.length-1;i>=0;i--){const a=anim[i],k=Math.min(1,Math.max(0,(t-a.t0)/a.d));a.o.scale.y=a.von+(a.bis-a.von)*ease(k);a.o.visible=a.o.scale.y>0.003;if(k>=1){anim.splice(i,1)}}renderer.render(scene,cam)});
+}
+function phaseVon(name){const m=name.match(/_P(\d)_/);return m?+m[1]:9}
+function setzePhase(g,p,frisch){
+  const t0=performance.now();let n=0;const delays=[0,70,120,160,190];
+  g.traverse(o=>{if(!o.isMesh)return;const ph=phaseVon(o.name);const soll=ph<=p?1:0.001;
+    if(reduziert){o.scale.y=soll;o.visible=soll>0.01;return}
+    const ist=o.scale.y;if(Math.abs(ist-soll)<0.01&&!frisch)return;
+    o.visible=true;anim.push({o,von:frisch?0.001:ist,bis:soll,t0:t0+(soll>0.5?delays[Math.min(ph,4)]+(n++%3)*25:0),d:soll>0.5?560:200})});
+}
+function zeigeVariante(code,p,frisch){
+  if(aktiv&&aktiv.code!==code){scene.remove(aktiv.g)}
+  const fertig=g=>{aktiv={code,g};if(!g.parent)scene.add(g);g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.scale.y=0.001}});setzePhase(g,p,true);laden.hidden=true};
+  if(varianten[code])fertig(varianten[code]);
+  else{laden.hidden=false;laden.textContent=`Variante ${code} lädt …`;loader.load(`3d/${code}.json`,g=>{varianten[code]=g.scene;fertig(g.scene)})}
+}
+let letzteAnsicht=null;
+window.addEventListener('starte3d',start);
+window.addEventListener('zustand',e=>{if(!gestartet||!scene)return;const {v,p,ansicht}=e.detail;
+  if(ansicht!==letzteAnsicht){blick(ansicht==='p1'?'p1':'ganz');letzteAnsicht=ansicht}
+  if(!aktiv||aktiv.code!==v)zeigeVariante(v,p,true);else setzePhase(aktiv.g,p,false)});
+</script>
+</body>
+</html>

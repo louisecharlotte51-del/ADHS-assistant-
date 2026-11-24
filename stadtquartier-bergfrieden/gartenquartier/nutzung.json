@@ -1,0 +1,1446 @@
+{
+ "kategorien": {
+  "laden": "Nahversorgung und Läden",
+  "gastro": "Gastronomie",
+  "bildung": "Bildung, Soziales, Kultur",
+  "gesundheit": "Gesundheit und Pflege",
+  "arbeiten": "Arbeiten: Büro, Werkstatt",
+  "mobilitaet": "Mobilität",
+  "wohnen": "Wohnen"
+ },
+ "varianten": [
+  {
+   "code": "V6",
+   "name": "Wassermäander",
+   "text": "Ein durchlaufender Baukörper schwingt im Zickzack durch jedes Feld. Die offenen Taschen wechseln die Seite: eine zur Wasserader, eine zur Straße. So entstehen Gärten, aber keine Höfe.",
+   "kennzahlen": {
+    "bgf": {
+     "laden": 3240,
+     "gastro": 1824,
+     "bildung": 11629,
+     "gesundheit": 3287,
+     "arbeiten": 5690,
+     "mobilitaet": 4247,
+     "wohnen": 106079
+    },
+    "bgf_gesamt": 135995,
+    "anteil_nicht_wohnen": 22,
+    "we": 1205,
+    "ew": 2290,
+    "arbeitsplaetze": 889,
+    "gfz_brutto": 0.59,
+    "kita_bedarf": 118,
+    "kita_plaetze": 140,
+    "grundschul_bedarf": 115,
+    "einzugsbereich_supermarkt": 8342,
+    "supermarkt_tragfaehig": true,
+    "dachgaerten_m2": 0,
+    "ersatzparzellen_dach": 0,
+    "phasen": {
+     "P1": {
+      "laden": 1416,
+      "gastro": 269,
+      "bildung": 1939,
+      "gesundheit": 468,
+      "arbeiten": 1634,
+      "mobilitaet": 4247,
+      "wohnen": 24202,
+      "we": 275
+     },
+     "P2": {
+      "laden": 2219,
+      "gastro": 605,
+      "bildung": 2589,
+      "gesundheit": 3287,
+      "arbeiten": 1634,
+      "mobilitaet": 4247,
+      "wohnen": 60047,
+      "we": 682
+     },
+     "P3": {
+      "laden": 2512,
+      "gastro": 1203,
+      "bildung": 11629,
+      "gesundheit": 3287,
+      "arbeiten": 3414,
+      "mobilitaet": 4247,
+      "wohnen": 83809,
+      "we": 952
+     },
+     "P4": {
+      "laden": 3240,
+      "gastro": 1824,
+      "bildung": 11629,
+      "gesundheit": 3287,
+      "arbeiten": 5690,
+      "mobilitaet": 4247,
+      "wohnen": 106079,
+      "we": 1205
+     }
+    },
+    "versorgung": {
+     "P1": {
+      "nahversorgung": 100,
+      "kita": 100,
+      "schule": 0,
+      "arzt": 100,
+      "kiez": 100
+     },
+     "P2": {
+      "nahversorgung": 100,
+      "kita": 100,
+      "schule": 0,
+      "arzt": 100,
+      "kiez": 100
+     },
+     "P3": {
+      "nahversorgung": 100,
+      "kita": 100,
+      "schule": 100,
+      "arzt": 100,
+      "kiez": 100
+     },
+     "P4": {
+      "nahversorgung": 100,
+      "kita": 100,
+      "schule": 100,
+      "arzt": 100,
+      "kiez": 100
+     }
+    },
+    "wege": {
+     "supermarkt": 274,
+     "kita": 176,
+     "schule": 329,
+     "arzt": 151,
+     "sbahn": 488
+    },
+    "gebaeude": 77,
+    "geschosse_max": 8
+   },
+   "orte": [
+    {
+     "name": "Supermarkt + Drogerie",
+     "kat": "laden",
+     "phase": "P1",
+     "bgf": 1416,
+     "soll": 1400,
+     "grund": "Anker an der S-Bahn; Einzugsbereich Quartier + Nachbarschaft + Pendler; im EG des Mobilitätshubs (kein Baufeldhaus groß genug)",
+     "x": 391388.1,
+     "y": 5813785.6,
+     "felder": [],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Bäckerei-Café am Bahnhofsplatz",
+     "kat": "gastro",
+     "phase": "P1",
+     "bgf": 269,
+     "soll": 180,
+     "grund": "Morgens die ersten, abends die letzten",
+     "x": 391239.2,
+     "y": 5813821.4,
+     "felder": [
+      1
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Coworking und Büros",
+     "kat": "arbeiten",
+     "phase": "P1",
+     "bgf": 1634,
+     "soll": 1600,
+     "grund": "Arbeitsplätze an der Station, Tagbelebung",
+     "x": 391239.2,
+     "y": 5813821.4,
+     "felder": [
+      1
+     ],
+     "geschosse": [
+      2,
+      3
+     ]
+    },
+    {
+     "name": "Kita „Am Feld“ (80 Plätze)",
+     "kat": "bildung",
+     "phase": "P1",
+     "bgf": 775,
+     "soll": 700,
+     "grund": "Bedarf ab dem ersten Bezug; Garten an der Wasserader",
+     "x": 391136.8,
+     "y": 5813756.5,
+     "felder": [
+      1,
+      2
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Kiezzentrum „Gartenhaus“",
+     "kat": "bildung",
+     "phase": "P1",
+     "bgf": 1164,
+     "soll": 900,
+     "grund": "Nachbarschaftshaus, Gartenwerkstatt, Vereinsraum der Kleingärtner",
+     "x": 391277.2,
+     "y": 5813729.5,
+     "felder": [
+      1
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Hausarztpraxis + Apotheke",
+     "kat": "gesundheit",
+     "phase": "P1",
+     "bgf": 468,
+     "soll": 450,
+     "grund": "Grundversorgung ab Phase 1",
+     "x": 391168.0,
+     "y": 5813807.0,
+     "felder": [
+      1
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Gesundheitshaus (MVZ, Physio)",
+     "kat": "gesundheit",
+     "phase": "P2",
+     "bgf": 1535,
+     "soll": 1400,
+     "grund": "1 je 5.000–10.000 Menschen; an der Bewegungsader",
+     "x": 391287.3,
+     "y": 5813654.8,
+     "felder": [
+      4
+     ],
+     "geschosse": [
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "name": "Tagespflege + Pflege-WG",
+     "kat": "gesundheit",
+     "phase": "P2",
+     "bgf": 1284,
+     "soll": 900,
+     "grund": "Ruhige Lage an der Wasserader",
+     "x": 391096.9,
+     "y": 5813642.9,
+     "felder": [
+      5
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Kita „Grünraum Ost“ (60 Plätze)",
+     "kat": "bildung",
+     "phase": "P2",
+     "bgf": 650,
+     "soll": 520,
+     "grund": "Bedarf wächst mit Phase 2",
+     "x": 391464.9,
+     "y": 5813652.7,
+     "felder": [
+      3
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Läden an der Komturstraße",
+     "kat": "laden",
+     "phase": "P2",
+     "bgf": 803,
+     "soll": 600,
+     "grund": "Friseur, Paketshop, Bioladen",
+     "x": 391246.4,
+     "y": 5813652.2,
+     "felder": [
+      3,
+      4
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Café an der Wasserader",
+     "kat": "gastro",
+     "phase": "P2",
+     "bgf": 336,
+     "soll": 250,
+     "grund": "Am Schwammknoten, Terrasse zum Wasser",
+     "x": 391229.8,
+     "y": 5813678.4,
+     "felder": [
+      4
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Jugendclub",
+     "kat": "bildung",
+     "phase": "P3",
+     "bgf": 452,
+     "soll": 400,
+     "grund": "Nah an Schule und Sport",
+     "x": 391223.7,
+     "y": 5813513.5,
+     "felder": [
+      8,
+      10
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Gastronomie an der Kreuzung",
+     "kat": "gastro",
+     "phase": "P3",
+     "bgf": 547,
+     "soll": 450,
+     "grund": "Wo Bewegungs- und Erholungsader sich kreuzen",
+     "x": 391363.7,
+     "y": 5813503.3,
+     "felder": [
+      8,
+      9
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Werkstätten an der Erholungsader",
+     "kat": "arbeiten",
+     "phase": "P3",
+     "bgf": 1313,
+     "soll": 1200,
+     "grund": "Handwerk, Ateliers, Reparatur",
+     "x": 391158.4,
+     "y": 5813550.1,
+     "felder": [
+      7
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Läden und Gastro an der Albrechtstraße",
+     "kat": "laden",
+     "phase": "P4",
+     "bgf": 727,
+     "soll": 500,
+     "grund": "Weg zum Quartiershauptplatz",
+     "x": 391193.5,
+     "y": 5813395.9,
+     "felder": [
+      11,
+      13
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Werkstätten an der Albrechtstraße",
+     "kat": "arbeiten",
+     "phase": "P4",
+     "bgf": 1118,
+     "soll": 900,
+     "grund": "Übergang zum Gewerbe am Kanal",
+     "x": 391193.5,
+     "y": 5813395.9,
+     "felder": [
+      13
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Mobilitätshub Nord",
+     "kat": "mobilitaet",
+     "phase": "P1",
+     "bgf": 4247,
+     "soll": 4247,
+     "grund": "Fahrradparken (600 Räder), Carsharing, Lastenräder, ca. 110 Stellplätze auf 3 Ebenen",
+     "x": 391388.1,
+     "y": 5813785.6,
+     "felder": [],
+     "geschosse": [],
+     "bestand": false
+    },
+    {
+     "name": "Werkhof Nord (Bestand)",
+     "kat": "arbeiten",
+     "phase": "P1",
+     "bgf": 2665,
+     "soll": 2665,
+     "grund": "Werkstatt und Fabrik bleiben: Makerspace, Repair-Café, Handwerk",
+     "x": 391450.6,
+     "y": 5813699.1,
+     "felder": [],
+     "geschosse": [],
+     "bestand": true
+    },
+    {
+     "name": "Bildungscampus: Grundschule + Sporthalle",
+     "kat": "bildung",
+     "phase": "P3",
+     "bgf": 8588,
+     "soll": 8588,
+     "grund": "3-zügig, Halle abends für Vereine; Baufeld 6",
+     "x": 391527.4,
+     "y": 5813554.3,
+     "felder": [
+      6
+     ],
+     "geschosse": [],
+     "bestand": false
+    },
+    {
+     "name": "Sport- und Kulturhaus (Bestand)",
+     "kat": "bildung",
+     "phase": "P3",
+     "bgf": 12842,
+     "soll": 12842,
+     "grund": "Geschäftshaus umgenutzt: Kletterhalle, Bibliothek, Probenräume",
+     "x": 391379.3,
+     "y": 5813362.9,
+     "felder": [],
+     "geschosse": [],
+     "bestand": true
+    },
+    {
+     "name": "Mobilitätshub Süd (Bestand-Tiefgarage)",
+     "kat": "mobilitaet",
+     "phase": "P4",
+     "bgf": 5718,
+     "soll": 5718,
+     "grund": "Vorhandene Tiefgarage, 2 Ebenen, ca. 230 Stellplätze",
+     "x": 391376.8,
+     "y": 5813368.1,
+     "felder": [],
+     "geschosse": [],
+     "bestand": true
+    },
+    {
+     "name": "Markthalle am Quartiershauptplatz",
+     "kat": "gastro",
+     "phase": "P4",
+     "bgf": 690,
+     "soll": 690,
+     "grund": "Bestandshalle am Kanal umgebaut: Markt, Gastro, Events",
+     "x": 391251.8,
+     "y": 5813202.9,
+     "felder": [],
+     "geschosse": [],
+     "bestand": true
+    }
+   ],
+   "eingriffe": 24
+  },
+  {
+   "code": "V7",
+   "name": "Gartendeck",
+   "text": "Ein eingeschossiger Sockel trägt Läden, Werkstätten und Kitas. Sein Dach ist ein Gartendeck mit Ersatzparzellen für die Kleingärtner. Darauf stehen schlanke Punkthäuser.",
+   "kennzahlen": {
+    "bgf": {
+     "laden": 3878,
+     "gastro": 1695,
+     "bildung": 11973,
+     "gesundheit": 3531,
+     "arbeiten": 6011,
+     "mobilitaet": 5662,
+     "wohnen": 81576
+    },
+    "bgf_gesamt": 114327,
+    "anteil_nicht_wohnen": 29,
+    "we": 927,
+    "ew": 1761,
+    "arbeitsplaetze": 936,
+    "gfz_brutto": 0.49,
+    "kita_bedarf": 81,
+    "kita_plaetze": 140,
+    "grundschul_bedarf": 88,
+    "einzugsbereich_supermarkt": 7813,
+    "supermarkt_tragfaehig": true,
+    "dachgaerten_m2": 7987,
+    "ersatzparzellen_dach": 53,
+    "phasen": {
+     "P1": {
+      "laden": 1656,
+      "gastro": 420,
+      "bildung": 1957,
+      "gesundheit": 837,
+      "arbeiten": 1728,
+      "mobilitaet": 5662,
+      "wohnen": 26054,
+      "we": 296
+     },
+     "P2": {
+      "laden": 2331,
+      "gastro": 999,
+      "bildung": 2917,
+      "gesundheit": 3531,
+      "arbeiten": 1728,
+      "mobilitaet": 5662,
+      "wohnen": 51006,
+      "we": 580
+     },
+     "P3": {
+      "laden": 2331,
+      "gastro": 1695,
+      "bildung": 11973,
+      "gesundheit": 3531,
+      "arbeiten": 3702,
+      "mobilitaet": 5662,
+      "wohnen": 68830,
+      "we": 782
+     },
+     "P4": {
+      "laden": 3878,
+      "gastro": 1695,
+      "bildung": 11973,
+      "gesundheit": 3531,
+      "arbeiten": 6011,
+      "mobilitaet": 5662,
+      "wohnen": 81576,
+      "we": 927
+     }
+    },
+    "versorgung": {
+     "P1": {
+      "nahversorgung": 100,
+      "kita": 100,
+      "schule": 0,
+      "arzt": 100,
+      "kiez": 100
+     },
+     "P2": {
+      "nahversorgung": 100,
+      "kita": 100,
+      "schule": 0,
+      "arzt": 100,
+      "kiez": 100
+     },
+     "P3": {
+      "nahversorgung": 100,
+      "kita": 100,
+      "schule": 100,
+      "arzt": 100,
+      "kiez": 100
+     },
+     "P4": {
+      "nahversorgung": 100,
+      "kita": 100,
+      "schule": 100,
+      "arzt": 100,
+      "kiez": 100
+     }
+    },
+    "wege": {
+     "supermarkt": 220,
+     "kita": 158,
+     "schule": 324,
+     "arzt": 159,
+     "sbahn": 467
+    },
+    "gebaeude": 115,
+    "geschosse_max": 9
+   },
+   "orte": [
+    {
+     "name": "Supermarkt + Drogerie",
+     "kat": "laden",
+     "phase": "P1",
+     "bgf": 1656,
+     "soll": 1400,
+     "grund": "Anker an der S-Bahn; Einzugsbereich Quartier + Nachbarschaft + Pendler; unter dem Gartendeck, eine Ebene",
+     "x": 391228.5,
+     "y": 5813805.5,
+     "felder": [
+      1
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Bäckerei-Café am Bahnhofsplatz",
+     "kat": "gastro",
+     "phase": "P1",
+     "bgf": 420,
+     "soll": 180,
+     "grund": "Morgens die ersten, abends die letzten",
+     "x": 391298.7,
+     "y": 5813757.2,
+     "felder": [
+      1
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Coworking und Büros",
+     "kat": "arbeiten",
+     "phase": "P1",
+     "bgf": 1728,
+     "soll": 1600,
+     "grund": "Arbeitsplätze an der Station, Tagbelebung",
+     "x": 391228.5,
+     "y": 5813805.5,
+     "felder": [
+      1
+     ],
+     "geschosse": [
+      2,
+      3
+     ]
+    },
+    {
+     "name": "Kita „Am Feld“ (80 Plätze)",
+     "kat": "bildung",
+     "phase": "P1",
+     "bgf": 741,
+     "soll": 700,
+     "grund": "Bedarf ab dem ersten Bezug; Garten an der Wasserader",
+     "x": 391125.8,
+     "y": 5813784.7,
+     "felder": [
+      1,
+      2
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Kiezzentrum „Gartenhaus“",
+     "kat": "bildung",
+     "phase": "P1",
+     "bgf": 1217,
+     "soll": 900,
+     "grund": "Nachbarschaftshaus, Gartenwerkstatt, Vereinsraum der Kleingärtner",
+     "x": 391213.9,
+     "y": 5813718.6,
+     "felder": [
+      1
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Hausarztpraxis + Apotheke",
+     "kat": "gesundheit",
+     "phase": "P1",
+     "bgf": 837,
+     "soll": 450,
+     "grund": "Grundversorgung ab Phase 1",
+     "x": 391296.2,
+     "y": 5813737.3,
+     "felder": [
+      1
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Gesundheitshaus (MVZ, Physio)",
+     "kat": "gesundheit",
+     "phase": "P2",
+     "bgf": 1698,
+     "soll": 1400,
+     "grund": "1 je 5.000–10.000 Menschen; an der Bewegungsader",
+     "x": 391283.3,
+     "y": 5813677.2,
+     "felder": [
+      4
+     ],
+     "geschosse": [
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "name": "Tagespflege + Pflege-WG",
+     "kat": "gesundheit",
+     "phase": "P2",
+     "bgf": 996,
+     "soll": 900,
+     "grund": "Ruhige Lage an der Wasserader",
+     "x": 391114.0,
+     "y": 5813642.3,
+     "felder": [
+      5
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Kita „Grünraum Ost“ (60 Plätze)",
+     "kat": "bildung",
+     "phase": "P2",
+     "bgf": 959,
+     "soll": 520,
+     "grund": "Bedarf wächst mit Phase 2",
+     "x": 391456.1,
+     "y": 5813646.8,
+     "felder": [
+      3
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Läden an der Komturstraße",
+     "kat": "laden",
+     "phase": "P2",
+     "bgf": 674,
+     "soll": 600,
+     "grund": "Friseur, Paketshop, Bioladen",
+     "x": 391250.7,
+     "y": 5813655.3,
+     "felder": [
+      4
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Café an der Wasserader",
+     "kat": "gastro",
+     "phase": "P2",
+     "bgf": 579,
+     "soll": 250,
+     "grund": "Am Schwammknoten, Terrasse zum Wasser",
+     "x": 391204.5,
+     "y": 5813670.4,
+     "felder": [
+      4
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Jugendclub",
+     "kat": "bildung",
+     "phase": "P3",
+     "bgf": 469,
+     "soll": 400,
+     "grund": "Nah an Schule und Sport",
+     "x": 391355.3,
+     "y": 5813508.6,
+     "felder": [
+      9
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Gastronomie an der Kreuzung",
+     "kat": "gastro",
+     "phase": "P3",
+     "bgf": 696,
+     "soll": 450,
+     "grund": "Wo Bewegungs- und Erholungsader sich kreuzen",
+     "x": 391229.9,
+     "y": 5813512.7,
+     "felder": [
+      9,
+      10
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Werkstätten an der Erholungsader",
+     "kat": "arbeiten",
+     "phase": "P3",
+     "bgf": 1631,
+     "soll": 1200,
+     "grund": "Handwerk, Ateliers, Reparatur",
+     "x": 391109.7,
+     "y": 5813533.0,
+     "felder": [
+      7,
+      10
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Läden und Gastro an der Albrechtstraße",
+     "kat": "laden",
+     "phase": "P4",
+     "bgf": 840,
+     "soll": 500,
+     "grund": "Weg zum Quartiershauptplatz",
+     "x": 391194.7,
+     "y": 5813412.0,
+     "felder": [
+      13
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Werkstätten an der Albrechtstraße",
+     "kat": "arbeiten",
+     "phase": "P4",
+     "bgf": 904,
+     "soll": 900,
+     "grund": "Übergang zum Gewerbe am Kanal",
+     "x": 391189.3,
+     "y": 5813427.9,
+     "felder": [
+      13
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Mobilitätshub Nord",
+     "kat": "mobilitaet",
+     "phase": "P1",
+     "bgf": 5662,
+     "soll": 5662,
+     "grund": "Fahrradparken (600 Räder), Carsharing, Lastenräder, ca. 110 Stellplätze auf 3 Ebenen",
+     "x": 391388.1,
+     "y": 5813785.6,
+     "felder": [],
+     "geschosse": [],
+     "bestand": false
+    },
+    {
+     "name": "Werkhof Nord (Bestand)",
+     "kat": "arbeiten",
+     "phase": "P1",
+     "bgf": 2665,
+     "soll": 2665,
+     "grund": "Werkstatt und Fabrik bleiben: Makerspace, Repair-Café, Handwerk",
+     "x": 391450.6,
+     "y": 5813699.1,
+     "felder": [],
+     "geschosse": [],
+     "bestand": true
+    },
+    {
+     "name": "Bildungscampus: Grundschule + Sporthalle",
+     "kat": "bildung",
+     "phase": "P3",
+     "bgf": 8588,
+     "soll": 8588,
+     "grund": "3-zügig, Halle abends für Vereine; Baufeld 6",
+     "x": 391527.4,
+     "y": 5813554.3,
+     "felder": [
+      6
+     ],
+     "geschosse": [],
+     "bestand": false
+    },
+    {
+     "name": "Sport- und Kulturhaus (Bestand)",
+     "kat": "bildung",
+     "phase": "P3",
+     "bgf": 12842,
+     "soll": 12842,
+     "grund": "Geschäftshaus umgenutzt: Kletterhalle, Bibliothek, Probenräume",
+     "x": 391379.3,
+     "y": 5813362.9,
+     "felder": [],
+     "geschosse": [],
+     "bestand": true
+    },
+    {
+     "name": "Mobilitätshub Süd (Bestand-Tiefgarage)",
+     "kat": "mobilitaet",
+     "phase": "P4",
+     "bgf": 5718,
+     "soll": 5718,
+     "grund": "Vorhandene Tiefgarage, 2 Ebenen, ca. 230 Stellplätze",
+     "x": 391376.8,
+     "y": 5813368.1,
+     "felder": [],
+     "geschosse": [],
+     "bestand": true
+    },
+    {
+     "name": "Markthalle am Quartiershauptplatz",
+     "kat": "gastro",
+     "phase": "P4",
+     "bgf": 690,
+     "soll": 690,
+     "grund": "Bestandshalle am Kanal umgebaut: Markt, Gastro, Events",
+     "x": 391251.8,
+     "y": 5813202.9,
+     "felder": [],
+     "geschosse": [],
+     "bestand": true
+    }
+   ],
+   "eingriffe": 8
+  },
+  {
+   "code": "V8",
+   "name": "Nachbarschaftsinseln",
+   "text": "Fünf Häuser gruppieren sich jeweils um einen kleinen öffentlichen Platz mit Café oder Kita. Dazwischen stehen Stadthäuser im Garten. Die Plätze sind offen, nicht umbaut.",
+   "kennzahlen": {
+    "bgf": {
+     "laden": 3142,
+     "gastro": 2543,
+     "bildung": 12821,
+     "gesundheit": 3029,
+     "arbeiten": 4196,
+     "mobilitaet": 4247,
+     "wohnen": 50069
+    },
+    "bgf_gesamt": 80046,
+    "anteil_nicht_wohnen": 37,
+    "we": 569,
+    "ew": 1081,
+    "arbeitsplaetze": 887,
+    "gfz_brutto": 0.34,
+    "kita_bedarf": 64,
+    "kita_plaetze": 80,
+    "grundschul_bedarf": 54,
+    "einzugsbereich_supermarkt": 7133,
+    "supermarkt_tragfaehig": true,
+    "dachgaerten_m2": 0,
+    "ersatzparzellen_dach": 0,
+    "phasen": {
+     "P1": {
+      "laden": 1416,
+      "gastro": 694,
+      "bildung": 2026,
+      "gesundheit": 520,
+      "arbeiten": 1643,
+      "mobilitaet": 4247,
+      "wohnen": 12323,
+      "we": 140
+     },
+     "P2": {
+      "laden": 2312,
+      "gastro": 1049,
+      "bildung": 2764,
+      "gesundheit": 3029,
+      "arbeiten": 1643,
+      "mobilitaet": 4247,
+      "wohnen": 27691,
+      "we": 315
+     },
+     "P3": {
+      "laden": 2312,
+      "gastro": 1793,
+      "bildung": 12293,
+      "gesundheit": 3029,
+      "arbeiten": 2853,
+      "mobilitaet": 4247,
+      "wohnen": 37850,
+      "we": 430
+     },
+     "P4": {
+      "laden": 3142,
+      "gastro": 2543,
+      "bildung": 12821,
+      "gesundheit": 3029,
+      "arbeiten": 4196,
+      "mobilitaet": 4247,
+      "wohnen": 50069,
+      "we": 569
+     }
+    },
+    "versorgung": {
+     "P1": {
+      "nahversorgung": 100,
+      "kita": 100,
+      "schule": 0,
+      "arzt": 100,
+      "kiez": 100
+     },
+     "P2": {
+      "nahversorgung": 100,
+      "kita": 100,
+      "schule": 0,
+      "arzt": 100,
+      "kiez": 100
+     },
+     "P3": {
+      "nahversorgung": 100,
+      "kita": 100,
+      "schule": 100,
+      "arzt": 100,
+      "kiez": 100
+     },
+     "P4": {
+      "nahversorgung": 98,
+      "kita": 100,
+      "schule": 100,
+      "arzt": 100,
+      "kiez": 100
+     }
+    },
+    "wege": {
+     "supermarkt": 281,
+     "kita": 218,
+     "schule": 340,
+     "arzt": 150,
+     "sbahn": 491
+    },
+    "gebaeude": 48,
+    "geschosse_max": 7
+   },
+   "orte": [
+    {
+     "name": "Supermarkt + Drogerie",
+     "kat": "laden",
+     "phase": "P1",
+     "bgf": 1416,
+     "soll": 1400,
+     "grund": "Anker an der S-Bahn; Einzugsbereich Quartier + Nachbarschaft + Pendler; im EG des Mobilitätshubs (kein Baufeldhaus groß genug)",
+     "x": 391388.1,
+     "y": 5813785.6,
+     "felder": [],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Bäckerei-Café am Bahnhofsplatz",
+     "kat": "gastro",
+     "phase": "P1",
+     "bgf": 208,
+     "soll": 180,
+     "grund": "Morgens die ersten, abends die letzten",
+     "x": 391310.8,
+     "y": 5813778.8,
+     "felder": [
+      1
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Coworking und Büros",
+     "kat": "arbeiten",
+     "phase": "P1",
+     "bgf": 1643,
+     "soll": 1600,
+     "grund": "Arbeitsplätze an der Station, Tagbelebung",
+     "x": 391215.0,
+     "y": 5813810.0,
+     "felder": [
+      1,
+      2
+     ],
+     "geschosse": [
+      2,
+      3
+     ]
+    },
+    {
+     "name": "Kita „Am Feld“ (80 Plätze)",
+     "kat": "bildung",
+     "phase": "P1",
+     "bgf": 830,
+     "soll": 700,
+     "grund": "Bedarf ab dem ersten Bezug; Garten an der Wasserader",
+     "x": 391140.1,
+     "y": 5813759.5,
+     "felder": [
+      1,
+      2
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Kiezzentrum „Gartenhaus“",
+     "kat": "bildung",
+     "phase": "P1",
+     "bgf": 1196,
+     "soll": 900,
+     "grund": "Nachbarschaftshaus, Gartenwerkstatt, Vereinsraum der Kleingärtner",
+     "x": 391259.0,
+     "y": 5813746.3,
+     "felder": [
+      1
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Hausarztpraxis + Apotheke",
+     "kat": "gesundheit",
+     "phase": "P1",
+     "bgf": 520,
+     "soll": 450,
+     "grund": "Grundversorgung ab Phase 1",
+     "x": 391215.0,
+     "y": 5813810.0,
+     "felder": [
+      1
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Gesundheitshaus (MVZ, Physio)",
+     "kat": "gesundheit",
+     "phase": "P2",
+     "bgf": 1599,
+     "soll": 1400,
+     "grund": "1 je 5.000–10.000 Menschen; an der Bewegungsader",
+     "x": 391247.5,
+     "y": 5813659.0,
+     "felder": [
+      4
+     ],
+     "geschosse": [
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "name": "Tagespflege + Pflege-WG",
+     "kat": "gesundheit",
+     "phase": "P2",
+     "bgf": 910,
+     "soll": 900,
+     "grund": "Ruhige Lage an der Wasserader",
+     "x": 391097.9,
+     "y": 5813622.6,
+     "felder": [
+      3,
+      5
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Läden an der Komturstraße",
+     "kat": "laden",
+     "phase": "P2",
+     "bgf": 896,
+     "soll": 600,
+     "grund": "Friseur, Paketshop, Bioladen",
+     "x": 391205.1,
+     "y": 5813658.5,
+     "felder": [
+      3,
+      4
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Café an der Wasserader",
+     "kat": "gastro",
+     "phase": "P2",
+     "bgf": 355,
+     "soll": 250,
+     "grund": "Am Schwammknoten, Terrasse zum Wasser",
+     "x": 391144.3,
+     "y": 5813662.0,
+     "felder": [
+      5
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Jugendclub",
+     "kat": "bildung",
+     "phase": "P3",
+     "bgf": 663,
+     "soll": 400,
+     "grund": "Nah an Schule und Sport",
+     "x": 391229.5,
+     "y": 5813521.4,
+     "felder": [
+      9,
+      10
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Gastronomie an der Kreuzung",
+     "kat": "gastro",
+     "phase": "P3",
+     "bgf": 744,
+     "soll": 450,
+     "grund": "Wo Bewegungs- und Erholungsader sich kreuzen",
+     "x": 391188.1,
+     "y": 5813577.7,
+     "felder": [
+      7,
+      8,
+      9
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Werkstätten an der Erholungsader",
+     "kat": "arbeiten",
+     "phase": "P3",
+     "bgf": 1210,
+     "soll": 1200,
+     "grund": "Handwerk, Ateliers, Reparatur",
+     "x": 391128.3,
+     "y": 5813538.6,
+     "felder": [
+      7
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Läden und Gastro an der Albrechtstraße",
+     "kat": "laden",
+     "phase": "P4",
+     "bgf": 518,
+     "soll": 500,
+     "grund": "Weg zum Quartiershauptplatz",
+     "x": 391203.9,
+     "y": 5813383.2,
+     "felder": [
+      13
+     ],
+     "geschosse": [
+      1
+     ]
+    },
+    {
+     "name": "Werkstätten an der Albrechtstraße",
+     "kat": "arbeiten",
+     "phase": "P4",
+     "bgf": 936,
+     "soll": 900,
+     "grund": "Übergang zum Gewerbe am Kanal",
+     "x": 391168.7,
+     "y": 5813426.4,
+     "felder": [
+      13
+     ],
+     "geschosse": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Mobilitätshub Nord",
+     "kat": "mobilitaet",
+     "phase": "P1",
+     "bgf": 4247,
+     "soll": 4247,
+     "grund": "Fahrradparken (600 Räder), Carsharing, Lastenräder, ca. 110 Stellplätze auf 3 Ebenen",
+     "x": 391388.1,
+     "y": 5813785.6,
+     "felder": [],
+     "geschosse": [],
+     "bestand": false
+    },
+    {
+     "name": "Werkhof Nord (Bestand)",
+     "kat": "arbeiten",
+     "phase": "P1",
+     "bgf": 2665,
+     "soll": 2665,
+     "grund": "Werkstatt und Fabrik bleiben: Makerspace, Repair-Café, Handwerk",
+     "x": 391450.6,
+     "y": 5813699.1,
+     "felder": [],
+     "geschosse": [],
+     "bestand": true
+    },
+    {
+     "name": "Bildungscampus: Grundschule + Sporthalle",
+     "kat": "bildung",
+     "phase": "P3",
+     "bgf": 8588,
+     "soll": 8588,
+     "grund": "3-zügig, Halle abends für Vereine; Baufeld 6",
+     "x": 391527.4,
+     "y": 5813554.3,
+     "felder": [
+      6
+     ],
+     "geschosse": [],
+     "bestand": false
+    },
+    {
+     "name": "Sport- und Kulturhaus (Bestand)",
+     "kat": "bildung",
+     "phase": "P3",
+     "bgf": 12842,
+     "soll": 12842,
+     "grund": "Geschäftshaus umgenutzt: Kletterhalle, Bibliothek, Probenräume",
+     "x": 391379.3,
+     "y": 5813362.9,
+     "felder": [],
+     "geschosse": [],
+     "bestand": true
+    },
+    {
+     "name": "Mobilitätshub Süd (Bestand-Tiefgarage)",
+     "kat": "mobilitaet",
+     "phase": "P4",
+     "bgf": 5718,
+     "soll": 5718,
+     "grund": "Vorhandene Tiefgarage, 2 Ebenen, ca. 230 Stellplätze",
+     "x": 391376.8,
+     "y": 5813368.1,
+     "felder": [],
+     "geschosse": [],
+     "bestand": true
+    },
+    {
+     "name": "Markthalle am Quartiershauptplatz",
+     "kat": "gastro",
+     "phase": "P4",
+     "bgf": 690,
+     "soll": 690,
+     "grund": "Bestandshalle am Kanal umgebaut: Markt, Gastro, Events",
+     "x": 391251.8,
+     "y": 5813202.9,
+     "felder": [],
+     "geschosse": [],
+     "bestand": true
+    }
+   ],
+   "eingriffe": 0
+  }
+ ],
+ "nachbarn_600": 2834,
+ "tageszeit": [
+  [
+   "6–9 Uhr",
+   [
+    "wohnen",
+    "laden",
+    "gastro",
+    "mobilitaet"
+   ]
+  ],
+  [
+   "9–12 Uhr",
+   [
+    "arbeiten",
+    "bildung",
+    "gesundheit"
+   ]
+  ],
+  [
+   "12–14 Uhr",
+   [
+    "gastro",
+    "arbeiten",
+    "laden"
+   ]
+  ],
+  [
+   "14–17 Uhr",
+   [
+    "bildung",
+    "laden",
+    "gesundheit"
+   ]
+  ],
+  [
+   "17–20 Uhr",
+   [
+    "wohnen",
+    "laden",
+    "gastro",
+    "bildung"
+   ]
+  ],
+  [
+   "20–23 Uhr",
+   [
+    "wohnen",
+    "gastro",
+    "bildung"
+   ]
+  ],
+  [
+   "Wochenende",
+   [
+    "gastro",
+    "laden",
+    "bildung",
+    "wohnen"
+   ]
+  ]
+ ]
+}
