@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bergfrieden – Schwarzpläne S1–S6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+/* VOICE work: Entwurfstafel, ruhig, Plan vor Text
+   IDEA die Schwarzplan-Tafel eines Wettbewerbs: schwarze Baukörper auf weißem Papier, Umgebung grau
+   PICTURE sechs Schwarzpläne nebeneinander, darunter jede Variante groß mit Umschalter Schwarzplan / Lesart
+   COLOUR Papier weiß, Tinte schwarz, Grau für Umgebung, Grün #2e8b3a nur als Akzent der Serie
+   TYPE Archivo 800/400, Caveat für eine Randnotiz je Variante
+   LAYOUT Übersicht als Raster, dann Vergleichstabelle, dann je Variante Plan 3/5 + Text 2/5; unter 860px gestapelt */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#121311);--ink:light-dark(#141414,#ecebe6);--soft:light-dark(#5a5a5a,#a9a9a3);
+--rule:light-dark(#dedede,#2e302c);--panel:light-dark(#f4f4f2,#1a1c19);--gruen:light-dark(#2e8b3a,#4fae5a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.55 Archivo,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-weight:800;line-height:1.05;letter-spacing:-.02em;text-wrap:balance;margin:0}
+h1{font-size:clamp(32px,4.6vw,50px)}h2{font-size:clamp(26px,3.2vw,36px);margin-bottom:10px}h3{font-size:18px;margin:0 0 6px}
+p{margin:0 0 12px;max-width:68ch}
+.band{padding:clamp(28px,4vw,56px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+.alt{background:var(--panel)}
+.top{border-top:12px solid var(--ink)}
+.lead{font-size:18.5px;max-width:64ch;margin-top:12px}
+.note{padding:8px 12px;border-left:4px solid var(--gruen);background:var(--panel);font-size:14px;max-width:72ch}
+nav.scroll{display:flex;gap:4px;padding:8px max(5vw,16px);border-block:1px solid var(--rule);background:var(--bg);white-space:nowrap;overflow-x:auto}
+nav.scroll a{flex:none;color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;padding:10px 12px;border-radius:8px}
+nav.scroll a:hover{background:var(--panel)}nav.scroll a:focus-visible{outline:3px solid var(--gruen)}
+@media(min-width:900px){nav.scroll{position:sticky;top:0;z-index:20}}
+.raster{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:22px}
+.raster a{display:block;color:var(--ink);text-decoration:none;border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:#fff;transition:transform 160ms cubic-bezier(.23,1,.32,1)}
+.raster a:active{transform:scale(.98)}.raster a:focus-visible{outline:3px solid var(--gruen);outline-offset:2px}
+.raster svg{display:block;width:100%;height:auto}
+.raster span{display:block;padding:8px 10px;font-weight:700;font-size:14.5px;background:var(--bg);border-top:1px solid var(--rule)}
+.raster small{display:block;font-weight:400;color:var(--soft);font-size:13px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:600;color:var(--soft);font-size:13.5px}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.var{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:clamp(16px,2.6vw,36px);align-items:start}
+.plan{border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:#fff}
+.plan svg{display:block;width:100%;height:auto}
+.umsch{display:flex;gap:6px;margin-top:10px}
+.tab{font:600 15px Archivo,sans-serif;min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--rule);background:var(--bg);color:var(--ink);cursor:pointer;transition:transform 140ms cubic-bezier(.23,1,.32,1)}
+.tab:active{transform:scale(.97)}.tab:focus-visible{outline:3px solid var(--gruen);outline-offset:2px}
+.tab[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.notiz{font-family:Caveat,cursive;font-size:24px;color:var(--gruen);line-height:1.1;margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 14px}
+.chips span{font-size:13.5px;padding:3px 10px;border:1px solid var(--ink);border-radius:999px}
+.phasen{list-style:none;padding:0;margin:0 0 14px}
+.phasen li{display:grid;grid-template-columns:3.6em minmax(0,1fr);gap:8px;padding:7px 0;border-top:1px solid var(--rule);font-size:15px}
+.phasen b{font-variant-numeric:tabular-nums}
+.kz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;background:var(--rule);border:1px solid var(--rule)}
+.kz div{background:var(--bg);padding:9px 10px}
+.kz b{display:block;font:800 21px/1.1 Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.kz span{font-size:12.5px;color:var(--soft)}
+section.var-sec+section.var-sec{border-top:1px solid var(--rule)}
+.klein{font-size:14px;color:var(--soft)}
+a{color:var(--gruen)}
+@media(max-width:860px){.raster{grid-template-columns:repeat(2,minmax(0,1fr))}.var{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){table{font-size:13.5px}th,td{padding:6px 5px}.kz{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .stack thead{display:none}.stack tr{display:grid;padding-block:8px;border-bottom:1px solid var(--rule)}.stack td{display:flex;justify-content:space-between;gap:12px;border:0;padding:3px 0;text-align:right}.stack td::before{content:attr(data-l);font-weight:600;color:var(--soft);text-align:left}}
+@media(prefers-reduced-motion:reduce){*{transition-duration:0ms!important}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+<header class="band top"><div class="wrap">
+<h1>Sechs Schwarzpläne: Typologien mischen</h1>
+<p class="lead">Wie lassen sich die 13 Baufelder bebauen? Sechs Grundmuster, jedes mit mehreren Typologien. Die Typologie folgt der Nutzung und der Phase: groß an der S-Bahn, wohnlich in der Mitte, Schule und Werkstätten an der Erholungsader, kleinteilig zum Kanal.</p>
+<p class="note">Unabhängig von den Varianten V1–V8. Keine Variante besteht nur aus Einzelgebäuden: Punkthäuser und Kopfbauten kommen nur im Mix vor. Höfe sind bewusst kein Thema. Abstandsflächen nach BauO Bln sind eingehalten.</p>
+<div class="raster" id="raster"></div>
+</div></header>
+
+<nav class="scroll" aria-label="Abschnitte" id="nav"><a href="#vergleich">Vergleich</a></nav>
+
+<section class="band alt" id="vergleich"><div class="wrap">
+<h2>Vergleich</h2>
+<div class="scroll"><table class="stack" id="vtab"></table></div>
+<p class="klein">GRZ und GFZ beziehen sich auf die Baufelder (9,1 ha). Wohnungen: 88 m² BGF je Wohnung, ohne Hallen, Schule, Sockel und aktive Erdgeschosse.</p>
+</div></section>
+
+<div id="varianten"></div>
+
+<footer class="band alt"><div class="wrap"><p class="klein">Gartenquartier Bergfrieden · Schwarzplan-Studie · Daten: Geoportal Berlin (dl-de/by-2-0) · Gerüst und Baufelder aus dem Handentwurf · <a href="__LINK_V1__">Seite V1–V5</a> · <a href="__LINK_V2__">Seite Phase 1 und Nutzungen</a></p></div></footer>
+
+<script>
+{
+const D=/*DATA*/;
+const $=id=>document.getElementById(id);
+const fmt=n=>Math.round(n).toLocaleString('de-DE');
+const komma=z=>z.toFixed(2).replace('.',',');
+const NOTIZ={S1:'Rücken zur Straße, Finger in den Garten',S2:'außen fest, innen fein',S3:'jeder Winkel fängt Sonne',S4:'von groß zu klein',S5:'wohnen in Zeilen, arbeiten in Hallen',S6:'die Häuser folgen dem Wasser'};
+const PH=['P1 · 2029–32','P2 · 2032–35','P3 · 2035–38','P4 · 2038–42'];
+const cache={};
+const svg=url=>cache[url]||(cache[url]=fetch(url).then(r=>r.ok?r.text():Promise.reject()));
+async function setze(el,url){try{el.innerHTML=await svg(url)}catch(e){el.textContent='Plan nicht geladen.'}}
+
+$('raster').innerHTML=D.map(v=>`<a href="#${v.code}"><div data-svg="z/schwarzplan_${v.code}.svg" role="img" aria-label="Schwarzplan ${v.code} ${v.name}"></div><span>${v.code} ${v.name}<small>${v.typen.slice(0,3).join(' · ')}</small></span></a>`).join('');
+$('nav').innerHTML+=D.map(v=>`<a href="#${v.code}">${v.code} ${v.name}</a>`).join('');
+$('vtab').innerHTML=`<thead><tr><th>Variante</th><th>Typologien</th><th class="n">GRZ</th><th class="n">GFZ</th><th class="n">Wohnungen</th><th class="n">ohne Wohnen</th><th class="n">Baukörper</th><th class="n">max. G</th></tr></thead><tbody>`+
+ D.map(v=>{const k=v.kennzahlen;return `<tr><td><b>${v.code} ${v.name}</b></td><td>${v.typen.join(', ')}</td><td class="n">${komma(k.grz)}</td><td class="n">${komma(k.gfz)}</td><td class="n">${fmt(k.we)}</td><td class="n">${k.nicht_wohnen} %</td><td class="n">${k.gebaeude}</td><td class="n">${k.g_max}</td></tr>`}).join('')+'</tbody>';
+
+$('varianten').innerHTML=D.map((v,i)=>{const k=v.kennzahlen;return `<section class="band var-sec${i%2?' alt':''}" id="${v.code}"><div class="wrap var">
+<div><div class="plan" id="plan_${v.code}" data-svg="z/schwarzplan_${v.code}.svg" role="img" aria-label="Plan ${v.code}"></div>
+<div class="umsch" role="group" aria-label="Darstellung"><button class="tab" aria-pressed="true" data-v="${v.code}" data-m="schwarzplan">Schwarzplan</button><button class="tab" aria-pressed="false" data-v="${v.code}" data-m="lesart">Lesart</button></div></div>
+<div><p class="notiz">${NOTIZ[v.code]}</p><h2>${v.code} ${v.name}</h2><p>${v.text}</p>
+<div class="chips">${v.typen.map(t=>`<span>${t}</span>`).join('')}</div>
+<h3>Warum es zu Nutzung und Phase passt</h3>
+<ol class="phasen">${v.phasen.map((t,j)=>`<li><b>${PH[j].split(' ')[0]}</b><span>${t}</span></li>`).join('')}</ol>
+<div class="kz"><div><b>${komma(k.grz)}</b><span>GRZ</span></div><div><b>${komma(k.gfz)}</b><span>GFZ</span></div><div><b>${fmt(k.we)}</b><span>Wohnungen</span></div>
+<div><b>${k.nicht_wohnen} %</b><span>ohne Wohnen</span></div><div><b>${k.gebaeude}</b><span>Baukörper</span></div><div><b>${k.g_max}</b><span>Geschosse max.</span></div></div>
+</div></div></section>`}).join('');
+
+document.addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(!b)return;
+ for(const x of b.parentNode.children)x.setAttribute('aria-pressed',x===b);
+ setze($('plan_'+b.dataset.v),`z/${b.dataset.m}_${b.dataset.v}.svg`)});
+const io=new IntersectionObserver(es=>{for(const e of es)if(e.isIntersecting){setze(e.target,e.target.dataset.svg);io.unobserve(e.target)}},{rootMargin:'400px'});
+document.querySelectorAll('[data-svg]').forEach(el=>io.observe(el));
+}
+</script>
+</body>
+</html>

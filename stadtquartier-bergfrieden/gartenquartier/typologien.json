@@ -1,0 +1,222 @@
+[
+ {
+  "code": "S1",
+  "name": "Kammstadt",
+  "typen": [
+   "Kamm",
+   "Fingerschule",
+   "Halle + Riegel",
+   "Zeile"
+  ],
+  "text": "Jedes Feld bekommt einen Kamm: Der Rücken steht an der öffentlichen Seite und trägt das aktive Erdgeschoss, die Finger reichen in die Gärten.",
+  "phasen": [
+   "Rücken zur S-Bahn: Supermarkt, Bäckerei, Praxis im EG, Büros im 1. OG",
+   "Rücken zur Komturstraße: Gesundheitshaus, Läden. Finger: Wohnen",
+   "Schule selbst als Kamm an der Erholungsader, Rücken der Wohnkämme mit Werkstätten",
+   "Halle an der Albrechtstraße für Handwerk, Kämme zum Kanal"
+  ],
+  "kennzahlen": {
+   "grz": 0.37,
+   "gfz": 1.43,
+   "gfz_brutto": 0.56,
+   "bgf": 129805,
+   "nicht_wohnen": 23,
+   "we": 1134,
+   "ew": 2155,
+   "gebaeude": 69,
+   "g_max": 6,
+   "typen_grundflaeche": {
+    "kamm_ruecken": 15964,
+    "kamm_finger": 11528,
+    "schule": 2299,
+    "sporthalle": 1164,
+    "zeile": 713,
+    "halle": 1494,
+    "riegel": 518
+   }
+  },
+  "eingriffe": 68
+ },
+ {
+  "code": "S2",
+  "name": "Kante und Reihe",
+  "typen": [
+   "Kante (Riegel)",
+   "Reihenhaus",
+   "Halle",
+   "Schule als Kante"
+  ],
+  "text": "Ein Riegel fasst die öffentliche Seite, dahinter liegen Reihen- und Stadthäuser mit Gärten. Die Kante schützt, die Reihen geben Körnung.",
+  "phasen": [
+   "16 m tiefe Kante an der Station: Platz für Supermarkt und Kita im EG",
+   "Kante an Komturstraße mit Läden, Reihenhäuser für Familien",
+   "Schule als Kante an der Erholungsader, Sporthalle als Halle",
+   "Hallen + Kanten mit Werkstätten, Reihenhäuser von Baugruppen"
+  ],
+  "kennzahlen": {
+   "grz": 0.34,
+   "gfz": 0.99,
+   "gfz_brutto": 0.39,
+   "bgf": 90540,
+   "nicht_wohnen": 34,
+   "we": 677,
+   "ew": 1287,
+   "gebaeude": 158,
+   "g_max": 7,
+   "typen_grundflaeche": {
+    "kante": 15378,
+    "reihe": 9095,
+    "schule": 2476,
+    "halle": 3825,
+    "riegel": 489
+   }
+  },
+  "eingriffe": 198
+ },
+ {
+  "code": "S3",
+  "name": "Winkel und Punkt",
+  "typen": [
+   "Winkel",
+   "Punkthaus (nur im Mix)",
+   "Halle",
+   "Schule als Winkel"
+  ],
+  "text": "Versetzte Winkel öffnen sich nach Südwest zur Sonne. Punkthäuser füllen die Lücken und markieren Ecken. Kein Winkel schließt sich mit dem nächsten.",
+  "phasen": [
+   "Winkel mit Ecke zur Station: Ladenecke, Kita im ruhigen Schenkel",
+   "Winkel um Gartenräume, Punkte an der Komturstraße",
+   "Große Winkel als Schule, die Schenkel fassen den Schulhof nach Süden offen",
+   "Halle für Werkstätten, kleinere Winkel zum Kanal"
+  ],
+  "kennzahlen": {
+   "grz": 0.27,
+   "gfz": 1.06,
+   "gfz_brutto": 0.41,
+   "bgf": 96014,
+   "nicht_wohnen": 17,
+   "we": 904,
+   "ew": 1718,
+   "gebaeude": 53,
+   "g_max": 6,
+   "typen_grundflaeche": {
+    "winkel": 18519,
+    "schule": 2449,
+    "halle": 2528,
+    "punkt": 722,
+    "riegel": 362
+   }
+  },
+  "eingriffe": 70
+ },
+ {
+  "code": "S4",
+  "name": "Groß zu Klein",
+  "typen": [
+   "Sockel + Hochpunkt",
+   "Zeile",
+   "Winkel",
+   "Reihenhaus",
+   "Halle"
+  ],
+  "text": "Die Körnung nimmt von der S-Bahn zum Kanal ab: Großform mit Hochpunkt an der Station, Zeilen in der Mitte, Winkel und Reihen im Süden.",
+  "phasen": [
+   "Sockel mit Supermarkt, Kita, Büros; Hochpunkt (13 G) markiert den Bahnhofsplatz",
+   "Nord-Süd-Zeilen, 6 G: viel Wohnen, Ost-West-Licht",
+   "Fingerschule + Winkel und Reihen, 3-4 G",
+   "Hallen für Werkstätten an der Albrechtstraße, Reihenhäuser zum Kanal"
+  ],
+  "kennzahlen": {
+   "grz": 0.34,
+   "gfz": 1.24,
+   "gfz_brutto": 0.48,
+   "bgf": 112520,
+   "nicht_wohnen": 26,
+   "we": 950,
+   "ew": 1806,
+   "gebaeude": 91,
+   "g_max": 13,
+   "typen_grundflaeche": {
+    "sockel": 4661,
+    "riegel": 956,
+    "hochpunkt": 864,
+    "zeile": 10374,
+    "schule": 2299,
+    "sporthalle": 1164,
+    "winkel": 4859,
+    "reihe": 2997,
+    "halle": 2780
+   }
+  },
+  "eingriffe": 80
+ },
+ {
+  "code": "S5",
+  "name": "Zeilen und Hallen",
+  "typen": [
+   "Zeile",
+   "Halle",
+   "Halle + Riegel"
+  ],
+  "text": "Produktive Stadt: Nord-Süd-Zeilen zum Wohnen, dazwischen Hallen an der öffentlichen Seite für Markt, Werkstatt, Sport und Kita.",
+  "phasen": [
+   "Große Halle an der Station: Supermarkt, darüber Riegel mit Büros und Wohnungen",
+   "Zeilen, kleine Hallen als Kita und Gemeinschaftsräume",
+   "Sporthalle und Schulzeilen (3 G), Werkhallen an der Erholungsader",
+   "Werkhallen mit Wohnriegeln: Handwerk am Kanal"
+  ],
+  "kennzahlen": {
+   "grz": 0.33,
+   "gfz": 1.14,
+   "gfz_brutto": 0.45,
+   "bgf": 103584,
+   "nicht_wohnen": 26,
+   "we": 871,
+   "ew": 1655,
+   "gebaeude": 61,
+   "g_max": 6,
+   "typen_grundflaeche": {
+    "halle": 8918,
+    "riegel": 3368,
+    "zeile": 17679
+   }
+  },
+  "eingriffe": 28
+ },
+ {
+  "code": "S6",
+  "name": "Uferlinien",
+  "typen": [
+   "Uferzeile",
+   "Kopfbau",
+   "Reihenhaus",
+   "Fingerschule"
+  ],
+  "text": "Zeilen folgen der Wasserader in zwei Reihen. Kopfbauten stehen an den Trichterspitzen und bilden Adressen. Innen liegen Reihenhäuser.",
+  "phasen": [
+   "Kopfbau mit 10 G am Eingang Nord: Café, Praxis; Uferzeilen mit Kita zum Wasser",
+   "Uferzeilen zum Wasser, Kopfbauten an der Komturstraße mit Läden",
+   "Schule an der Erholungsader, Uferzeile mit Werkstätten",
+   "Kopfbauten zur Albrechtstraße, Reihenhäuser zum Kanal"
+  ],
+  "kennzahlen": {
+   "grz": 0.32,
+   "gfz": 1.13,
+   "gfz_brutto": 0.44,
+   "bgf": 103262,
+   "nicht_wohnen": 17,
+   "we": 974,
+   "ew": 1850,
+   "gebaeude": 85,
+   "g_max": 8,
+   "typen_grundflaeche": {
+    "kopfbau": 2773,
+    "uferzeile": 20816,
+    "reihe": 2148,
+    "schule": 2643,
+    "sporthalle": 613
+   }
+  },
+  "eingriffe": 94
+ }
+]
