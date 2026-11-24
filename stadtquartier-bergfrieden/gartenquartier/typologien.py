@@ -67,8 +67,15 @@ def H(geo, g, typ):
 
 
 # ---------------- Typologien ----------------
-def kamm(feld, frei, g_r=6, g_f=5, tiefe=13.0, f_b=12.5, takt=34.0, f_len=40.0, je=2, fuge=10.0):
+def fuge_h(g):
+    """Lichter Abstand zweier gleich hoher Giebel nach BauO Bln: 2 x 0,4 H (+ Reserve)."""
+    return max(6.5, 0.8 * hoehe(g) + 0.8)
+
+
+def kamm(feld, frei, g_r=6, g_f=5, tiefe=13.0, f_b=12.5, takt=34.0, f_len=40.0, je=2, fuge=None):
     """Rücken zur öffentlichen Seite (aktives EG), Finger in die Gärten. Nie geschlossen."""
+    fuge = fuge or fuge_h(g_r)
+    takt = max(takt, f_b + fuge_h(g_f))
     rot, zur = rahmen(feld, ziel(feld), lang=True)
     r = rot(frei)
     x0, y0, x1, y1 = r.bounds
@@ -92,7 +99,7 @@ def kamm(feld, frei, g_r=6, g_f=5, tiefe=13.0, f_b=12.5, takt=34.0, f_len=40.0, 
     return out
 
 
-def zeilen(feld, frei, g=5, tiefe=12.5, seg=46.0, fuge=8.0, nord_sued=True, abstand=None):
+def zeilen(feld, frei, g=5, tiefe=12.5, seg=46.0, fuge=None, nord_sued=True, abstand=None):
     """Zeilen, Längsachse Nord-Süd (Ost-West-Licht) oder parallel zur öffentlichen Seite."""
     if nord_sued:
         rot, zur = rahmen(feld, Point(feld.centroid.x + 1000, feld.centroid.y))   # lokal x = Nord
@@ -101,6 +108,7 @@ def zeilen(feld, frei, g=5, tiefe=12.5, seg=46.0, fuge=8.0, nord_sued=True, abst
     r = rot(frei)
     x0, y0, x1, y1 = r.bounds
     abstand = abstand or max(16.0, 0.85 * hoehe(g) + 4)
+    fuge = fuge or fuge_h(g)
     out, y = [], y0 + 1
     while y + tiefe <= y1 + 0.5:
         x = x0
@@ -112,8 +120,10 @@ def zeilen(feld, frei, g=5, tiefe=12.5, seg=46.0, fuge=8.0, nord_sued=True, abst
     return out
 
 
-def winkel(feld, frei, g=5, a=34.0, b=27.0, t=12.5, dx=45.0, dy=40.0, typ="winkel"):
+def winkel(feld, frei, g=5, a=34.0, b=27.0, t=12.5, dx=None, dy=None, typ="winkel"):
     """Winkel, geschlossen nach Nord und Ost, offen nach Südwest (Sonne). Reihen versetzt."""
+    dx = dx or a + fuge_h(g)
+    dy = dy or b + fuge_h(g)
     rot, zur = nord(feld)
     r = rot(frei)
     x0, y0, x1, y1 = r.bounds
@@ -144,7 +154,7 @@ def punkte(feld, frei, g=6, s=19.0, abstand=14.0, raster=7.0, max_n=99):
         x = x0
         while x < x1 and len(out) < max_n:
             q = box(x, y, x + s, y + s)
-            if q.within(r) and all(q.distance(p) >= abstand for p in gesetzt):
+            if q.within(r) and all(q.distance(p) >= max(abstand, fuge_h(g)) for p in gesetzt):
                 gesetzt.append(q)
                 out.append(H(zur(q), g, "punkt"))
             x += raster
@@ -152,7 +162,7 @@ def punkte(feld, frei, g=6, s=19.0, abstand=14.0, raster=7.0, max_n=99):
     return out
 
 
-def reihen(feld, frei, b=6.5, t=11.0, garten=12.0, n=5, luecke=5.0):
+def reihen(feld, frei, b=6.5, t=11.0, garten=12.0, n=5, luecke=9.5):
     """Reihenhäuser / Stadthäuser, 3 G, Gärten nach Süden, Gruppen zu n Häusern.
     Probiert Nord- und Feldausrichtung und verschiedene Versätze, nimmt die dichteste Packung."""
     beste = []
@@ -165,10 +175,22 @@ def reihen(feld, frei, b=6.5, t=11.0, garten=12.0, n=5, luecke=5.0):
                 while y >= y0 - 0.5:
                     x = x0 + dx
                     while x + b * 2 <= x1:
-                        for j in range(n):
-                            hs = box(x + j * b, y, x + (j + 1) * b, y + t)
-                            if hs.within(r):
-                                out.append(H(zur(hs), 3, "reihe"))
+                        drin = [box(x + j * b, y, x + (j + 1) * b, y + t).within(r) for j in range(n)]
+                        # nur die längste zusammenhängende Reihe der Gruppe (keine 6,5-m-Lücken)
+                        best, cur, start = (0, 0), 0, 0
+                        for j, ok in enumerate(drin + [False]):
+                            if ok:
+                                cur += 1
+                                if cur > best[0]:
+                                    best = (cur, j - cur + 1)
+                            else:
+                                cur = 0
+                        if best[0] >= 2:
+                            gid = f"R{id(feld)}_{round(y)}_{round(x)}"
+                            for j in range(best[1], best[1] + best[0]):
+                                hs = H(zur(box(x + j * b, y, x + (j + 1) * b, y + t)), 3, "reihe")
+                                hs["gruppe"] = gid
+                                out.append(hs)
                         x += n * b + luecke
                     y -= t + garten
                 if len(out) > len(beste):
@@ -176,8 +198,9 @@ def reihen(feld, frei, b=6.5, t=11.0, garten=12.0, n=5, luecke=5.0):
     return beste
 
 
-def kante(feld, frei, g=6, tiefe=13.0, seite=True, typ="kante", seg=52.0, fuge=8.0):
+def kante(feld, frei, g=6, tiefe=13.0, seite=True, typ="kante", seg=52.0, fuge=None):
     """Riegel an der öffentlichen Seite, bei großen Feldern als Winkel um eine Ecke. Nie ringsum."""
+    fuge = fuge or fuge_h(g)
     rot, zur = rahmen(feld, ziel(feld), lang=True)
     r = rot(frei)
     x0, y0, x1, y1 = r.bounds
@@ -245,8 +268,9 @@ def fingerschule(feld, frei, typ_g=3):
     return out
 
 
-def uferzeilen(feld, frei, g=6, t=12.5, d0=12.0, zweite=True, seg=44.0, fuge=8.0):
+def uferzeilen(feld, frei, g=6, t=12.5, d0=12.0, zweite=True, seg=44.0, fuge=None):
     """Zeilen, die der Wasserader folgen (parallel zum Wasser), mit Fugen."""
+    fuge = fuge or fuge_h(g)
     baender = [WASSERNETZ.buffer(d0 + t).difference(WASSERNETZ.buffer(d0))]
     if zweite:
         d1 = d0 + t + max(18.0, 0.8 * hoehe(g))
@@ -288,10 +312,29 @@ def frei_von(feld, liste, abstand=12.0):
     return innen.difference(unary_union([h["geo"] for h in liste]).buffer(abstand, join_style=2))
 
 
+def g_von(fn, kw):
+    if fn is reihen:
+        return 3
+    if fn in (fingerschule,):
+        return 3
+    if fn is halle:
+        return max(kw.get("g_halle", 2), kw.get("g_riegel", 5) if kw.get("mit_riegel", True) else 0)
+    if fn is hybrid:
+        return kw.get("g_turm", 13)
+    return kw.get("g", kw.get("g_r", 5))
+
+
 def mach(feld, *schritte):
+    """Typologien nacheinander setzen. Abstand zur bisherigen Bebauung = 0,4 H + 0,4 H (BauO Bln)."""
     out = []
     for fn, kw in schritte:
-        out += fn(feld, frei_von(feld, out, kw.pop("_abstand", 12.0)), **kw)
+        kw.pop("_abstand", None)
+        if out:
+            h_vor = max(hoehe(h["g"]) for h in out)
+            abstand = max(8.0, 0.4 * h_vor + 0.4 * hoehe(g_von(fn, kw)) + 0.8)
+        else:
+            abstand = 0
+        out += fn(feld, frei_von(feld, out, abstand), **kw)
     return out
 
 
@@ -400,7 +443,8 @@ def generiere():
                     continue
                 h.update(feld=i, phase=E.phase(f))
                 hs.append(h)
-        hs, eingriffe = durchsetzen(hs)
+        # Häuser derselben Reihenhausgruppe sind aneinandergebaut: kein Abstand untereinander
+        hs, eingriffe = durchsetzen(hs, ausnahme=lambda a, b: a.get("gruppe") is not None and a.get("gruppe") == b.get("gruppe"))
         alle[code] = dict(haeuser=hs, eingriffe=eingriffe)
     return alle
 

@@ -62,6 +62,9 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .kz span{font-size:12.5px;color:var(--soft)}
 section.var-sec+section.var-sec{border-top:1px solid var(--rule)}
 .klein{font-size:14px;color:var(--soft)}
+.schnitte{margin-top:22px}
+.sn{border:1px solid var(--rule);border-radius:6px;background:#fff;margin-bottom:10px;overflow-x:auto}
+.sn svg{display:block;width:100%;height:auto;min-width:760px}
 a{color:var(--gruen)}
 @media(max-width:860px){.raster{grid-template-columns:repeat(2,minmax(0,1fr))}.var{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:600px){table{font-size:13.5px}th,td{padding:6px 5px}.kz{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -74,7 +77,7 @@ a{color:var(--gruen)}
 <header class="band top"><div class="wrap">
 <h1>Sechs Schwarzpläne: Typologien mischen</h1>
 <p class="lead">Wie lassen sich die 13 Baufelder bebauen? Sechs Grundmuster, jedes mit mehreren Typologien. Die Typologie folgt der Nutzung und der Phase: groß an der S-Bahn, wohnlich in der Mitte, Schule und Werkstätten an der Erholungsader, kleinteilig zum Kanal.</p>
-<p class="note">Unabhängig von den Varianten V1–V8. Keine Variante besteht nur aus Einzelgebäuden: Punkthäuser und Kopfbauten kommen nur im Mix vor. Höfe sind bewusst kein Thema. Abstandsflächen nach BauO Bln sind eingehalten.</p>
+<p class="note">Unabhängig von den Varianten V1–V8. Keine Variante besteht nur aus Einzelgebäuden: Punkthäuser und Kopfbauten kommen nur im Mix vor. Höfe sind bewusst kein Thema. Abstandsflächen nach BauO Bln sind eingehalten. Höhen: je Variante ein Höhenplan und vier Schnitte A–D.</p>
 <div class="raster" id="raster"></div>
 </div></header>
 
@@ -109,14 +112,16 @@ $('vtab').innerHTML=`<thead><tr><th>Variante</th><th>Typologien</th><th class="n
 
 $('varianten').innerHTML=D.map((v,i)=>{const k=v.kennzahlen;return `<section class="band var-sec${i%2?' alt':''}" id="${v.code}"><div class="wrap var">
 <div><div class="plan" id="plan_${v.code}" data-svg="z/schwarzplan_${v.code}.svg" role="img" aria-label="Plan ${v.code}"></div>
-<div class="umsch" role="group" aria-label="Darstellung"><button class="tab" aria-pressed="true" data-v="${v.code}" data-m="schwarzplan">Schwarzplan</button><button class="tab" aria-pressed="false" data-v="${v.code}" data-m="lesart">Lesart</button></div></div>
+<div class="umsch" role="group" aria-label="Darstellung"><button class="tab" aria-pressed="true" data-v="${v.code}" data-m="schwarzplan">Schwarzplan</button><button class="tab" aria-pressed="false" data-v="${v.code}" data-m="lesart">Lesart</button><button class="tab" aria-pressed="false" data-v="${v.code}" data-m="hoehenplan">Höhen</button></div></div>
 <div><p class="notiz">${NOTIZ[v.code]}</p><h2>${v.code} ${v.name}</h2><p>${v.text}</p>
 <div class="chips">${v.typen.map(t=>`<span>${t}</span>`).join('')}</div>
 <h3>Warum es zu Nutzung und Phase passt</h3>
 <ol class="phasen">${v.phasen.map((t,j)=>`<li><b>${PH[j].split(' ')[0]}</b><span>${t}</span></li>`).join('')}</ol>
 <div class="kz"><div><b>${komma(k.grz)}</b><span>GRZ</span></div><div><b>${komma(k.gfz)}</b><span>GFZ</span></div><div><b>${fmt(k.we)}</b><span>Wohnungen</span></div>
 <div><b>${k.nicht_wohnen} %</b><span>ohne Wohnen</span></div><div><b>${k.gebaeude}</b><span>Baukörper</span></div><div><b>${k.g_max}</b><span>Geschosse max.</span></div></div>
-</div></div></section>`}).join('');
+</div></div>
+<div class="wrap schnitte"><h3>Höhen im Schnitt</h3><p class="klein">Wahrer Maßstab, Länge = Höhe. Schwarz geschnitten, grau die Häuser dahinter, Zahl = Geschosse. Lage der Schnitte: Knopf „Höhen“ am Plan.</p>
+${['A','D','B','C'].map(z=>`<div class="sn" data-svg="z/schnitt_${z}_${v.code}.svg" role="img" aria-label="Schnitt ${z}–${z} ${v.code}"></div>`).join('')}</div></section>`}).join('');
 
 document.addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(!b)return;
  for(const x of b.parentNode.children)x.setAttribute('aria-pressed',x===b);

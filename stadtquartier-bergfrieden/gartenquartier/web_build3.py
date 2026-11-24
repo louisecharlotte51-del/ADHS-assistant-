@@ -1,9 +1,10 @@
-"""Baut web3/index.html (Schwarzpläne S1-S6) und das Druck-PDF schwarzplaene_S1-S6.pdf (A3 quer)."""
+"""Baut web3/index.html (Schwarzpläne S1-S6 mit Höhen und Schnitten) und das Druck-PDF schwarzplaene_S1-S6.pdf (A3 quer)."""
 import json, os, shutil, glob, subprocess
 
 W = "web3"
 os.makedirs(f"{W}/z", exist_ok=True)
-for f in glob.glob("zeichnungen/schwarzplan_S?.svg") + glob.glob("zeichnungen/lesart_S?.svg") + ["zeichnungen/schwarzplaene_uebersicht.svg"]:
+for f in glob.glob("zeichnungen/schwarzplan_S?.svg") + glob.glob("zeichnungen/lesart_S?.svg") + ["zeichnungen/schwarzplaene_uebersicht.svg"] \
+        + glob.glob("zeichnungen/hoehenplan_S?.svg") + glob.glob("zeichnungen/schnitt_[ABCD]_S?.svg"):
     shutil.copy(f, f"{W}/z/")
 daten = json.load(open("typologien.json"))
 html = open(f"{W}/vorlage.html").read().replace("/*DATA*/", json.dumps(daten, ensure_ascii=False)) \
@@ -27,16 +28,21 @@ for v in daten:
 <ol>{phasen}</ol>
 <table><tr><td>GRZ</td><td>{komma(k["grz"])}</td></tr><tr><td>GFZ</td><td>{komma(k["gfz"])}</td></tr><tr><td>Wohnungen</td><td>ca. {k["we"]:,}</td></tr>
 <tr><td>ohne Wohnen</td><td>{k["nicht_wohnen"]} %</td></tr><tr><td>max. Geschosse</td><td>{k["g_max"]}</td></tr></table></div></section>'''.replace("ca. 1,", "ca. 1."))
+    schnitte = "".join(f'<div class="sn">{inline(f"zeichnungen/schnitt_{z}_{v["code"]}.svg")}</div>' for z in "ADBC")
+    seiten.append(f'''<section class="s"><div class="hs"><div class="hp">{inline(f"zeichnungen/hoehenplan_{v["code"]}.svg")}</div>
+<div class="sl">{schnitte}</div></div></section>''')
 druck = f'''<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><style>
 @page{{size:420mm 297mm;margin:10mm}}
 body{{margin:0;font:10.5pt/1.4 Archivo,Arial,sans-serif;color:#141414}}
-.s{{page-break-after:always;height:277mm;display:flex;flex-direction:column;gap:4mm}}
-.s:last-child{{page-break-after:auto}}
+.s{{height:276mm;display:flex;flex-direction:column;gap:4mm;overflow:hidden}}
+.s+.s{{page-break-before:always}}
 h1{{font-size:22pt;margin:0}}h2{{font-size:17pt;margin:0 0 2mm}}p{{margin:0 0 2mm}}
 .voll{{flex:1;min-height:0}}.voll svg{{width:100%;height:100%}}
 .zwei{{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:6mm}}.zwei svg{{width:100%;height:100%}}
 .txt{{display:grid;grid-template-columns:1.3fr 1.6fr .7fr;gap:8mm;border-top:1.5pt solid #141414;padding-top:3mm}}
 .t{{color:#555}}ol{{margin:0;padding-left:0;list-style:none}}li{{margin-bottom:1.2mm}}
+.hs{{flex:1;min-height:0;display:grid;grid-template-columns:34% 1fr;gap:6mm}}.hp svg{{width:100%;height:100%}}
+.sl{{display:flex;flex-direction:column;justify-content:space-between;gap:2mm}}.sn svg{{width:100%;height:auto;display:block}}
 table{{border-collapse:collapse}}td{{padding:.6mm 3mm .6mm 0}}td+td{{text-align:right;font-weight:700}}
 </style></head><body>{"".join(seiten)}</body></html>'''
 open("/tmp/claude-0/-home-user-ADHS-assistant-/01adda2c-47b3-5e17-823c-f789e56bd433/scratchpad/schwarzplaene_druck.html", "w").write(druck)
