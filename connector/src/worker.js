@@ -5,6 +5,7 @@ import { createIcloud } from "./icloud.js";
 import { SCOPES, createOutlook } from "./outlook.js";
 import { registerTools } from "./tools.js";
 import { setupPage } from "./setup-page.js";
+import { handleSplit } from "./split.js";
 
 const MS_BASE = "https://login.microsoftonline.com/consumers/oauth2/v2.0";
 const SCOPE = SCOPES.join(" ");
@@ -197,6 +198,13 @@ export default {
       const newKey = randomKey();
       await env.STORE.put("access_key", newKey);
       return Response.redirect(`${url.origin}/setup/${newKey}`, 303);
+    }
+    // "Berg zerlegen" für die Zentrale-PWA (Browser-Aufruf, daher Preflight ohne Schlüssel erlaubt).
+    if (area === "split") {
+      if (request.method !== "OPTIONS" && !(await keyMatches(key, accessKey))) {
+        return new Response("Nicht erlaubt", { status: 403, headers: { "Access-Control-Allow-Origin": "*" } });
+      }
+      return handleSplit(request, env);
     }
     // Only the start page is HTML. Anything else (e.g. Claude probing /.well-known/oauth-*
     // to see whether OAuth is needed) must get a plain 404, or the connector fails to connect.

@@ -44,3 +44,15 @@ Dritte App im Ordner [`zentrale/`](zentrale/): **Uni, Arbeit, Privat, Partei und
 
 📲 Öffnen: `https://<benutzername>.github.io/<repo>/zentrale/` → **Teilen → Zum Home-Bildschirm**
 🧪 Logik-Tests: `node --test zentrale/test/logic.test.js`
+
+### ✨ Claude zerlegt Aufgaben (optional, ca. 10 Min.)
+
+Nutzt den Cloudflare-Connector (Route `/split/<Schlüssel>`). Kosten: unter 1 Cent pro Zerlegung, Tageslimit im Server 100 Anfragen.
+
+1. **API-Key anlegen:** console.anthropic.com → *Settings → Limits* → **Monthly spend limit 5 €** setzen → *API Keys → Create Key*.
+2. **In Cloudflare eintragen:** Worker `adhs-assistant` → *Settings → Variables and Secrets* → **Add** → Typ **Secret**, Name `ANTHROPIC_API_KEY`, Wert = der Key → *Deploy*.
+3. **In der Zentrale verbinden:** *Einstellungen → Claude zerlegt für dich* → Connector-Link (`…/setup/…` oder `…/mcp/…`) einfügen → *Speichern*.
+4. In „Berg zerlegen" erscheint **✨ Claude schlägt Schritte vor**.
+
+🔒 Gesendet wird nur der Titel der Aufgabe. Der Link wird nur auf diesem Gerät gespeichert (nicht im Backup).
+🧪 Tests: `node --test connector/test/split.test.js`

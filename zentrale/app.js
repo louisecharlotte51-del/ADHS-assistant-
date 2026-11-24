@@ -37,6 +37,12 @@ function save() {
 const find = (id) => state.tasks.find((t) => t.id === id);
 function touch(t) { t.updatedAt = Date.now(); save(); }
 
+/* ---------- Einstellungen (nur dieses Gerät, nicht im Backup) ---------- */
+
+const CFG_KEY = 'zentrale-cfg-v1';
+function getCfg() { try { return JSON.parse(localStorage.getItem(CFG_KEY)) || {}; } catch (e) { return {}; } }
+function setCfg(c) { try { localStorage.setItem(CFG_KEY, JSON.stringify(c)); } catch (e) { toast('Speichern nicht möglich'); } }
+
 /* ---------- Zustand der Ansicht ---------- */
 
 let view = 'now';
@@ -196,6 +202,10 @@ function renderSettings() {
       <p class="muted">Speichere eine Datei (z. B. in iCloud Drive), um Daten zwischen iPad, iPhone und Mac zu tauschen. Beim Laden wird <b>zusammengeführt</b>, nichts überschrieben.</p>
       <div class="row"><button class="btn primary" data-act="export">Datei speichern</button>
       <label class="btn" style="cursor:pointer">Datei laden<input type="file" accept="application/json,.json" data-import hidden></label></div></div>
+    <div class="card" style="margin-top:14px"><h2>✨ Claude zerlegt für dich</h2>
+      <p class="muted">Füge hier deinen <b>Connector-Link</b> ein (der mit <b>/mcp/…</b> oder <b>/setup/…</b>). Beim Zerlegen wird nur der <b>Titel</b> der Aufgabe (und deine Notiz) an Claude gesendet.</p>
+      <form class="quick" data-cfg autocomplete="off"><input type="text" name="url" placeholder="https://adhs-assistant.….workers.dev/setup/…" value="${esc(getCfg().splitUrl ? '(gespeichert)' : '')}" aria-label="Connector-Link"><button class="btn primary" type="submit">Speichern</button></form>
+      ${getCfg().splitUrl ? '<p class="hint">✅ Verbunden. <button class="btn small" data-act="cfg-clear">Trennen</button></p>' : ''}</div>
     <p class="hint">Bitte keine sensiblen Daten (Gesundheit, Passwörter) eintragen.</p></div>`;
 }
 
@@ -262,9 +272,41 @@ function splitSheet(id, focus = true) {
       <div class="mins" role="radiogroup" aria-label="Dauer">${[5, 10, 20].map((m, i) => `<label class="btn small"><input type="radio" name="min" value="${m}"${i === 1 ? ' checked' : ''} style="width:auto"> ${m} Min.</label>`).join('')}</div>
       <div class="row"><button class="btn primary" type="submit">＋ Schritt</button><button class="btn" type="button" data-act="close">Fertig</button></div>
     </form>
+    <div id="ai-box">${getCfg().splitUrl
+      ? `<button class="btn" type="button" data-act="ai" data-id="${t.id}" style="margin-top:14px">✨ Claude schlägt Schritte vor</button>`
+      : '<p class="hint">✨ Automatische Vorschläge: in den Einstellungen verbinden.</p>'}</div>
     <p class="hint">Kleine Schritte zuerst – du musst nicht alle kennen. Du kannst später ergänzen.</p>`);
   const input = $('#sheet-card input[name=text]');
   if (input) input.focus();
+}
+
+/* ---------- Claude-Vorschläge ---------- */
+
+let aiProposal = [];
+async function aiSuggest(t) {
+  const box = $('#ai-box');
+  box.innerHTML = '<p class="hint">⏳ Claude überlegt …</p>';
+  try {
+    const res = await fetch(getCfg().splitUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title: t.title }) });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || `Fehler ${res.status}`);
+    aiProposal = data.steps;
+    box.innerHTML = `<h3>Vorschlag</h3>${aiProposal.map((s) => `<div class="stepline"><span>👣 ${esc(s.text)} · ${s.min} Min.</span></div>`).join('')}
+      <div class="row" style="margin-top:12px"><button class="btn primary" type="button" data-act="ai-take" data-id="${t.id}">Übernehmen</button><button class="btn" type="button" data-act="ai" data-id="${t.id}">Nochmal</button></div>`;
+  } catch (err) {
+    const offline = err instanceof TypeError;
+    box.innerHTML = `<p class="hint" style="color:var(--warm)">${esc(offline ? 'Keine Verbindung zum Server. Du kannst die Schritte auch selbst eintippen.' : err.message)}</p>
+      <button class="btn small" type="button" data-act="ai" data-id="${t.id}">Nochmal versuchen</button>`;
+  }
+}
+function takeAi(id) {
+  const t = find(id);
+  if (!t || !aiProposal.length) return;
+  aiProposal.forEach((s) => t.steps.push({ id: uid(), text: s.text, min: s.min, done: false }));
+  aiProposal = [];
+  touch(t);
+  splitSheet(id);
+  toast('Schritte übernommen ✅');
 }
 
 /* ---------- Backup ---------- */
@@ -310,6 +352,9 @@ document.addEventListener('click', (e) => {
     case 'close': closeSheet(); break;
     case 'delete': if (t && confirm('Diese Aufgabe löschen?')) { state.tasks = state.tasks.filter((x) => x.id !== t.id); save(); closeSheet(); } break;
     case 'export': exportData(); break;
+    case 'ai': if (t) aiSuggest(t); break;
+    case 'ai-take': takeAi(b.dataset.id); break;
+    case 'cfg-clear': setCfg({}); render(); toast('Getrennt'); break;
     default:
   }
 });
@@ -325,6 +370,12 @@ document.addEventListener('submit', (e) => {
     addTask(title, el.area.value, el.due.value);
     render(); toast('Aufgeschrieben – aus dem Kopf raus ✅');
     const inp = $('[data-quick] input[type=text]'); if (inp) inp.focus();
+  } else if (f.matches('[data-cfg]')) {
+    e.preventDefault();
+    const url = Logic.splitEndpoint(f.elements.url.value);
+    if (!url) return toast('Das ist kein gültiger Connector-Link (https://…/mcp/… oder /setup/…)');
+    setCfg({ ...getCfg(), splitUrl: url });
+    render(); toast('Verbunden ✅');
   } else if (f.matches('[data-split]')) {
     e.preventDefault();
     const t = find(f.dataset.split);

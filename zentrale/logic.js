@@ -84,7 +84,17 @@
     return { ...local, tasks: [...byId.values()] };
   }
 
-  const api = { toIso, addDays, daysBetween, nextDue, weekDays, dueLabel, rank, pickNext, mergeData };
+  function splitEndpoint(raw) {
+    let u;
+    try { u = new URL(String(raw || '').trim()); } catch (e) { return null; }
+    if (u.protocol !== 'https:') return null;
+    const seg = u.pathname.split('/').filter(Boolean);
+    const i = seg.findIndex((x) => x === 'mcp' || x === 'setup' || x === 'split');
+    if (i < 0 || !seg[i + 1]) return null;
+    return `${u.origin}/split/${seg[i + 1]}`;
+  }
+
+  const api = { splitEndpoint, toIso, addDays, daysBetween, nextDue, weekDays, dueLabel, rank, pickNext, mergeData };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.Logic = api;
 })(typeof self !== 'undefined' ? self : this);
