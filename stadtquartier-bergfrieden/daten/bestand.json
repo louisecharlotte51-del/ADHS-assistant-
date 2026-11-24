@@ -1,0 +1,39 @@
+{
+ "nordfeld": {
+  "gebaeude": 35,
+  "grundflaeche": 19163,
+  "bgf": 27838,
+  "typen": {
+   "Wohnhaus": 6,
+   "Bürogebäude": 4,
+   "null": 9,
+   "Schuppen": 3,
+   "Gebäude für Gewerbe und Industrie": 2,
+   "Lagerhalle, Lagerschuppen, Lagerhaus": 5,
+   "Werkstatt": 2,
+   "Kiosk": 1,
+   "Garage": 2,
+   "Wohngebäude mit Handel und Dienstleistungen": 1
+  }
+ },
+ "suedfeld": {
+  "gebaeude": 70,
+  "grundflaeche": 41241,
+  "bgf": 112856,
+  "typen": {
+   "null": 28,
+   "Bürogebäude": 9,
+   "Lagerhalle, Lagerschuppen, Lagerhaus": 6,
+   "Umformer": 1,
+   "Werkstatt": 5,
+   "Speichergebäude": 3,
+   "Fabrik": 9,
+   "Speditionsgebäude": 3,
+   "Umspannwerk": 1,
+   "Tiefgarage": 2,
+   "Geschäftsgebäude": 1,
+   "Gebäude für Vorratshaltung": 1,
+   "Fahrzeughalle": 1
+  }
+ }
+}

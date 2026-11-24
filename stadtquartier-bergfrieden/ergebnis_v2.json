@@ -1,0 +1,218 @@
+{
+ "genom": {
+  "Blocklänge": 90.6,
+  "Breite Gartenfuge": 20.0,
+  "Breite Uferpromenade": 15.0,
+  "Geschosse Gartenkante": 5,
+  "Geschosse Werkkante": 6,
+  "Hochpunkt Ordensmeisterstraße": 13,
+  "GFZ Südfeld (Gewerbe)": 2.4
+ },
+ "kennzahlen": {
+  "WE": 1030,
+  "EW": 1906,
+  "Arbeitsplaetze": 3918,
+  "BGF_Wohnen": 94770,
+  "BGF_Gewerbe": 195917,
+  "BGF_Gewerbe_Sued": 171745,
+  "Bestand_BGF": 140694,
+  "Arbeitsplaetze_Bestand_ca": 1876,
+  "GFZ_brutto": 1.98,
+  "Gebiet_ha": 14.7,
+  "Nordfeld_ha": 6.2,
+  "Suedfeld_ha": 8.5,
+  "Gruen_neu_m2": 12476,
+  "Gruen_je_EW": 6.5,
+  "Hofbesonnung_pct": 70,
+  "Bloecke": 6,
+  "Stellplaetze": 309,
+  "Kita_Plaetze_Bedarf": 86,
+  "Grundschulplaetze_Bedarf": 95,
+  "Strafe": 0.0
+ },
+ "pareto": [
+  {
+   "WE": 932,
+   "AP": 3918,
+   "Sonne": 72
+  },
+  {
+   "WE": 781,
+   "AP": 3692,
+   "Sonne": 76
+  },
+  {
+   "WE": 788,
+   "AP": 3581,
+   "Sonne": 76
+  },
+  {
+   "WE": 1054,
+   "AP": 3798,
+   "Sonne": 62
+  },
+  {
+   "WE": 1034,
+   "AP": 3307,
+   "Sonne": 63
+  },
+  {
+   "WE": 847,
+   "AP": 3626,
+   "Sonne": 74
+  },
+  {
+   "WE": 806,
+   "AP": 3916,
+   "Sonne": 76
+  },
+  {
+   "WE": 1030,
+   "AP": 3918,
+   "Sonne": 70
+  },
+  {
+   "WE": 792,
+   "AP": 3837,
+   "Sonne": 76
+  },
+  {
+   "WE": 878,
+   "AP": 2683,
+   "Sonne": 74
+  },
+  {
+   "WE": 911,
+   "AP": 3464,
+   "Sonne": 73
+  },
+  {
+   "WE": 932,
+   "AP": 3918,
+   "Sonne": 72
+  },
+  {
+   "WE": 930,
+   "AP": 3901,
+   "Sonne": 72
+  },
+  {
+   "WE": 1000,
+   "AP": 3690,
+   "Sonne": 70
+  },
+  {
+   "WE": 914,
+   "AP": 3796,
+   "Sonne": 72
+  },
+  {
+   "WE": 898,
+   "AP": 3352,
+   "Sonne": 73
+  },
+  {
+   "WE": 938,
+   "AP": 3909,
+   "Sonne": 72
+  },
+  {
+   "WE": 909,
+   "AP": 3693,
+   "Sonne": 73
+  },
+  {
+   "WE": 853,
+   "AP": 3538,
+   "Sonne": 74
+  },
+  {
+   "WE": 859,
+   "AP": 3552,
+   "Sonne": 74
+  },
+  {
+   "WE": 1003,
+   "AP": 3642,
+   "Sonne": 70
+  },
+  {
+   "WE": 1038,
+   "AP": 3340,
+   "Sonne": 62
+  },
+  {
+   "WE": 891,
+   "AP": 3752,
+   "Sonne": 73
+  },
+  {
+   "WE": 1051,
+   "AP": 3763,
+   "Sonne": 62
+  },
+  {
+   "WE": 1025,
+   "AP": 2793,
+   "Sonne": 70
+  },
+  {
+   "WE": 1017,
+   "AP": 3076,
+   "Sonne": 70
+  },
+  {
+   "WE": 865,
+   "AP": 3599,
+   "Sonne": 73
+  },
+  {
+   "WE": 798,
+   "AP": 2902,
+   "Sonne": 76
+  },
+  {
+   "WE": 895,
+   "AP": 3437,
+   "Sonne": 73
+  },
+  {
+   "WE": 1015,
+   "AP": 3025,
+   "Sonne": 70
+  },
+  {
+   "WE": 898,
+   "AP": 3292,
+   "Sonne": 73
+  },
+  {
+   "WE": 894,
+   "AP": 3229,
+   "Sonne": 73
+  },
+  {
+   "WE": 1007,
+   "AP": 3724,
+   "Sonne": 70
+  },
+  {
+   "WE": 800,
+   "AP": 2905,
+   "Sonne": 76
+  },
+  {
+   "WE": 1012,
+   "AP": 3391,
+   "Sonne": 70
+  }
+ ],
+ "knie": 7,
+ "kolonie": {
+  "nr": "07009",
+  "flaeche_m2": 35219,
+  "parzellen": 94,
+  "kategorie": "1 dauerhaft gesicherte Kleingärten",
+  "grund": "Landeseigen + FNP Grün"
+ }
+}
