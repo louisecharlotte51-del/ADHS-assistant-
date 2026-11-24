@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gartenquartier Bergfrieden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE work: Wettbewerbstafel eines Städtebau-Entwurfs, Fazit zuerst, ruhig und genau
+   IDEA das Handblatt der Entwerferin: Papier, grüne Adern, blaue Wasserader, orange Trichter, Handschrift-Notizen
+   PICTURE das Modell: Blender-Rendering bzw. drehbares 3D-Modell mit Phasenregler S-Bahn -> Kanal
+   COLOUR Papier #fbfaf6, Tinte #1d1d1b, Grün #2e8b3a führt, Wasser #1f7fc4 stützt, Orange #f39c34 akzentuiert
+   TYPE Archivo 800/500 + Caveat für Notizen aus der Skizze
+   LAYOUT Titel quer mit Kennzahlen rechts; darunter Modell 2/3 + Variantenkarte 1/3; unter 860px gestapelt */
+:root{color-scheme:light dark;
+--bg:light-dark(#fbfaf6,#141613);--ink:light-dark(#1d1d1b,#ecebe4);--soft:light-dark(#5d5f58,#a7aaa1);--rule:light-dark(#dcd8cd,#30342d);
+--panel:light-dark(#f2efe6,#1b1e1a);--gruen:light-dark(#2e8b3a,#4fae5a);--wasser:light-dark(#1f7fc4,#4a9fe0);--orange:#f39c34;--rot:#ec6b5e;
+--v1:light-dark(#2e8b3a,#3f9e4b);--v2:light-dark(#1f7fc4,#3a8fd0);--v3:light-dark(#d98a00,#c4852a);--v4:light-dark(#7a5aa6,#9478c4);--v5:light-dark(#c8473a,#d4604f);
+--ease-out:cubic-bezier(0.23,1,0.32,1);--ease-io:cubic-bezier(0.77,0,0.175,1)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.55 Archivo,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-weight:800;line-height:1.05;letter-spacing:-.02em;text-wrap:balance;margin:0}
+h1{font-size:clamp(34px,5vw,52px)}h2{font-size:clamp(26px,3.2vw,36px);margin-bottom:12px}h3{font-size:19px;margin:0 0 6px}
+p{margin:0 0 12px;max-width:68ch}
+.hand{font-family:Caveat,cursive;font-size:1.35em;line-height:1.1}
+.band{padding-block:clamp(28px,4vw,56px);padding-left:max(5vw,16px,env(safe-area-inset-left,0px));padding-right:max(5vw,16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1240px;margin:0 auto}
+.alt{background:var(--panel)}
+.top{border-top:12px solid var(--gruen)}
+.head{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(18px,3vw,40px);align-items:start}
+.zeit{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;margin-top:8px}
+.zeit button{font:600 12.5px Archivo,sans-serif;min-height:44px;border:0;border-top:6px solid var(--rule);background:none;color:var(--soft);text-align:left;padding:6px 2px 0;cursor:pointer;transition:border-color 200ms ease,color 200ms ease}
+.zeit button[aria-pressed=true]{border-top-color:var(--gruen);color:var(--ink)}
+.zeit button:focus-visible{outline:3px solid var(--wasser)}
+.lead{font-size:18.5px;margin-top:12px;max-width:62ch}
+.note{margin-top:12px;padding:8px 12px;border-left:4px solid var(--orange);background:var(--panel);font-size:14px;max-width:72ch}
+.figs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--ink)}
+.figs div{padding:10px 10px 6px 0}
+.figs b{display:block;font:800 clamp(24px,2.6vw,32px)/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.figs span{font-size:13.5px;color:var(--soft)}
+nav.scroll{display:flex;gap:4px;padding:8px max(5vw,16px);border-block:1px solid var(--rule);background:var(--bg);white-space:nowrap;overflow-x:auto}
+nav.scroll a{flex:none;color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;padding:10px 12px;border-radius:8px}
+nav.scroll a:hover{background:var(--panel)}nav.scroll a:focus-visible{outline:3px solid var(--wasser)}
+@media(min-width:900px){nav.scroll{position:sticky;top:0;z-index:20}}
+.buehne{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:clamp(16px,2.4vw,32px);align-items:start}
+.bild{position:relative;aspect-ratio:16/10;border-radius:10px;overflow:hidden;background:#e9e6dc;border:1px solid var(--rule)}
+.bild img,.bild canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.bild img{transition:opacity 260ms var(--ease-out),filter 260ms var(--ease-out)}
+.bild img.weg{opacity:0;filter:blur(3px)}
+.bild canvas{opacity:0;transition:opacity 300ms var(--ease-out)}
+.bild.drei canvas{opacity:1}.bild.drei img{opacity:0}
+.laden{position:absolute;left:12px;bottom:12px;background:rgba(251,250,246,.92);color:#1d1d1b;font-size:13px;padding:6px 10px;border-radius:6px}
+.legende{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px;margin-top:10px;color:var(--soft)}
+.legende i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.steuer{display:grid;gap:12px;margin-top:14px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tab{font:600 15px Archivo,sans-serif;min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--rule);background:var(--bg);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform 140ms var(--ease-out),background-color 160ms ease}
+.tab:active{transform:scale(.97)}.tab:focus-visible{outline:3px solid var(--wasser);outline-offset:2px}
+.tab[aria-selected=true],.modus .tab[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tab i{width:10px;height:10px;border-radius:50%;display:inline-block}
+@media(hover:hover) and (pointer:fine){.tab:hover{border-color:var(--ink)}}
+.phase{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center}
+.phase label{font-weight:600;font-size:15px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--gruen) var(--p,100%),var(--rule) var(--p,100%))}
+input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:var(--rule)}
+input[type=range]::-moz-range-progress{height:6px;border-radius:3px;background:var(--gruen)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--bg);border:3px solid var(--gruen);margin-top:-9px}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--bg);border:3px solid var(--gruen)}
+input[type=range]:focus-visible{outline:3px solid var(--wasser);outline-offset:2px;border-radius:6px}
+.jahr{font:800 22px Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap;min-width:6.5em;text-align:right}
+.modus{display:flex;gap:6px}
+.karte{border-top:6px solid var(--vc,var(--gruen));padding-top:12px}
+.karte .hand{color:var(--vc,var(--gruen))}
+.kz{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;background:var(--rule);border:1px solid var(--rule);margin:12px 0}
+.kz div{background:var(--bg);padding:9px 10px}
+.kz b{display:block;font:800 22px/1.1 Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.kz span{font-size:13px;color:var(--soft)}
+ul{padding-left:20px;margin:0 0 10px}li{margin-bottom:5px}
+.reihe{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
+.reihe>figure{flex:0 0 min(560px,88%);scroll-snap-align:start;margin:0;min-width:0}
+.reihe svg{width:100%;height:auto;display:block;border-radius:8px;border:1px solid var(--rule);background:#fbfaf6}
+figcaption{font-size:14.5px;margin-top:8px}
+figcaption b{font-family:Caveat,cursive;font-size:24px;color:var(--gruen);display:block;line-height:1}
+.pfeile{display:flex;gap:8px;margin-top:10px}
+.pfeile button{min-width:44px;min-height:44px;border-radius:50%;border:1.5px solid var(--rule);background:var(--bg);color:var(--ink);font-size:20px;cursor:pointer;transition:transform 140ms var(--ease-out)}
+.pfeile button:active{transform:scale(.95)}.pfeile button:focus-visible{outline:3px solid var(--wasser)}
+.zwei{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.4vw,32px);align-items:start}
+.plan svg{width:100%;height:auto;display:block;border-radius:8px;border:1px solid var(--rule);background:#fbfaf6}
+.schnitt svg{width:100%;height:auto;display:block;border-radius:6px;border:1px solid var(--rule);background:#fbfaf6;margin-bottom:10px}
+.renders{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:14px 0 24px}
+.renders button{padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;cursor:pointer;background:none;display:block;transition:transform 140ms var(--ease-out)}
+.renders button:active{transform:scale(.97)}
+.renders button[aria-pressed=true]{border-color:var(--vc)}
+.renders img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+.renders span{display:block;font:600 13px Archivo,sans-serif;padding:5px 2px;color:var(--ink);text-align:left}
+.vgl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 28px}
+@media(max-width:860px){.vgl{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.vgl{grid-template-columns:minmax(0,1fr)}}
+.mt{font-weight:700;font-size:15px;margin-bottom:8px}
+.zeile{display:grid;grid-template-columns:2.2em minmax(0,1fr) 4.6em;gap:8px;align-items:center;min-height:26px;font-size:14px}
+.zeile .bar{height:12px;border-radius:0 4px 4px 0;background:var(--vc);transform-origin:left;transition:transform 420ms var(--ease-out)}
+.zeile .val{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.zeile.aus{opacity:.45}
+.fig{position:relative;min-height:320px;border:1px solid var(--rule);border-radius:8px;background:var(--bg)}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+.fig text{font:13px Archivo,sans-serif;fill:var(--soft);paint-order:stroke;stroke:var(--bg);stroke-width:4px}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:13px;padding:6px 9px;border-radius:6px;white-space:nowrap;opacity:0;transition:opacity 120ms ease}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:600;color:var(--soft);font-size:13.5px}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.phasen{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.phasen article{border-top:4px solid var(--gruen);padding-top:8px}
+.phasen img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:6px;display:block;margin:6px 0;border:1px solid var(--rule);transition:opacity 220ms var(--ease-out)}
+.phasen .j{font:800 18px Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.phasen p{font-size:14px;margin:0}
+.adern{display:grid;grid-template-columns:repeat(auto-fit,minmax(17em,1fr));gap:18px 24px}
+.ader{border-top:6px solid var(--c);padding-top:10px}
+.ader .ort{font-size:13.5px;color:var(--soft);margin-bottom:6px}
+.ader .hand{color:var(--c);font-size:21px}
+.ader ul{font-size:14.5px}
+.skizze{list-style:none;padding:0}
+.skizze li{font-family:Caveat,cursive;font-size:21px;line-height:1.1;color:var(--ink)}
+.skizze li::before{content:"✎ ";color:var(--c)}
+.klein{font-size:14px;color:var(--soft)}
+a{color:var(--wasser)}
+footer{font-size:14px;color:var(--soft)}
+@media(max-width:860px){.head,.buehne,.zwei{grid-template-columns:minmax(0,1fr)}.phasen{grid-template-columns:repeat(2,minmax(0,1fr))}.renders{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){table{font-size:13.5px}th,td{padding:6px 5px}.figs{grid-template-columns:repeat(3,minmax(0,1fr))}.phase{grid-template-columns:minmax(0,1fr) auto}.phase label{grid-column:1/-1}.stack thead{display:none}.stack tr{display:grid;padding-block:8px;border-bottom:1px solid var(--rule)}.stack td{display:flex;justify-content:space-between;gap:12px;border:0;padding:3px 0;text-align:right}.stack td::before{content:attr(data-l);font-weight:600;color:var(--soft);text-align:left}}
+@media(prefers-reduced-motion:reduce){*{transition-duration:0ms!important}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<header class="band top"><div class="wrap head">
+<div>
+<h1>Gartenquartier Bergfrieden: fünf Wege, die Baufelder zu bebauen</h1>
+<p class="lead">Dein Entwurf bleibt das Gerüst. Fünf Varianten zeigen, wie die 13 Baufelder bebaut werden können. Das Quartier wächst von der S-Bahn bis zum Kanal, 2027 bis 2042.</p>
+<p class="note">Kataster-Grundlage: Geoportal Berlin, Stand 24.11.2026. Die Kolonien sind im Kleingartenentwicklungsplan als dauerhaft gesichert eingestuft. Bauen braucht eine FNP-Änderung und Ersatzland (<a href="#methode">offene Punkte</a>).</p>
+</div>
+<div><div class="figs" id="figs"></div><p class="klein" id="figsnote"></p><div class="zeit" id="zeit" role="group" aria-label="Bauphase wählen"></div></div>
+</div></header>
+
+<nav class="scroll" aria-label="Abschnitte"><a href="#modell">Modell</a><a href="#skizze">Vom Handblatt zum Kataster</a><a href="#varianten">Varianten</a><a href="#vergleich">Vergleich</a><a href="#phasen">Phasen</a><a href="#regeln">Regelwerk</a><a href="#methode">Methode</a></nav>
+
+<section class="band" id="modell"><div class="wrap buehne">
+<div>
+<div class="bild" id="bild" role="img" aria-label="Modell des Gartenquartiers">
+<img id="imgA" alt=""><img id="imgB" alt="" class="weg">
+<canvas id="c3d" aria-label="Drehbares 3D-Modell. Ziehen zum Drehen, Scrollen zum Zoomen."></canvas>
+<div class="laden" id="laden" hidden>3D-Modell lädt …</div>
+</div>
+<div class="steuer">
+<div class="tabs" role="tablist" aria-label="Variante" id="vtabs"></div>
+<div class="phase"><label for="phase">Bauphase</label><input id="phase" type="range" min="0" max="4" step="1" value="4" aria-describedby="jahr"><span class="jahr" id="jahr"></span></div>
+<div class="modus"><button class="tab" id="mRender" aria-pressed="true">Rendering</button><button class="tab" id="m3d" aria-pressed="false">3D-Modell drehen</button></div>
+</div>
+<div class="legende"><span><i style="background:#2aaee8"></i>Wasserader, Schwammflächen</span><span><i style="background:#3d9a3d"></i>Hauptadern, Grünraum</span><span><i style="background:#f3bb6b"></i>Erholungsader</span><span><i style="background:#ec7d6d"></i>Bewegungsader</span><span><i style="background:#f19a35"></i>Trichter</span><span><i style="background:#e0873a"></i>aktives Erdgeschoss</span><span><i style="background:#93c26d"></i>Gründach</span></div>
+</div>
+<aside class="karte" id="karte" aria-live="polite"></aside>
+</div></section>
+
+<section class="band alt" id="skizze"><div class="wrap">
+<h2>Vom Handblatt zum Kataster</h2>
+<p>Die fünf Schritte deiner Skizze, Strich für Strich auf echte Grundstücksgrenzen gelegt. Alles bleibt wie gezeichnet. Neu sind nur die Maße.</p>
+<div class="reihe" id="schritte"></div>
+<div class="pfeile"><button id="sPrev" aria-label="Vorheriger Schritt">←</button><button id="sNext" aria-label="Nächster Schritt">→</button></div>
+</div></section>
+
+<section class="band" id="varianten"><div class="wrap">
+<h2 id="vTitel"></h2>
+<p id="vText"></p>
+<div class="renders" id="renders"></div>
+<div class="zwei">
+<figure class="plan" style="margin:0"><div id="plan"></div><figcaption>Lageplan mit Schatten am 21. März um 15 Uhr. Zahl = Geschosse. Lila: Gewerbe-Bestand. Grau: Bestand, der bleibt.</figcaption></figure>
+<div><div class="schnitt" id="schnitte"></div>
+<h3>Regeln dieser Variante</h3><ul id="vRegeln"></ul>
+<h3>Vorbild</h3><p id="vVorbild" class="klein"></p></div>
+</div>
+</div></section>
+
+<section class="band alt" id="vergleich"><div class="wrap">
+<h2>Vergleich: mehr Wohnungen kosten Sonne und Garten</h2>
+<p>Die Varianten reichen von 785 Stadthaus-Wohnungen im Garten bis zu 1.765 Wohnungen im S-Bahn-Gradienten. Alle halten die Abstandsflächen der Berliner Bauordnung ein. Das Modell hat jedes Gebäudepaar geprüft und nachgeregelt.</p>
+<div class="vgl" id="balken"></div>
+<h3 style="margin-top:28px">Bewertung nach Composite Scorecard (je 1–5)</h3>
+<div class="scroll"><table class="stack" id="bewertung"></table></div>
+<p class="klein">A Vernetzung · B Vielfalt und Dichte · C öffentlicher Raum · D Komfort, Sonne, Abstand · E Maßstab und Identität · F Klima und Wasser. Aus den Kennzahlen abgeleitet; Vielfalt und Maßstab sind je Typologie gesetzt.</p>
+</div></section>
+
+<section class="band" id="phasen"><div class="wrap">
+<h2>Wachsen in Phasen: von der S-Bahn zum Kanal</h2>
+<p>Erst die Landschaft, dann die Häuser. Jede Phase baut zuerst ihren Abschnitt von Wasserader, Erholungsader und Trichtern. Danach folgen die Baufelder, die der Station am nächsten liegen.</p>
+<div class="phasen" id="phasenK"></div>
+<h3 style="margin-top:28px">Wohnungen über die Zeit</h3>
+<div class="fig" id="kurve" role="img" aria-label="Kumulierte Wohnungen je Variante 2027 bis 2042"></div>
+<div class="tip" id="tip"></div>
+<ul class="klein" id="phasenRegeln" style="margin-top:14px"></ul>
+</div></section>
+
+<section class="band alt" id="regeln"><div class="wrap">
+<h2>Regelwerk für das Areal</h2>
+<p>Handschrift = Regel aus deiner Skizze. Darunter folgen die messbaren Regeln, die daraus abgeleitet sind. Sie gelten für alle fünf Varianten.</p>
+<div class="adern" id="adern"></div>
+<h3 style="margin-top:30px">Regeln für alle Baufelder</h3>
+<div class="scroll"><table class="stack" id="bfRegeln"><thead><tr><th>Regel</th><th>Festsetzung</th></tr></thead><tbody></tbody></table></div>
+</div></section>
+
+<section class="band" id="methode"><div class="wrap zwei">
+<div>
+<h2>Methode und Daten</h2>
+<p>Die Skizze wurde auf die echten Grenzen aus dem Geoportal Berlin übertragen: Kleingärten, Straßenachsen, Gebäude mit Geschosszahl, Bäume, Gewässer und Flächennutzungsplan. Die Wasserader-Äste teilen das Gebiet in 13 Baufelder. Fünf Typologie-Generatoren bebauen sie. Danach prüft ein Regellauf jedes Gebäudepaar auf die Abstandsfläche nach § 6 BauO Bln. Die Sonne ist für Berlin (52,46° N) am 21.3. von 10 bis 16 Uhr und am 21.12. um 12 Uhr simuliert. Das 3D-Modell ist in Blender gebaut und mit Cycles gerendert.</p>
+<p class="klein">Angewandte Skills: Urban Design (Grundlagen, Standortanalyse, Block und Dichte, Zonierung, TOD, Stadtreparatur, öffentlicher Raum, klimagerechtes Entwerfen, Bewertung, Mischnutzung, Mobilität, Straßenraum, Vorbilder, Kosten, Nachhaltigkeit, Urban Calculator) · Architektur (Deutschland, Gebäudetypologie, Tageslicht, Brandschutz, Material, Grundriss) · Computational Design (generativ, algorithmische Muster: Voronoi, Lloyd, Poisson; Geometrie; Umweltsimulation; Interoperabilität glTF) · Design (Emil Kowalski Design Engineering und Choreografie, UI/UX Pro Max, Dataviz mit validierter Palette).</p>
+</div>
+<div>
+<h2>Offene Punkte</h2>
+<ul>
+<li><b>Kleingarten-Status:</b> Kategorie 1 im Kleingartenentwicklungsplan. Ohne politische Entscheidung, FNP-Änderung und Ersatzland bleibt das Konzept eine Studie.</li>
+<li><b>S-Bahn-Station:</b> Die Station an der Komturstraße ist Teil des Entwurfs und heute nicht geplant. Ohne sie gilt die TOD-Dichte von V4 nicht.</li>
+<li><b>Wasserader:</b> Gefälle, Grundwasserstand und der Anschluss an den Kanal brauchen ein hydrologisches Gutachten.</li>
+<li><b>Lärm:</b> Autobahn A100 und Ring im Norden. Die Nordkanten brauchen Grundrisse mit ruhiger Seite.</li>
+</ul>
+<h3>Dateien</h3>
+<p class="klein">3D-Modelle als glTF: <a href="3d/kontext.json">Kontext</a> · <a href="3d/V1.json">V1</a> · <a href="3d/V2.json">V2</a> · <a href="3d/V3.json">V3</a> · <a href="3d/V4.json">V4</a> · <a href="3d/V5.json">V5</a>. Das Blender-Modell (.blend), die GLB-Dateien, alle Zeichnungen als SVG und der Code liegen im Repository unter <code>stadtquartier-bergfrieden/gartenquartier/</code>.</p>
+</div>
+</div></section>
+
+<footer class="band alt"><div class="wrap"><p>Daten: Geoportal Berlin / FIS-Broker (Datenlizenz Deutschland – Zero 2.0). Kennzahlen sind Modellwerte einer Konzeptstudie.</p></div></footer>
+
+<script>
+{
+const D={"varianten": [{"code": "V1", "name": "Gartenhöfe", "text": "Offener Blockrand folgt den Feldkanten. Jeder Hof ist ein halböffentlicher Garten, der sich zur Wasserader öffnet.", "kennzahlen": {"gebaeude": 134, "bgf": 159075, "bgf_wohnen": 144430, "bgf_gewerbe": 14644, "we": 1641, "ew": 3118, "gfz_brutto": 0.69, "gfz_netto": 1.75, "grz_netto": 0.47, "geschosse_mittel": 3.7, "geschosse_max": 6, "hoehe_max": 19.7, "hauslaenge_mittel": 25.9, "gruen_oeff_je_ew": 49.1, "freiraum_je_ew": 64.7, "sonne_hof_maerz": 54, "sonne_adern_maerz": 79, "sonne_hof_dez": 26, "durchlaessigkeit": 14, "dichte_we_ha": 71, "abstand_verstoesse": 0, "kita_plaetze": 140, "grundschulplaetze": 156, "stellplaetze": 492, "arbeitsplaetze": 335, "phasen": {"P1": {"bgf": 34553, "we": 356}, "P2": {"bgf": 42457, "we": 438}, "P3": {"bgf": 54515, "we": 562}, "P4": {"bgf": 27550, "we": 284}}, "regel_anpassungen": 78}, "bewertung": {"A": 3.3, "B": 3.0, "C": 5.0, "D": 3.2, "E": 4.4, "F": 3.6}, "punkte": 112}, {"code": "V2", "name": "Wasserkämme", "text": "Zeilen stehen quer zur Wasserader. Die Fugen dazwischen führen Wasser, Wind und Wege direkt zu den Adern.", "kennzahlen": {"gebaeude": 63, "bgf": 88599, "bgf_wohnen": 81038, "bgf_gewerbe": 7562, "we": 921, "ew": 1750, "gfz_brutto": 0.38, "gfz_netto": 0.97, "grz_netto": 0.23, "geschosse_mittel": 4.2, "geschosse_max": 5, "hoehe_max": 16.6, "hauslaenge_mittel": 30.9, "gruen_oeff_je_ew": 87.6, "freiraum_je_ew": 127.6, "sonne_hof_maerz": 63, "sonne_adern_maerz": 91, "sonne_hof_dez": 50, "durchlaessigkeit": 100, "dichte_we_ha": 40, "abstand_verstoesse": 0, "kita_plaetze": 79, "grundschulplaetze": 87, "stellplaetze": 276, "arbeitsplaetze": 173, "phasen": {"P1": {"bgf": 20700, "we": 215}, "P2": {"bgf": 24578, "we": 255}, "P3": {"bgf": 30196, "we": 314}, "P4": {"bgf": 13125, "we": 136}}, "regel_anpassungen": 12}, "bewertung": {"A": 4.5, "B": 2.3, "C": 5.0, "D": 4.3, "E": 3.6, "F": 4.8}, "punkte": 122}, {"code": "V3", "name": "Gartenpunkte", "text": "Punkthäuser stehen frei im Garten. Der Boden bleibt fast ganz grün, die Kleingarten-Atmosphäre bleibt erlebbar.", "kennzahlen": {"gebaeude": 43, "bgf": 87128, "bgf_wohnen": 83159, "bgf_gewerbe": 3969, "we": 945, "ew": 1795, "gfz_brutto": 0.38, "gfz_netto": 0.96, "grz_netto": 0.17, "geschosse_mittel": 5.6, "geschosse_max": 7, "hoehe_max": 22.8, "hauslaenge_mittel": 19.2, "gruen_oeff_je_ew": 85.3, "freiraum_je_ew": 127.3, "sonne_hof_maerz": 71, "sonne_adern_maerz": 92, "sonne_hof_dez": 59, "durchlaessigkeit": 96, "dichte_we_ha": 41, "abstand_verstoesse": 0, "kita_plaetze": 81, "grundschulplaetze": 90, "stellplaetze": 283, "arbeitsplaetze": 91, "phasen": {"P1": {"bgf": 25327, "we": 275}, "P2": {"bgf": 22704, "we": 246}, "P3": {"bgf": 24849, "we": 270}, "P4": {"bgf": 14249, "we": 155}}, "regel_anpassungen": 1}, "bewertung": {"A": 4.9, "B": 2.0, "C": 5.0, "D": 4.5, "E": 2.7, "F": 5.0}, "punkte": 120}, {"code": "V4", "name": "S-Bahn-Gradient", "text": "Am Bahnhof dicht und hoch, zum Kanal hin niedrig und kleinteilig. Zwei Hochpunkte markieren Station und Autobahnohr.", "kennzahlen": {"gebaeude": 113, "bgf": 167524, "bgf_wohnen": 155304, "bgf_gewerbe": 12220, "we": 1765, "ew": 3353, "gfz_brutto": 0.72, "gfz_netto": 1.84, "grz_netto": 0.4, "geschosse_mittel": 4.6, "geschosse_max": 11, "hoehe_max": 35.2, "hauslaenge_mittel": 26.6, "gruen_oeff_je_ew": 45.7, "freiraum_je_ew": 61.9, "sonne_hof_maerz": 54, "sonne_adern_maerz": 82, "sonne_hof_dez": 32, "durchlaessigkeit": 34, "dichte_we_ha": 76, "abstand_verstoesse": 0, "kita_plaetze": 151, "grundschulplaetze": 168, "stellplaetze": 529, "arbeitsplaetze": 279, "phasen": {"P1": {"bgf": 50513, "we": 532}, "P2": {"bgf": 51424, "we": 542}, "P3": {"bgf": 57648, "we": 607}, "P4": {"bgf": 7939, "we": 84}}, "regel_anpassungen": 20}, "bewertung": {"A": 3.6, "B": 3.3, "C": 5.0, "D": 3.4, "E": 3.5, "F": 4.0}, "punkte": 114}, {"code": "V5", "name": "Gartenparzellen", "text": "Stadthäuser auf einer Parzellenstruktur wie im Kleingarten: viele Bauherren, Baugruppen, jede fünfte Parzelle bleibt Gemeinschaftsgarten.", "kennzahlen": {"gebaeude": 113, "bgf": 72827, "bgf_wohnen": 69075, "bgf_gewerbe": 3751, "we": 785, "ew": 1491, "gfz_brutto": 0.31, "gfz_netto": 0.8, "grz_netto": 0.2, "geschosse_mittel": 4.0, "geschosse_max": 4, "hoehe_max": 13.5, "hauslaenge_mittel": 15.5, "gruen_oeff_je_ew": 102.7, "freiraum_je_ew": 151.6, "sonne_hof_maerz": 61, "sonne_adern_maerz": 91, "sonne_hof_dez": 48, "durchlaessigkeit": 100, "dichte_we_ha": 34, "abstand_verstoesse": 0, "kita_plaetze": 67, "grundschulplaetze": 75, "stellplaetze": 235, "arbeitsplaetze": 86, "phasen": {"P1": {"bgf": 17550, "we": 189}, "P2": {"bgf": 19556, "we": 211}, "P3": {"bgf": 25135, "we": 271}, "P4": {"bgf": 10585, "we": 114}}, "regel_anpassungen": 0}, "bewertung": {"A": 5.0, "B": 2.5, "C": 5.0, "D": 4.1, "E": 4.5, "F": 5.0}, "punkte": 130}], "felder": [{"nr": 1, "phase": "P1", "flaeche": 14797}, {"nr": 2, "phase": "P1", "flaeche": 5560}, {"nr": 3, "phase": "P2", "flaeche": 9052}, {"nr": 4, "phase": "P2", "flaeche": 9556}, {"nr": 5, "phase": "P2", "flaeche": 6109}, {"nr": 6, "phase": "P3", "flaeche": 12689}, {"nr": 7, "phase": "P3", "flaeche": 8830}, {"nr": 8, "phase": "P3", "flaeche": 2504}, {"nr": 9, "phase": "P3", "flaeche": 2907}, {"nr": 10, "phase": "P3", "flaeche": 2984}, {"nr": 11, "phase": "P4", "flaeche": 8095}, {"nr": 12, "phase": "P4", "flaeche": 3226}, {"nr": 13, "phase": "P4", "flaeche": 4698}], "regeln": {"adern": [{"name": "Bewegungsader", "farbe": "#ec6b5e", "ort": "Komturstraße, S-Bahn bis Teltowkanal", "aus_skizze": ["2 Verkehrsachsen", "Auto, Fahrrad, Fußgänger", "Straßenbegleitgrün", "Tempo 30"], "regeln": ["Fahrbahnraum 18 m, beidseitig 20–26 m Grünband", "Geschützter Radweg je Richtung 2,3 m", "Baumreihe alle 10–12 m, je Seite zweireihig", "Querung an jedem Trichter, Abstand höchstens 80 m", "Bushalt an der S-Bahn und an der Erholungsader"]}, {"name": "Wasserader", "farbe": "#29aee8", "ort": "Tempelhofer Feld bis Teltowkanal", "aus_skizze": ["Kühlung des Orts", "Erholungsbereich offen am Kanal und am Tempelhofer Feld"], "regeln": ["Hauptgerinne 14 m Profil, Wasserlauf 4–6 m, Ufer flacher als 1:3", "Gefälle mind. 0,3 % Richtung Kanal", "Äste 7 m, enden in Schwammknoten", "Weg an mind. einer Uferseite, überall zugänglich", "Anschluss an den Kanal über Retentionsbecken mit Notüberlauf"]}, {"name": "Retentions- und Schwammflächen", "farbe": "#7fd3f5", "ort": "zwischen den Baufeldern", "aus_skizze": ["Zwischen den Baufeldern", "Erholungsfläche", "Verbindung zu EG-Flächen der Baufelder"], "regeln": ["Knoten 14–20 m Durchmesser, etwa alle 35 m", "Fläche mind. 5–7 % der angeschlossenen Dach- und Wegeflächen", "100 % des Regenwassers bleibt im Gebiet", "Keine Tiefgarage unter Schwammflächen", "Erdgeschoss-Terrassen dürfen bis an den Knoten reichen"]}, {"name": "Erholungsader", "farbe": "#f39c34", "ort": "Franckepark bis Grünzug Ost (heutige Albrechtshöhe-Promenade)", "aus_skizze": ["Biodiversität steigern", "Raum für Entschleunigung und Ruhe", "Verbindung zwischen Parks in der Umgebung", "Parks und Quartiersplätze", "Nischenparks", "Spielplätze"], "regeln": ["Breite 32 m, autofrei", "Sitzplatz alle 30 m, im Wechsel Sonne und Schatten", "Baumkronen auf 60 % der Fläche", "An jedem Wasserast ein Nischenpark von 15–25 m", "Spielfläche mind. 2,4 m² je Kind im Einzugsbereich"]}, {"name": "Nachbarschaftsgärten", "farbe": "#6fae5c", "ort": "Höfe, Pocketparks, Grünraum Ost", "aus_skizze": ["Pocketparks und Gemeinschaftsgärten", "Urban Gardening", "Spielplatz"], "regeln": ["Mind. ein Gemeinschaftsgarten je Baufeld", "Ersatzparzellen zuerst für heutige Pächter der Kolonie", "Gärten sind tagsüber öffentlich durchwegbar"]}, {"name": "Trichter (Erschließung)", "farbe": "#f39c34", "ort": "10 Eingänge an den Rändern", "aus_skizze": ["Trichterform: öffentlich zu privat, als Symbol", "Verschiedene Zugänge zusammenziehen"], "regeln": ["Mündung 20–30 m an der Straße, Tiefe 20–30 m", "Spitze mind. 6 m breit als Durchgang", "Feuerwehrbefahrbar 3,5 m, Radbügel und Adresstafel", "Erdgeschoss an der Mündung aktiv genutzt"]}, {"name": "Quartiershauptplatz", "farbe": "#f3d36b", "ort": "Komturstraße am Teltowkanal", "aus_skizze": ["Mischung aus Grünraum, Gastro, Wasser und Retention", "Umlenkung der Verkehrsachsen", "Gewerbe und andere Nutzungen um den Platz herum"], "regeln": ["Durchmesser etwa 70 m", "Mind. 4 h Sonne am 21. März", "Aktive Erdgeschosse an mind. 3 Seiten", "Wasserstufen zum Retentionsbecken"]}, {"name": "Zwischenräume an Grenzen", "farbe": "#b9dc99", "ort": "Rand des Plangebiets", "aus_skizze": ["Zwischenräume an den Grenzen"], "regeln": ["Grünsaum 11 m ohne Bebauung", "Heckensaum zu privaten Gärten der Nachbarn", "Neubau mind. 20 m vom Bestandswohnen entfernt"]}], "baufelder": [["B1 Baugrenze", "Gebaut wird nur in den 13 Baufeldern. Zu den Adern bleibt eine Vorzone von 3 m."], ["B2 Abstand", "Abstandsfläche 0,4 H, mind. 3 m (§ 6 BauO Bln). Das Modell prüft jedes Gebäudepaar."], ["B3 Höhe", "Höchstens 5 Geschosse an Grenzen und Gärten. Hochpunkte nur an der S-Bahn und am Autobahnohr."], ["B4 Erdgeschoss", "An Adern, Trichtern und Platz aktiv genutzt: Gewerbe, Kita, Werkstatt, Café. Lichte Höhe 4,2 m."], ["B5 Hof", "Höfe mind. 22 m breit. Südflügel höchstens 3 Geschosse oder Hof nach Süden offen."], ["B6 Dach", "Mind. 60 % begrünt als Retentionsdach, Rest Photovoltaik."], ["B7 Boden", "GRZ netto höchstens 0,5. Biotopflächenfaktor mind. 0,6."], ["B8 Parken", "0,3 Stellplätze je Wohnung, nur in Mobilitätshubs an der Bewegungsader."], ["B9 Bezahlbar", "Mind. 30 % mietpreis- und belegungsgebunden (Berliner Modell)."], ["B10 Kleingärten", "Jede wegfallende Parzelle bekommt Ersatz (§ 14 BKleingG), bevor gebaut wird."]], "varianten": {"V1": ["Blockrand folgt der Feldkante, Haustiefe 13 m", "Hausabschnitte alle 24 m (Parzellierung)", "Kleine Felder: L- oder U-Hof, nach Süden offen", "5 Geschosse, an der Bewegungsader 6, Südflügel 3"], "V2": ["Zeilen 12,5 m tief, Längsachse zeigt zur Wasserader", "Zeilenabstand mind. 1,0 H + 6 m, mind. 18 m", "Zeilen höchstens 36 m lang, dann 11 m Durchgang", "4 Geschosse, nahe der S-Bahn 5"], "V3": ["Punkthaus 19–21 m im Quadrat", "Abstand zwischen Hausmitten mind. 41 m", "5–8 Geschosse, höher in Richtung S-Bahn", "Boden bleibt Garten: GRZ netto unter 0,3"], "V4": ["Geschosse aus der Entfernung zur Station: 8 an der S-Bahn bis 3 am Kanal", "Hochpunkt 14 G an der Station, 11 G am Autobahnohr", "Am Kanalende Stadthäuser statt Blöcke", "Phase 1 und 2 tragen über 60 % der Wohnungen"], "V5": ["Parzellen per Voronoi mit Lloyd-Glättung, etwa 24 m Raster", "Stadthaus 16 × 14 m, 4 Geschosse, Abstand mind. 11 m", "Jede 5. Parzelle bleibt Gemeinschaftsgarten", "Vergabe an Baugruppen und Genossenschaften"]}, "phasen": ["Landschaft zuerst: Jede Phase beginnt mit ihrem Abschnitt von Wasserader, Erholungsader und Trichtern.", "Kleingärtner ziehen erst um, wenn Ersatzgärten im Quartier fertig sind.", "Die nächste Phase startet, wenn die vorige zu 70 % bezogen ist.", "Bis zum Baubeginn bleiben Felder Zwischennutzung: Gärten, Spiel, Markt."]}};
+const VC={V1:'var(--v1)',V2:'var(--v2)',V3:'var(--v3)',V4:'var(--v4)',V5:'var(--v5)'};
+const VORBILD={V1:'Möckernkiez, Berlin: genossenschaftliche Höfe mit Gärten.',V2:'Weiße Stadt, Berlin, und Kronsberg, Hannover: Zeilen im Grün.',V3:'Hansaviertel, Berlin (Interbau 1957): Punkthäuser im Park.',V4:'Seestadt Aspern, Wien, und Nordhavn, Kopenhagen: Etappen, die an der Bahn beginnen.',V5:'Französisches Viertel, Tübingen, und Vauban, Freiburg: Baugruppen auf kleinen Parzellen.'};
+const JAHR=['2027–2029','2029–2032','2032–2035','2035–2038','2038–2042'];
+const PNAME=['Vorlauf: S-Bahn, Adern, Gärten verlagern','Ankunft an der S-Bahn','Gartenmitte','Erholungsader','Ankunft am Kanal'];
+const de=(v,n=0)=>Number(v).toLocaleString('de-DE',{minimumFractionDigits:n,maximumFractionDigits:n});
+const st={v:'V1',p:4,modus:'render'};
+const $=id=>document.getElementById(id);
+const V=c=>D.varianten.find(x=>x.code===c);
+const kum=(v,p)=>['P1','P2','P3','P4'].slice(0,p).reduce((s,k)=>s+(v.kennzahlen.phasen[k]?.we||0),0);
+
+// Varianten-Tabs
+$('vtabs').innerHTML=D.varianten.map(v=>`<button class="tab" role="tab" id="t${v.code}" aria-selected="${v.code===st.v}" data-v="${v.code}"><i style="background:${VC[v.code]}"></i>${v.code} ${v.name}</button>`).join('');
+$('renders').innerHTML=D.varianten.map(v=>`<button data-v="${v.code}" aria-pressed="${v.code===st.v}" style="--vc:${VC[v.code]}"><img src="r/render_${v.code}_k.jpg" alt="Rendering ${v.name}" loading="lazy"><span>${v.code} ${v.name}</span></button>`).join('');
+
+function bildQuelle(){return st.p===4?`r/render_${st.v}.jpg`:`r/phase_${st.v}_P${st.p}.jpg`}
+let vorne=$('imgA'),hinten=$('imgB');
+function zeigeBild(){
+  const src=bildQuelle(); if(vorne.getAttribute('src')===src)return;
+  hinten.onload=()=>{hinten.classList.remove('weg');vorne.classList.add('weg');[vorne,hinten]=[hinten,vorne]};
+  hinten.src=src; hinten.alt=`${V(st.v).name}, Phase ${st.p}`;
+}
+function figs(){
+  const v=V(st.v),k=v.kennzahlen;
+  const we=st.p===4?k.we:kum(v,st.p);
+  $('figs').innerHTML=[[de(we),'Wohnungen'],[de(Math.round(we*1.9)),'Einwohner'],[de(k.arbeitsplaetze),'Arbeitsplätze im EG'],[de(k.gfz_netto,2),'GFZ netto'],[k.sonne_hof_maerz+' %','Hofsonne 21.3.'],[v.punkte+'/150','Bewertung']].map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('');
+  $('figsnote').textContent=`${v.code} ${v.name}, Stand ${JAHR[st.p].split('–')[1]}`;
+}
+function karte(){
+  const v=V(st.v),k=v.kennzahlen;
+  $('karte').style.setProperty('--vc',VC[v.code]);
+  $('karte').innerHTML=`<span class="hand">${v.code} · Phase ${st.p}: ${PNAME[st.p]}</span><h2 style="margin-top:4px">${v.name}</h2><p>${v.text}</p>
+  <div class="kz"><div><b>${de(k.gebaeude)}</b><span>Häuser</span></div><div><b>${de(k.geschosse_mittel,1)} G</b><span>mittlere Höhe, max. ${k.geschosse_max}</span></div>
+  <div><b>${k.sonne_hof_dez} %</b><span>Hofsonne 21.12.</span></div><div><b>${de(k.gruen_oeff_je_ew,1)} m²</b><span>öff. Grün je EW</span></div></div>
+  <ul>${D.regeln.varianten[v.code].map(r=>`<li>${r}</li>`).join('')}</ul>
+  <h3 style="margin-top:14px">Diese Phase · ${JAHR[st.p]}</h3><p class="klein" style="margin:0">${st.p===0?'Noch keine Häuser. Gebaut werden S-Bahn-Station, Bewegungsader, der Nordabschnitt der Wasserader und Ersatzgärten. Die Kolonie bleibt bis dahin in Nutzung.':`${de(v.kennzahlen.phasen['P'+st.p]?.we||0)} neue Wohnungen auf den Feldern ${D.felder.filter(f=>f.phase==='P'+st.p).map(f=>f.nr).join(', ')}. Zusammen stehen dann ${de(kum(v,st.p))} Wohnungen.`}</p>`;
+}
+// Inline-SVG laden (damit Seitenschriften greifen)
+const svgCache={};
+async function svg(url){if(!svgCache[url]){const r=await fetch(url);svgCache[url]=await r.text()}return svgCache[url]}
+async function variantenBlock(){
+  const v=V(st.v);
+  $('vTitel').textContent=`${v.code} ${v.name}`; $('vText').textContent=v.text;
+  $('vRegeln').innerHTML=D.regeln.varianten[v.code].map(r=>`<li>${r}</li>`).join('');
+  $('vVorbild').textContent=VORBILD[v.code];
+  for(const b of document.querySelectorAll('#renders button'))b.setAttribute('aria-pressed',b.dataset.v===st.v);
+  try{$('plan').innerHTML=await svg(`z/lageplan_${v.code}.svg`);
+  $('schnitte').innerHTML=(await svg(`z/schnitt_ns_${v.code}.svg`))+(await svg(`z/schnitt_ow_${v.code}.svg`));}catch(e){$('plan').textContent='Zeichnung nicht geladen.'}
+}
+function balken(){
+  const m=[['we','Wohnungen',0],['gfz_netto','GFZ netto',2],['sonne_hof_maerz','Hofsonne 21.3. in %',0],['sonne_hof_dez','Hofsonne 21.12. in %',0],['gruen_oeff_je_ew','öffentliches Grün je EW in m²',1],['arbeitsplaetze','Arbeitsplätze',0]];
+  $('balken').innerHTML=m.map(([key,titel,n])=>{const max=Math.max(...D.varianten.map(v=>v.kennzahlen[key]));
+    return `<div><div class="mt">${titel}</div>${D.varianten.map(v=>`<div class="zeile ${v.code===st.v?'':'aus'}" title="${v.name}: ${de(v.kennzahlen[key],n)}"><span>${v.code}</span><div class="bar" style="--vc:${VC[v.code]};transform:scaleX(${v.kennzahlen[key]/max})"></div><span class="val">${de(v.kennzahlen[key],n)}</span></div>`).join('')}</div>`}).join('');
+  const kat=['A','B','C','D','E','F'];
+  $('bewertung').innerHTML=`<thead><tr><th>Variante</th>${kat.map(k=>`<th class="n">${k}</th>`).join('')}<th class="n">Punkte</th></tr></thead><tbody>${D.varianten.map(v=>`<tr${v.code===st.v?' style="font-weight:700"':''}><td><span style="color:${VC[v.code]}">●</span> ${v.code} ${v.name}</td>${kat.map(k=>`<td class="n">${de(v.bewertung[k],1)}</td>`).join('')}<td class="n">${v.punkte}</td></tr>`).join('')}</tbody>`;
+}
+function phasenKarten(){
+  const v=V(st.v);
+  $('phasenK').innerHTML=[0,1,2,3,4].map(i=>`<article style="border-color:${i<=st.p?'var(--gruen)':'var(--rule)'}"><div class="j">${JAHR[i]}</div><img src="${i===4?`r/render_${st.v}_k.jpg`:`r/phase_${st.v}_P${i}.jpg`}" alt="${v.name}, Phase ${i}" loading="lazy"><h3>${PNAME[i]}</h3><p>${i===0?'Station, Bewegungsader und Wasserader Nord. Ersatzgärten anlegen.':`${de(v.kennzahlen.phasen['P'+i]?.we||0)} Wohnungen, Felder ${D.felder.filter(f=>f.phase==='P'+i).map(f=>f.nr).join(', ')}.`}</p></article>`).join('');
+}
+// Kumulierte Wohnungen (Stufenlinie, Hover-Fadenkreuz)
+const kurve=$('kurve'),tip=$('tip');
+const JX=[2027,2029,2032,2035,2038,2042];
+function zeichneKurve(){
+  const W=kurve.clientWidth,H=kurve.clientHeight,ml=W<520?44:56,mr=W<520?60:120,mt=16,mb=34;
+  const ymax=Math.ceil(Math.max(...D.varianten.map(v=>v.kennzahlen.we))/500)*500;
+  const X=j=>ml+(j-2027)/(2042-2027)*(W-ml-mr),Y=v=>H-mb-v/ymax*(H-mt-mb);
+  let o='';
+  for(let v=0;v<=ymax;v+=500)o+=`<line x1="${ml}" x2="${W-mr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${ml-8}" y="${Y(v)+4}" text-anchor="end">${de(v)}</text>`;
+  for(const j of (W<520?[2027,2032,2038,2042]:JX))o+=`<text x="${X(j)}" y="${H-10}" text-anchor="middle">${j}</text>`;
+  const pts=v=>[[2027,0],[2029,0],[2032,kum(v,1)],[2035,kum(v,2)],[2038,kum(v,3)],[2042,kum(v,4)]];
+  const lab=[];
+  for(const v of D.varianten){const p=pts(v);let d=`M${X(p[0][0])},${Y(0)}`;for(let i=1;i<p.length;i++)d+=` L${X(p[i][0])},${Y(p[i-1][1])} L${X(p[i][0])},${Y(p[i][1])}`;
+    const sel=v.code===st.v;o+=`<path d="${d}" fill="none" stroke="${VC[v.code]}" stroke-width="${sel?3:2}" opacity="${sel?1:.55}" stroke-linejoin="round"/>`;
+    lab.push({y:Y(kum(v,4)),t:`${v.code} ${de(kum(v,4))}`,c:VC[v.code],sel})}
+  lab.sort((a,b)=>a.y-b.y);for(let i=1;i<lab.length;i++)if(lab[i].y-lab[i-1].y<15)lab[i].y=lab[i-1].y+15;
+  for(const l of lab)o+=`<text x="${W-mr+8}" y="${l.y+4}" style="fill:var(--ink);font-weight:${l.sel?700:400}">${W<520?l.t.split(' ')[0]:l.t}</text><circle cx="${W-mr+2}" cy="${l.y}" r="0"/>`;
+  o+=`<line id="kx" y1="${mt}" y2="${H-mb}" stroke="var(--ink)" stroke-dasharray="3 3" opacity="0"/>`;
+  kurve.innerHTML=`<svg aria-hidden="true">${o}</svg>`;
+  kurve.onpointermove=e=>{const r=kurve.getBoundingClientRect(),x=e.clientX-r.left;const j=2027+(x-ml)/(W-ml-mr)*15;if(j<2027||j>2042){tip.style.opacity=0;return}
+    const p=j>=2038?4:j>=2035?3:j>=2032?2:j>=2029?1:0;const ln=kurve.querySelector('#kx');ln.setAttribute('x1',x);ln.setAttribute('x2',x);ln.setAttribute('opacity',.6);
+    tip.innerHTML=`<b>${Math.floor(j)}</b> · Phase ${p}<br>`+D.varianten.map(v=>`${v.code}: ${de(kum(v,p))} WE`).join('<br>');
+    const t=kurve.offsetTop;tip.style.left=Math.min(x+kurve.offsetLeft+12,kurve.offsetLeft+W-170)+'px';tip.style.top=(t+20)+'px';tip.style.opacity=1};
+  kurve.onpointerleave=()=>{tip.style.opacity=0;kurve.querySelector('#kx')?.setAttribute('opacity',0)};
+}
+const roKurve=new ResizeObserver(zeichneKurve);roKurve.observe(kurve);
+$('phasenRegeln').innerHTML=D.regeln.phasen.map(r=>`<li>${r}</li>`).join('');
+// Regelwerk
+$('adern').innerHTML=D.regeln.adern.map(a=>`<div class="ader" style="--c:${a.farbe}"><h3>${a.name}</h3><div class="ort">${a.ort}</div><ul class="skizze">${a.aus_skizze.map(r=>`<li>${r}</li>`).join('')}</ul><ul>${a.regeln.map(r=>`<li>${r}</li>`).join('')}</ul></div>`).join('');
+$('bfRegeln').querySelector('tbody').innerHTML=D.regeln.baufelder.map(([a,b])=>`<tr><td><b>${a}</b></td><td>${b}</td></tr>`).join('');
+// Schritte-Karussell
+const TITEL=['1 Grüne Hauptachsen','2 Wasserader','3 Freiräume zuordnen','4 Erschließungsflächen','5 Wohnbaufelder'];
+const TXT=['Dunkelgrüner Rahmen, Bänder entlang der Komturstraße, Erholungsader vom Franckepark zum Grünzug Ost.','Vom Tempelhofer Feld zum Teltowkanal. Die Äste enden in Schwammknoten.','Hauptadern, Schwammflächen, Grünräume, Zwischenräume an den Grenzen.','Zehn Trichter ziehen die Zugänge zusammen: öffentlich zu privat. Rot: die Bewegungsader.','Was bleibt, sind 13 Baufelder mit zusammen 9,1 ha.'];
+(async()=>{const box=$('schritte');box.innerHTML=TITEL.map((t,i)=>`<figure id="sch${i}"><div class="svgbox"></div><figcaption><b>${t}</b>${TXT[i]}</figcaption></figure>`).join('');
+  for(let i=0;i<5;i++){try{box.children[i].querySelector('.svgbox').innerHTML=await svg(`z/schritt_${i+1}.svg`)}catch(e){}}})();
+const schritt=d=>{const b=$('schritte'),w=b.children[0]?.getBoundingClientRect().width+16||400;b.scrollBy({left:d*w,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})};
+$('sPrev').onclick=()=>schritt(-1);$('sNext').onclick=()=>schritt(1);
+$('schritte').tabIndex=0;$('schritte').onkeydown=e=>{if(e.key==='ArrowRight')schritt(1);if(e.key==='ArrowLeft')schritt(-1)};
+
+// Zustand anwenden
+function setze(neu){Object.assign(st,neu);
+  for(const b of document.querySelectorAll('#vtabs .tab'))b.setAttribute('aria-selected',b.dataset.v===st.v);
+  const r=$('phase');r.value=st.p;r.style.setProperty('--p',st.p*25+'%');$('jahr').textContent=JAHR[st.p];
+  $('zeit').innerHTML=JAHR.map((j,i)=>`<button data-p="${i}" aria-pressed="${i<=st.p}">${j.split('–')[1]}<br>${['Vorlauf','S-Bahn','Mitte','Erholung','Kanal'][i]}</button>`).join('');
+  zeigeBild();figs();karte();balken();phasenKarten();zeichneKurve();
+  if(neu.v)variantenBlock();
+  window.dispatchEvent(new CustomEvent('zustand',{detail:{...st}}));
+}
+$('vtabs').onclick=e=>{const b=e.target.closest('[data-v]');if(b)setze({v:b.dataset.v})};
+$('vtabs').onkeydown=e=>{if(!['ArrowRight','ArrowLeft'].includes(e.key))return;const c=D.varianten.map(v=>v.code),i=c.indexOf(st.v),n=c[(i+(e.key==='ArrowRight'?1:4))%5];setze({v:n});$('t'+n).focus()};
+$('renders').onclick=e=>{const b=e.target.closest('[data-v]');if(b){setze({v:b.dataset.v});$('modell').scrollIntoView({behavior:'smooth'})}};
+$('phase').oninput=e=>setze({p:+e.target.value});
+$('zeit').onclick=e=>{const b=e.target.closest('[data-p]');if(b)setze({p:+b.dataset.p})};
+$('mRender').onclick=()=>{st.modus='render';$('bild').classList.remove('drei');$('mRender').setAttribute('aria-pressed',true);$('m3d').setAttribute('aria-pressed',false)};
+$('m3d').onclick=()=>{st.modus='3d';$('mRender').setAttribute('aria-pressed',false);$('m3d').setAttribute('aria-pressed',true);window.dispatchEvent(new Event('starte3d'))};
+setze({v:'V1',p:4});
+window.__ZUSTAND=st;
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+const bild=document.getElementById('bild'),cv=document.getElementById('c3d'),laden=document.getElementById('laden');
+let renderer,scene,cam,ctl,gestartet=false;const loader=new GLTFLoader();const varianten={};let aktiv=null;
+const reduziert=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ease=t=>1-Math.pow(1-t,4);
+const anim=[];
+function start(){
+  if(gestartet){bild.classList.add('drei');return}gestartet=true;laden.hidden=false;
+  try{renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true})}catch(e){laden.textContent='3D wird von diesem Gerät nicht unterstützt.';return}
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+  scene=new THREE.Scene();scene.background=new THREE.Color('#e8eef2');scene.fog=new THREE.Fog('#e8eef2',1400,3200);
+  cam=new THREE.PerspectiveCamera(32,1,5,6000);cam.position.set(-470,640,960);
+  ctl=new OrbitControls(cam,cv);ctl.target.set(30,0,-10);ctl.enableDamping=true;ctl.maxPolarAngle=Math.PI*0.47;ctl.minDistance=120;ctl.maxDistance=2200;
+  scene.add(new THREE.HemisphereLight('#f4f7ff','#cbbfa8',1.25));
+  const sun=new THREE.DirectionalLight('#fff4e0',2.2);sun.position.set(-500,700,500);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+  Object.assign(sun.shadow.camera,{left:-700,right:700,top:700,bottom:-700,near:10,far:2500});sun.shadow.bias=-0.0006;sun.shadow.normalBias=0.8;scene.add(sun);
+  const ro=new ResizeObserver(()=>{const w=cv.clientWidth,h=cv.clientHeight;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()});ro.observe(cv);
+  loader.load('3d/kontext.json',g=>{g.scene.traverse(o=>{if(o.isMesh){o.receiveShadow=true;o.castShadow=/kontext|bestand|baeume/.test(o.name)}});scene.add(g.scene);
+    zeigeVariante(window.__ZUSTAND.v,window.__ZUSTAND.p,true);bild.classList.add('drei')},undefined,()=>{laden.textContent='3D-Modell konnte nicht laden.'});
+  renderer.setAnimationLoop(t=>{ctl.update();for(let i=anim.length-1;i>=0;i--){const a=anim[i],k=Math.min(1,Math.max(0,(t-a.t0)/a.d));a.o.scale.y=a.von+(a.bis-a.von)*ease(k);a.o.visible=a.o.scale.y>0.003;if(k>=1){anim.splice(i,1)}}renderer.render(scene,cam)});
+}
+function phaseVon(name){const m=name.match(/_P(\d)_/);return m?+m[1]:9}
+function setzePhase(g,p,frisch){
+  const t0=performance.now();let n=0;const delays=[0,70,120,160,190];
+  g.traverse(o=>{if(!o.isMesh)return;const ph=phaseVon(o.name);const soll=ph<=p?1:0.001;
+    if(reduziert){o.scale.y=soll;o.visible=soll>0.01;return}
+    const ist=o.scale.y;if(Math.abs(ist-soll)<0.01&&!frisch)return;
+    o.visible=true;anim.push({o,von:frisch?0.001:ist,bis:soll,t0:t0+(soll>0.5?delays[Math.min(ph,4)]+(n++%3)*25:0),d:soll>0.5?560:200})});
+}
+function zeigeVariante(code,p,frisch){
+  if(aktiv&&aktiv.code!==code){scene.remove(aktiv.g)}
+  const fertig=g=>{aktiv={code,g};if(!g.parent)scene.add(g);g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.scale.y=0.001}});setzePhase(g,p,true);laden.hidden=true};
+  if(varianten[code])fertig(varianten[code]);
+  else{laden.hidden=false;laden.textContent=`Variante ${code} lädt …`;loader.load(`3d/${code}.json`,g=>{varianten[code]=g.scene;fertig(g.scene)})}
+}
+window.addEventListener('starte3d',start);
+window.addEventListener('zustand',e=>{if(!gestartet||!scene)return;const {v,p}=e.detail;if(!aktiv||aktiv.code!==v)zeigeVariante(v,p,true);else setzePhase(aktiv.g,p,false)});
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{
+ "adern": [
+  {"name": "Bewegungsader", "farbe": "#ec6b5e", "ort": "Komturstraße, S-Bahn bis Teltowkanal",
+   "aus_skizze": ["2 Verkehrsachsen", "Auto, Fahrrad, Fußgänger", "Straßenbegleitgrün", "Tempo 30"],
+   "regeln": ["Fahrbahnraum 18 m, beidseitig 20–26 m Grünband", "Geschützter Radweg je Richtung 2,3 m", "Baumreihe alle 10–12 m, je Seite zweireihig", "Querung an jedem Trichter, Abstand höchstens 80 m", "Bushalt an der S-Bahn und an der Erholungsader"]},
+  {"name": "Wasserader", "farbe": "#29aee8", "ort": "Tempelhofer Feld bis Teltowkanal",
+   "aus_skizze": ["Kühlung des Orts", "Erholungsbereich offen am Kanal und am Tempelhofer Feld"],
+   "regeln": ["Hauptgerinne 14 m Profil, Wasserlauf 4–6 m, Ufer flacher als 1:3", "Gefälle mind. 0,3 % Richtung Kanal", "Äste 7 m, enden in Schwammknoten", "Weg an mind. einer Uferseite, überall zugänglich", "Anschluss an den Kanal über Retentionsbecken mit Notüberlauf"]},
+  {"name": "Retentions- und Schwammflächen", "farbe": "#7fd3f5", "ort": "zwischen den Baufeldern",
+   "aus_skizze": ["Zwischen den Baufeldern", "Erholungsfläche", "Verbindung zu EG-Flächen der Baufelder"],
+   "regeln": ["Knoten 14–20 m Durchmesser, etwa alle 35 m", "Fläche mind. 5–7 % der angeschlossenen Dach- und Wegeflächen", "100 % des Regenwassers bleibt im Gebiet", "Keine Tiefgarage unter Schwammflächen", "Erdgeschoss-Terrassen dürfen bis an den Knoten reichen"]},
+  {"name": "Erholungsader", "farbe": "#f39c34", "ort": "Franckepark bis Grünzug Ost (heutige Albrechtshöhe-Promenade)",
+   "aus_skizze": ["Biodiversität steigern", "Raum für Entschleunigung und Ruhe", "Verbindung zwischen Parks in der Umgebung", "Parks und Quartiersplätze", "Nischenparks", "Spielplätze"],
+   "regeln": ["Breite 32 m, autofrei", "Sitzplatz alle 30 m, im Wechsel Sonne und Schatten", "Baumkronen auf 60 % der Fläche", "An jedem Wasserast ein Nischenpark von 15–25 m", "Spielfläche mind. 2,4 m² je Kind im Einzugsbereich"]},
+  {"name": "Nachbarschaftsgärten", "farbe": "#6fae5c", "ort": "Höfe, Pocketparks, Grünraum Ost",
+   "aus_skizze": ["Pocketparks und Gemeinschaftsgärten", "Urban Gardening", "Spielplatz"],
+   "regeln": ["Mind. ein Gemeinschaftsgarten je Baufeld", "Ersatzparzellen zuerst für heutige Pächter der Kolonie", "Gärten sind tagsüber öffentlich durchwegbar"]},
+  {"name": "Trichter (Erschließung)", "farbe": "#f39c34", "ort": "10 Eingänge an den Rändern",
+   "aus_skizze": ["Trichterform: öffentlich zu privat, als Symbol", "Verschiedene Zugänge zusammenziehen"],
+   "regeln": ["Mündung 20–30 m an der Straße, Tiefe 20–30 m", "Spitze mind. 6 m breit als Durchgang", "Feuerwehrbefahrbar 3,5 m, Radbügel und Adresstafel", "Erdgeschoss an der Mündung aktiv genutzt"]},
+  {"name": "Quartiershauptplatz", "farbe": "#f3d36b", "ort": "Komturstraße am Teltowkanal",
+   "aus_skizze": ["Mischung aus Grünraum, Gastro, Wasser und Retention", "Umlenkung der Verkehrsachsen", "Gewerbe und andere Nutzungen um den Platz herum"],
+   "regeln": ["Durchmesser etwa 70 m", "Mind. 4 h Sonne am 21. März", "Aktive Erdgeschosse an mind. 3 Seiten", "Wasserstufen zum Retentionsbecken"]},
+  {"name": "Zwischenräume an Grenzen", "farbe": "#b9dc99", "ort": "Rand des Plangebiets",
+   "aus_skizze": ["Zwischenräume an den Grenzen"],
+   "regeln": ["Grünsaum 11 m ohne Bebauung", "Heckensaum zu privaten Gärten der Nachbarn", "Neubau mind. 20 m vom Bestandswohnen entfernt"]}
+ ],
+ "baufelder": [
+  ["B1 Baugrenze", "Gebaut wird nur in den 13 Baufeldern. Zu den Adern bleibt eine Vorzone von 3 m."],
+  ["B2 Abstand", "Abstandsfläche 0,4 H, mind. 3 m (§ 6 BauO Bln). Das Modell prüft jedes Gebäudepaar."],
+  ["B3 Höhe", "Höchstens 5 Geschosse an Grenzen und Gärten. Hochpunkte nur an der S-Bahn und am Autobahnohr."],
+  ["B4 Erdgeschoss", "An Adern, Trichtern und Platz aktiv genutzt: Gewerbe, Kita, Werkstatt, Café. Lichte Höhe 4,2 m."],
+  ["B5 Hof", "Höfe mind. 22 m breit. Südflügel höchstens 3 Geschosse oder Hof nach Süden offen."],
+  ["B6 Dach", "Mind. 60 % begrünt als Retentionsdach, Rest Photovoltaik."],
+  ["B7 Boden", "GRZ netto höchstens 0,5. Biotopflächenfaktor mind. 0,6."],
+  ["B8 Parken", "0,3 Stellplätze je Wohnung, nur in Mobilitätshubs an der Bewegungsader."],
+  ["B9 Bezahlbar", "Mind. 30 % mietpreis- und belegungsgebunden (Berliner Modell)."],
+  ["B10 Kleingärten", "Jede wegfallende Parzelle bekommt Ersatz (§ 14 BKleingG), bevor gebaut wird."]
+ ],
+ "varianten": {
+  "V1": ["Blockrand folgt der Feldkante, Haustiefe 13 m", "Hausabschnitte alle 24 m (Parzellierung)", "Kleine Felder: L- oder U-Hof, nach Süden offen", "5 Geschosse, an der Bewegungsader 6, Südflügel 3"],
+  "V2": ["Zeilen 12,5 m tief, Längsachse zeigt zur Wasserader", "Zeilenabstand mind. 1,0 H + 6 m, mind. 18 m", "Zeilen höchstens 36 m lang, dann 11 m Durchgang", "4 Geschosse, nahe der S-Bahn 5"],
+  "V3": ["Punkthaus 19–21 m im Quadrat", "Abstand zwischen Hausmitten mind. 41 m", "5–8 Geschosse, höher in Richtung S-Bahn", "Boden bleibt Garten: GRZ netto unter 0,3"],
+  "V4": ["Geschosse aus der Entfernung zur Station: 8 an der S-Bahn bis 3 am Kanal", "Hochpunkt 14 G an der Station, 11 G am Autobahnohr", "Am Kanalende Stadthäuser statt Blöcke", "Phase 1 und 2 tragen über 60 % der Wohnungen"],
+  "V5": ["Parzellen per Voronoi mit Lloyd-Glättung, etwa 24 m Raster", "Stadthaus 16 × 14 m, 4 Geschosse, Abstand mind. 11 m", "Jede 5. Parzelle bleibt Gemeinschaftsgarten", "Vergabe an Baugruppen und Genossenschaften"]
+ },
+ "phasen": [
+  "Landschaft zuerst: Jede Phase beginnt mit ihrem Abschnitt von Wasserader, Erholungsader und Trichtern.",
+  "Kleingärtner ziehen erst um, wenn Ersatzgärten im Quartier fertig sind.",
+  "Die nächste Phase startet, wenn die vorige zu 70 % bezogen ist.",
+  "Bis zum Baubeginn bleiben Felder Zwischennutzung: Gärten, Spiel, Markt."
+ ]
+}

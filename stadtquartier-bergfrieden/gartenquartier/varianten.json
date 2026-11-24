@@ -1,0 +1,405 @@
+{
+ "varianten": [
+  {
+   "code": "V1",
+   "name": "Gartenhöfe",
+   "text": "Offener Blockrand folgt den Feldkanten. Jeder Hof ist ein halböffentlicher Garten, der sich zur Wasserader öffnet.",
+   "kennzahlen": {
+    "gebaeude": 134,
+    "bgf": 159075,
+    "bgf_wohnen": 144430,
+    "bgf_gewerbe": 14644,
+    "we": 1641,
+    "ew": 3118,
+    "gfz_brutto": 0.69,
+    "gfz_netto": 1.75,
+    "grz_netto": 0.47,
+    "geschosse_mittel": 3.7,
+    "geschosse_max": 6,
+    "hoehe_max": 19.7,
+    "hauslaenge_mittel": 25.9,
+    "gruen_oeff_je_ew": 49.1,
+    "freiraum_je_ew": 64.7,
+    "sonne_hof_maerz": 54,
+    "sonne_adern_maerz": 79,
+    "sonne_hof_dez": 26,
+    "durchlaessigkeit": 14,
+    "dichte_we_ha": 71,
+    "abstand_verstoesse": 0,
+    "kita_plaetze": 140,
+    "grundschulplaetze": 156,
+    "stellplaetze": 492,
+    "arbeitsplaetze": 335,
+    "phasen": {
+     "P1": {
+      "bgf": 34553,
+      "we": 356
+     },
+     "P2": {
+      "bgf": 42457,
+      "we": 438
+     },
+     "P3": {
+      "bgf": 54515,
+      "we": 562
+     },
+     "P4": {
+      "bgf": 27550,
+      "we": 284
+     }
+    },
+    "regel_anpassungen": 78
+   },
+   "bewertung": {
+    "A": 3.3,
+    "B": 3.0,
+    "C": 5.0,
+    "D": 3.2,
+    "E": 4.4,
+    "F": 3.6
+   },
+   "punkte": 112
+  },
+  {
+   "code": "V2",
+   "name": "Wasserkämme",
+   "text": "Zeilen stehen quer zur Wasserader. Die Fugen dazwischen führen Wasser, Wind und Wege direkt zu den Adern.",
+   "kennzahlen": {
+    "gebaeude": 63,
+    "bgf": 88599,
+    "bgf_wohnen": 81038,
+    "bgf_gewerbe": 7562,
+    "we": 921,
+    "ew": 1750,
+    "gfz_brutto": 0.38,
+    "gfz_netto": 0.97,
+    "grz_netto": 0.23,
+    "geschosse_mittel": 4.2,
+    "geschosse_max": 5,
+    "hoehe_max": 16.6,
+    "hauslaenge_mittel": 30.9,
+    "gruen_oeff_je_ew": 87.6,
+    "freiraum_je_ew": 127.6,
+    "sonne_hof_maerz": 63,
+    "sonne_adern_maerz": 91,
+    "sonne_hof_dez": 50,
+    "durchlaessigkeit": 100,
+    "dichte_we_ha": 40,
+    "abstand_verstoesse": 0,
+    "kita_plaetze": 79,
+    "grundschulplaetze": 87,
+    "stellplaetze": 276,
+    "arbeitsplaetze": 173,
+    "phasen": {
+     "P1": {
+      "bgf": 20700,
+      "we": 215
+     },
+     "P2": {
+      "bgf": 24578,
+      "we": 255
+     },
+     "P3": {
+      "bgf": 30196,
+      "we": 314
+     },
+     "P4": {
+      "bgf": 13125,
+      "we": 136
+     }
+    },
+    "regel_anpassungen": 12
+   },
+   "bewertung": {
+    "A": 4.5,
+    "B": 2.3,
+    "C": 5.0,
+    "D": 4.3,
+    "E": 3.6,
+    "F": 4.8
+   },
+   "punkte": 122
+  },
+  {
+   "code": "V3",
+   "name": "Gartenpunkte",
+   "text": "Punkthäuser stehen frei im Garten. Der Boden bleibt fast ganz grün, die Kleingarten-Atmosphäre bleibt erlebbar.",
+   "kennzahlen": {
+    "gebaeude": 43,
+    "bgf": 87128,
+    "bgf_wohnen": 83159,
+    "bgf_gewerbe": 3969,
+    "we": 945,
+    "ew": 1795,
+    "gfz_brutto": 0.38,
+    "gfz_netto": 0.96,
+    "grz_netto": 0.17,
+    "geschosse_mittel": 5.6,
+    "geschosse_max": 7,
+    "hoehe_max": 22.8,
+    "hauslaenge_mittel": 19.2,
+    "gruen_oeff_je_ew": 85.3,
+    "freiraum_je_ew": 127.3,
+    "sonne_hof_maerz": 71,
+    "sonne_adern_maerz": 92,
+    "sonne_hof_dez": 59,
+    "durchlaessigkeit": 96,
+    "dichte_we_ha": 41,
+    "abstand_verstoesse": 0,
+    "kita_plaetze": 81,
+    "grundschulplaetze": 90,
+    "stellplaetze": 283,
+    "arbeitsplaetze": 91,
+    "phasen": {
+     "P1": {
+      "bgf": 25327,
+      "we": 275
+     },
+     "P2": {
+      "bgf": 22704,
+      "we": 246
+     },
+     "P3": {
+      "bgf": 24849,
+      "we": 270
+     },
+     "P4": {
+      "bgf": 14249,
+      "we": 155
+     }
+    },
+    "regel_anpassungen": 1
+   },
+   "bewertung": {
+    "A": 4.9,
+    "B": 2.0,
+    "C": 5.0,
+    "D": 4.5,
+    "E": 2.7,
+    "F": 5.0
+   },
+   "punkte": 120
+  },
+  {
+   "code": "V4",
+   "name": "S-Bahn-Gradient",
+   "text": "Am Bahnhof dicht und hoch, zum Kanal hin niedrig und kleinteilig. Zwei Hochpunkte markieren Station und Autobahnohr.",
+   "kennzahlen": {
+    "gebaeude": 113,
+    "bgf": 167524,
+    "bgf_wohnen": 155304,
+    "bgf_gewerbe": 12220,
+    "we": 1765,
+    "ew": 3353,
+    "gfz_brutto": 0.72,
+    "gfz_netto": 1.84,
+    "grz_netto": 0.4,
+    "geschosse_mittel": 4.6,
+    "geschosse_max": 11,
+    "hoehe_max": 35.2,
+    "hauslaenge_mittel": 26.6,
+    "gruen_oeff_je_ew": 45.7,
+    "freiraum_je_ew": 61.9,
+    "sonne_hof_maerz": 54,
+    "sonne_adern_maerz": 82,
+    "sonne_hof_dez": 32,
+    "durchlaessigkeit": 34,
+    "dichte_we_ha": 76,
+    "abstand_verstoesse": 0,
+    "kita_plaetze": 151,
+    "grundschulplaetze": 168,
+    "stellplaetze": 529,
+    "arbeitsplaetze": 279,
+    "phasen": {
+     "P1": {
+      "bgf": 50513,
+      "we": 532
+     },
+     "P2": {
+      "bgf": 51424,
+      "we": 542
+     },
+     "P3": {
+      "bgf": 57648,
+      "we": 607
+     },
+     "P4": {
+      "bgf": 7939,
+      "we": 84
+     }
+    },
+    "regel_anpassungen": 20
+   },
+   "bewertung": {
+    "A": 3.6,
+    "B": 3.3,
+    "C": 5.0,
+    "D": 3.4,
+    "E": 3.5,
+    "F": 4.0
+   },
+   "punkte": 114
+  },
+  {
+   "code": "V5",
+   "name": "Gartenparzellen",
+   "text": "Stadthäuser auf einer Parzellenstruktur wie im Kleingarten: viele Bauherren, Baugruppen, jede fünfte Parzelle bleibt Gemeinschaftsgarten.",
+   "kennzahlen": {
+    "gebaeude": 113,
+    "bgf": 72827,
+    "bgf_wohnen": 69075,
+    "bgf_gewerbe": 3751,
+    "we": 785,
+    "ew": 1491,
+    "gfz_brutto": 0.31,
+    "gfz_netto": 0.8,
+    "grz_netto": 0.2,
+    "geschosse_mittel": 4.0,
+    "geschosse_max": 4,
+    "hoehe_max": 13.5,
+    "hauslaenge_mittel": 15.5,
+    "gruen_oeff_je_ew": 102.7,
+    "freiraum_je_ew": 151.6,
+    "sonne_hof_maerz": 61,
+    "sonne_adern_maerz": 91,
+    "sonne_hof_dez": 48,
+    "durchlaessigkeit": 100,
+    "dichte_we_ha": 34,
+    "abstand_verstoesse": 0,
+    "kita_plaetze": 67,
+    "grundschulplaetze": 75,
+    "stellplaetze": 235,
+    "arbeitsplaetze": 86,
+    "phasen": {
+     "P1": {
+      "bgf": 17550,
+      "we": 189
+     },
+     "P2": {
+      "bgf": 19556,
+      "we": 211
+     },
+     "P3": {
+      "bgf": 25135,
+      "we": 271
+     },
+     "P4": {
+      "bgf": 10585,
+      "we": 114
+     }
+    },
+    "regel_anpassungen": 0
+   },
+   "bewertung": {
+    "A": 5.0,
+    "B": 2.5,
+    "C": 5.0,
+    "D": 4.1,
+    "E": 4.5,
+    "F": 5.0
+   },
+   "punkte": 130
+  }
+ ],
+ "felder": [
+  {
+   "nr": 1,
+   "phase": "P1",
+   "flaeche": 14797
+  },
+  {
+   "nr": 2,
+   "phase": "P1",
+   "flaeche": 5560
+  },
+  {
+   "nr": 3,
+   "phase": "P2",
+   "flaeche": 9052
+  },
+  {
+   "nr": 4,
+   "phase": "P2",
+   "flaeche": 9556
+  },
+  {
+   "nr": 5,
+   "phase": "P2",
+   "flaeche": 6109
+  },
+  {
+   "nr": 6,
+   "phase": "P3",
+   "flaeche": 12689
+  },
+  {
+   "nr": 7,
+   "phase": "P3",
+   "flaeche": 8830
+  },
+  {
+   "nr": 8,
+   "phase": "P3",
+   "flaeche": 2504
+  },
+  {
+   "nr": 9,
+   "phase": "P3",
+   "flaeche": 2907
+  },
+  {
+   "nr": 10,
+   "phase": "P3",
+   "flaeche": 2984
+  },
+  {
+   "nr": 11,
+   "phase": "P4",
+   "flaeche": 8095
+  },
+  {
+   "nr": 12,
+   "phase": "P4",
+   "flaeche": 3226
+  },
+  {
+   "nr": 13,
+   "phase": "P4",
+   "flaeche": 4698
+  }
+ ],
+ "phasen": [
+  {
+   "code": "P0",
+   "von": 2027,
+   "bis": 2029,
+   "titel": "Vorlauf: S-Bahn, Adern, Gärten verlagern"
+  },
+  {
+   "code": "P1",
+   "von": 2029,
+   "bis": 2032,
+   "titel": "Ankunft an der S-Bahn"
+  },
+  {
+   "code": "P2",
+   "von": 2032,
+   "bis": 2035,
+   "titel": "Gartenmitte"
+  },
+  {
+   "code": "P3",
+   "von": 2035,
+   "bis": 2038,
+   "titel": "Erholungsader"
+  },
+  {
+   "code": "P4",
+   "von": 2038,
+   "bis": 2042,
+   "titel": "Ankunft am Kanal"
+  }
+ ],
+ "gebiet_ha": 23.21,
+ "baufelder_ha": 9.1
+}
