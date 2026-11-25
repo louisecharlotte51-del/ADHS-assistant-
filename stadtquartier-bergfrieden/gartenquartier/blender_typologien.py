@@ -10,14 +10,14 @@ import bpy, bmesh, json, math, os, sys, random
 from mathutils import Vector, Matrix
 
 ARGS = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
-MODUS = next((a for a in ARGS if a in ("--luft", "--situationen", "--export", "--test", "--vorschau", "--kandidaten")), "--test")
+MODUS = next((a for a in ARGS if a in ("--luft", "--situationen", "--export", "--test", "--vorschau", "--kandidaten", "--fbx")), "--test")
 VAR_SIT = ARGS[ARGS.index("--variante") + 1] if "--variante" in ARGS else "S4"
 HIER = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HIER, "3d")
 D = json.load(open(os.path.join(OUT, "szene.json")))
 S = json.load(open(os.path.join(OUT, "szene3.json")))
 EG_H, OG_H = 4.2, 3.1
-RENDER = MODUS != "--export"
+RENDER = MODUS not in ("--export", "--fbx")      # Export: einfache Materialien (Principled), ohne Schnitt-Knoten
 rnd = random.Random(11)
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -649,4 +649,27 @@ elif MODUS == "--export":
     export("freiraum.glb", [F])
     zeige("S4")
     bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT, "bergfrieden_typologien_S1-S6.blend"), compress=True)
+elif MODUS == "--fbx":
+    # FBX und OBJ für Rhino, SketchUp, 3ds Max, Archicad, Cinema 4D: ein Baustein je Datei, gleiche Koordinaten
+    ziel = os.path.join(HIER, "export_3d")
+    for f in ("FBX", "OBJ"):
+        os.makedirs(os.path.join(ziel, f), exist_ok=True)
+    for c in list(VK.values()) + [K, F, ST, TUFFS]:
+        c.hide_viewport = False
+        c.hide_render = False
+    gruppen = [("umgebung_und_geruest", [o for o in K.all_objects if o.name != "erdkoerper"]),
+               ("freiraum", list(F.all_objects)), ("staffage", list(ST.all_objects)), ("stauden", list(TUFFS.all_objects))] + \
+              [(f"bebauung_{code}", list(VK[code].all_objects)) for code in VK]
+    for name, obs in gruppen:
+        bpy.ops.object.select_all(action="DESELECT")
+        for ob in obs:
+            ob.select_set(True)
+        bpy.context.view_layer.objects.active = obs[0]
+        bpy.ops.export_scene.fbx(filepath=os.path.join(ziel, "FBX", f"bergfrieden_{name}.fbx"), use_selection=True,
+                                 object_types={"MESH"}, apply_scale_options="FBX_SCALE_UNITS", mesh_smooth_type="FACE",
+                                 use_mesh_modifiers=True, add_leaf_bones=False, bake_anim=False)
+        bpy.ops.wm.obj_export(filepath=os.path.join(ziel, "OBJ", f"bergfrieden_{name}.obj"), export_selected_objects=True,
+                              forward_axis="Y", up_axis="Z", export_uv=False, export_normals=True, export_materials=True,
+                              export_object_groups=False, export_material_groups=False)
+        print("EXPORT", name, len(obs), "Objekte", flush=True)
 print("FERTIG", flush=True)
