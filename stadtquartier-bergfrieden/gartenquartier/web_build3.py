@@ -6,6 +6,28 @@ os.makedirs(f"{W}/z", exist_ok=True)
 for f in glob.glob("zeichnungen/schwarzplan_S?.svg") + glob.glob("zeichnungen/lesart_S?.svg") + ["zeichnungen/schwarzplaene_uebersicht.svg"] \
         + glob.glob("zeichnungen/hoehenplan_S?.svg") + glob.glob("zeichnungen/schnitt_[ABCD]_S?.svg"):
     shutil.copy(f, f"{W}/z/")
+# ---------- Renderings, Skizzen, 3D ----------
+import struct, base64
+from PIL import Image
+os.makedirs(f"{W}/r", exist_ok=True)
+os.makedirs(f"{W}/3d", exist_ok=True)
+for muster, breite in (("3d/luft_S?.png", 1800), ("3d/schnittperspektive_S?.png", 2000), ("3d/skizze_*.png", 1650), ("3d/rendering_*.png", 1650)):
+    for f in glob.glob(muster):
+        im = Image.open(f).convert("RGB")
+        if "schnittperspektive" in f:              # Himmel oben knapper
+            w_, h_ = im.size
+            im = im.crop((0, int(h_ * 0.1), w_, h_))
+        im.thumbnail((breite, breite), Image.LANCZOS)
+        im.save(f"{W}/r/{os.path.basename(f)[:-4]}.jpg", quality=85, optimize=True, progressive=True)
+for f in ["3d/kontext.glb"] + sorted(glob.glob("3d/S?.glb")):
+    if not os.path.exists(f):
+        continue
+    b = open(f, "rb").read()
+    n = struct.unpack("<I", b[12:16])[0]
+    gltf = json.loads(b[20:20 + n])
+    bl = struct.unpack("<I", b[20 + n:24 + n])[0]
+    gltf["buffers"] = [dict(byteLength=bl, uri="data:application/octet-stream;base64," + base64.b64encode(b[28 + n:28 + n + bl]).decode())]
+    json.dump(gltf, open(f"{W}/3d/{os.path.basename(f)[:-4]}.json", "w"), separators=(",", ":"))
 daten = json.load(open("typologien.json"))
 html = open(f"{W}/vorlage.html").read().replace("/*DATA*/", json.dumps(daten, ensure_ascii=False)) \
     .replace("__LINK_V1__", "https://claude.ai/artifact/7XSSdVs4tovei1V22WfnYk") \

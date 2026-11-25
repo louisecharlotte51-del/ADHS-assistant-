@@ -70,18 +70,56 @@ a{color:var(--gruen)}
 @media(max-width:600px){table{font-size:13.5px}th,td{padding:6px 5px}.kz{grid-template-columns:repeat(2,minmax(0,1fr))}
  .stack thead{display:none}.stack tr{display:grid;padding-block:8px;border-bottom:1px solid var(--rule)}.stack td{display:flex;justify-content:space-between;gap:12px;border:0;padding:3px 0;text-align:right}.stack td::before{content:attr(data-l);font-weight:600;color:var(--soft);text-align:left}}
 @media(prefers-reduced-motion:reduce){*{transition-duration:0ms!important}}
+.bild{position:relative;aspect-ratio:16/10;border-radius:10px;overflow:hidden;background:#e9e6dc;border:1px solid var(--rule)}
+.bild img,.bild canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.bild img{transition:opacity 260ms var(--ease-out,cubic-bezier(.23,1,.32,1))}
+.bild canvas{opacity:0;transition:opacity 300ms cubic-bezier(.23,1,.32,1)}
+.bild.drei canvas{opacity:1}.bild.drei img{opacity:0}
+.laden{position:absolute;left:12px;bottom:12px;background:rgba(251,250,246,.92);color:#1d1d1b;font-size:13px;padding:6px 10px;border-radius:6px}
+.steuer{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-top:12px}
+.phase{display:grid;grid-template-columns:auto minmax(160px,1fr) auto;gap:10px;align-items:center;flex:1 1 320px}
+.phase[hidden]{display:none}
+.phase label{font-weight:600;font-size:15px}
+input[type=range]{width:100%;height:44px;accent-color:var(--ink)}
+.jahr{font:800 17px Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sit{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:clamp(16px,2.6vw,36px);align-items:start;padding-block:22px;border-top:1px solid var(--rule)}
+.sit:nth-child(even){grid-template-columns:minmax(0,2fr) minmax(0,3fr)}.sit:nth-child(even)>figure{order:2}
+.sit img{width:100%;display:block;border-radius:8px;border:1px solid var(--rule);background:#f6f3ec}
+.sit ul{font-size:15px;padding-left:18px}.sit li{margin-bottom:4px}
+.regeln{font-family:Caveat,cursive;font-size:21px;line-height:1.15;color:var(--gruen);list-style:none;padding:0!important}
+.regeln li::before{content:"– "}
+@media(max-width:860px){.sit,.sit:nth-child(even){grid-template-columns:minmax(0,1fr)}.sit:nth-child(even)>figure{order:0}}
 </style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 <script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
 </head>
 <body>
 <header class="band top"><div class="wrap">
 <h1>Sechs Schwarzpläne: Typologien mischen</h1>
 <p class="lead">Wie lassen sich die 13 Baufelder bebauen? Sechs Grundmuster, jedes mit mehreren Typologien. Die Typologie folgt der Nutzung und der Phase: groß an der S-Bahn, wohnlich in der Mitte, Schule und Werkstätten an der Erholungsader, kleinteilig zum Kanal.</p>
-<p class="note">Unabhängig von den Varianten V1–V8. Keine Variante besteht nur aus Einzelgebäuden: Punkthäuser und Kopfbauten kommen nur im Mix vor. Höfe sind bewusst kein Thema. Abstandsflächen nach BauO Bln sind eingehalten. Höhen: je Variante ein Höhenplan und vier Schnitte A–D.</p>
+<p class="note">Unabhängig von den Varianten V1–V8. Keine Variante besteht nur aus Einzelgebäuden: Punkthäuser und Kopfbauten kommen nur im Mix vor. Höfe sind bewusst kein Thema. Abstandsflächen nach BauO Bln sind eingehalten. Höhen: je Variante ein Höhenplan und vier Schnitte A–D. Neu: 3D-Modell, Renderings und Situationsskizzen der Adern und Plätze.</p>
 <div class="raster" id="raster"></div>
 </div></header>
 
-<nav class="scroll" aria-label="Abschnitte" id="nav"><a href="#vergleich">Vergleich</a></nav>
+<nav class="scroll" aria-label="Abschnitte" id="nav"><a href="#modell">3D-Modell</a><a href="#situationen">Situationen</a><a href="#vergleich">Vergleich</a></nav>
+
+<section class="band" id="modell"><div class="wrap">
+<h2>3D-Modell</h2>
+<p>Alle sechs Varianten als Modell mit Umgebung, Freiraum und Staffage. Luftbild aus Südwesten, Schnittperspektive entlang A–A mit Blick ins aufgeschnittene Quartier, oder selbst drehen.</p>
+<div class="tabs" role="tablist" aria-label="Variante" id="mtabs"></div>
+<div class="bild" id="bild" style="margin-top:12px" role="img" aria-label="Modell"><img id="mimg" alt=""><canvas id="c3d" aria-label="Drehbares 3D-Modell. Ziehen zum Drehen, Scrollen zum Zoomen."></canvas><div class="laden" id="laden" hidden>3D-Modell lädt …</div></div>
+<div class="steuer">
+<div class="tabs" role="group" aria-label="Ansicht"><button class="tab" data-a="luft" aria-pressed="true">Luftbild</button><button class="tab" data-a="schnitt" aria-pressed="false">Schnittperspektive A–A</button><button class="tab" data-a="3d" aria-pressed="false">3D drehen</button></div>
+<div class="phase" id="phasebox" hidden><label for="pr">Bauphase</label><input type="range" id="pr" min="0" max="4" step="1" value="4"><span class="jahr" id="jahr"></span></div>
+</div>
+<p class="klein" id="mcap" style="margin-top:8px"></p>
+</div></section>
+
+<section class="band alt" id="situationen"><div class="wrap">
+<h2>Situationen: Adern und Plätze</h2>
+<p>Skizzen der fünf Orte nach dem Referenz-Board. Bebauung im Hintergrund: Variante S4. Umschalten zwischen Skizze und Rendering.</p>
+<div id="sitliste"></div>
+</div></section>
 
 <section class="band alt" id="vergleich"><div class="wrap">
 <h2>Vergleich</h2>
@@ -126,9 +164,69 @@ ${['A','D','B','C'].map(z=>`<div class="sn" data-svg="z/schnitt_${z}_${v.code}.s
 document.addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(!b)return;
  for(const x of b.parentNode.children)x.setAttribute('aria-pressed',x===b);
  setze($('plan_'+b.dataset.v),`z/${b.dataset.m}_${b.dataset.v}.svg`)});
+// ---------- 3D-Modell / Renderings ----------
+const M={v:'S4',a:'luft',p:4};
+const PHM=[['P0','2027–29','Vorlauf'],['P1','2029–32','S-Bahn'],['P2','2032–35','Gartenmitte'],['P3','2035–38','Erholungsader'],['P4','2038–42','Kanal']];
+$('mtabs').innerHTML=D.map(v=>`<button class="tab" role="tab" data-mv="${v.code}" aria-selected="${v.code===M.v}">${v.code} ${v.name}</button>`).join('');
+function modell(){for(const b of $('mtabs').children)b.setAttribute('aria-selected',b.dataset.mv===M.v);
+ for(const b of document.querySelectorAll('[data-a]'))b.setAttribute('aria-pressed',b.dataset.a===M.a);
+ const v=D.find(x=>x.code===M.v);$('phasebox').hidden=M.a!=='3d';
+ $('jahr').textContent=`${PHM[M.p][0]} · ${PHM[M.p][1]}`;
+ if(M.a!=='3d'){$('bild').classList.remove('drei');$('mimg').src=`r/${M.a==='luft'?'luft':'schnittperspektive'}_${M.v}.jpg`;$('mimg').alt=`${M.a==='luft'?'Luftbild':'Schnittperspektive'} ${v.code} ${v.name}`}
+ $('mcap').textContent=M.a==='luft'?`${v.code} ${v.name}: Luftbild aus Südwesten, Kanal vorn, S-Bahn hinten.`:M.a==='schnitt'?`${v.code} ${v.name}: Schnitt A–A, alles östlich der Linie ausgeblendet. Dunkel = Schnittfläche.`:'Ziehen zum Drehen, Scrollen zum Zoomen. Regler: Bauphasen von der S-Bahn zum Kanal.';
+ window.__M={v:M.v,p:M.p};window.dispatchEvent(new CustomEvent('m3d',{detail:window.__M}))}
+$('mtabs').addEventListener('click',e=>{const b=e.target.closest('[data-mv]');if(b){M.v=b.dataset.mv;modell()}});
+document.querySelectorAll('[data-a]').forEach(b=>b.addEventListener('click',()=>{M.a=b.dataset.a;modell();if(M.a==='3d')window.dispatchEvent(new Event('start3d'))}));
+$('pr').addEventListener('input',e=>{M.p=+e.target.value;modell()});
+modell();
+const SIT=[['wasserader','Wasserader','Vom Tempelhofer Feld zum Kanal: ein offener Bach mit Schilfufern. An den Schwammknoten liegen Teiche mit Trittsteinen und Holzdecks.',['Kühlung vor Ort','Erholungsbereich offen','verbindet Kanal und Tempelhofer Feld'],['Bach mit Schilf- und Staudenufer','Teiche an den Schwammknoten, Trittsteine, Holzdecks','Kiesweg entlang des Wassers, Weiden und Laubbäume']],
+ ['bewegungsader','Bewegungsader Komturstraße','Zwei Fahrspuren mit Tempo 30, in der Mitte ein Zweirichtungs-Radweg zwischen Pflanzstreifen. Breite Gehwege und Straßenbegleitgrün mit Baumreihen.',['2 Verkehrsachsen','Auto, Fahrrad, Fußgänger','Straßenbegleitgrün','Tempo 30'],['Radweg 3,5 m in der Mitte, Pflanzstreifen 2,5 m','Rasengitter zum Liefern und Halten','Gehwege 5 m, Bänke, Café-Pavillon im Grünband']],
+ ['erholungsader','Erholungsader (Flanierachse)','Geschwungene Wege durch Staudenbeete, dazwischen Rasenlichtungen, Pergolen und ein Spielplatz. Die Ader verbindet die Parks der Umgebung.',['Biodiversität steigern','Raum für Entschleunigung und Ruhe','Verbindung zwischen Parks','Nischenparks, Spielplätze'],['zwei Wege, 3,2 und 2,4 m, geschwungen','Staudenbeete mit Gräsern, Rasenlichtungen zum Liegen','Pergolen mit Sitzplätzen, Spielplatz am Westende']],
+ ['quartiersplatz','Quartiershauptplatz am Kanal','Rund um die Markthalle liegt ein Platz mit Pflanzinseln, Café-Tischen und Kiosken. Sitzstufen führen zum Kanal, im Osten liegt ein Retentionsbecken mit Trittsteinen.',['Mischung Grünraum, Gastro, Wasser/Retention','Umlenkung der Verkehrsachsen','Gewerbe und Nutzungsmischung um den Platz'],['Pflasterplatz mit fünf Pflanzinseln und Bäumen','Café-Tische an der Markthalle, zwei Kioske','Sitzstufen zum Kanal, Retentionsbecken']],
+ ['gartenfuge','Nachbarschaftsgarten in der Gartenfuge','Zwischen zwei Zeilen liegt ein gemeinsamer Garten mit Hochbeeten, Regenrinne, Blütenbäumen und Sandspiel. Er gehört den Nachbarn und bleibt offen für alle.',['Pocketparks','Gemeinschaftsgärten','Urban Gardening','Spielplatz'],['12 Hochbeete entlang des Weges','offene Regenrinne (Wasserast) in der Mitte','Blütenbäume, Bänke, Sandspiel am Ende']]];
+$('sitliste').innerHTML=SIT.map(([k,t,txt,regeln,teile])=>`<article class="sit"><figure><img id="sit_${k}" src="r/skizze_${k}.jpg" alt="Skizze ${t}" loading="lazy">
+<div class="umsch" role="group" aria-label="Darstellung"><button class="tab" aria-pressed="true" data-s="${k}" data-st="skizze">Skizze</button><button class="tab" aria-pressed="false" data-s="${k}" data-st="rendering">Rendering</button></div></figure>
+<div><h3>${t}</h3><p>${txt}</p><ul class="regeln">${regeln.map(r=>`<li>${r}</li>`).join('')}</ul><ul>${teile.map(r=>`<li>${r}</li>`).join('')}</ul></div></article>`).join('');
+document.addEventListener('click',e=>{const b=e.target.closest('[data-st]');if(!b)return;for(const x of b.parentNode.children)x.setAttribute('aria-pressed',x===b);$('sit_'+b.dataset.s).src=`r/${b.dataset.st}_${b.dataset.s}.jpg`});
 const io=new IntersectionObserver(es=>{for(const e of es)if(e.isIntersecting){setze(e.target,e.target.dataset.svg);io.unobserve(e.target)}},{rootMargin:'400px'});
 document.querySelectorAll('[data-svg]').forEach(el=>io.observe(el));
 }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+const bild=document.getElementById('bild'),cv=document.getElementById('c3d'),laden=document.getElementById('laden');
+let renderer,scene,cam,ctl,gestartet=false;const loader=new GLTFLoader();const varianten={};let aktiv=null;
+const reduziert=matchMedia('(prefers-reduced-motion: reduce)').matches;const ease=t=>1-Math.pow(1-t,4);const anim=[];
+function start(){
+  if(gestartet){bild.classList.add('drei');return}gestartet=true;laden.hidden=false;
+  try{renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true})}catch(e){laden.textContent='3D wird von diesem Gerät nicht unterstützt.';return}
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+  scene=new THREE.Scene();scene.background=new THREE.Color('#e8eef2');scene.fog=new THREE.Fog('#e8eef2',1400,3200);
+  cam=new THREE.PerspectiveCamera(32,1,5,6000);cam.position.set(-470,600,900);
+  ctl=new OrbitControls(cam,cv);ctl.target.set(20,0,-40);ctl.enableDamping=true;ctl.maxPolarAngle=Math.PI*0.47;ctl.minDistance=60;ctl.maxDistance=2200;
+  scene.add(new THREE.HemisphereLight('#f4f7ff','#cbbfa8',1.25));
+  const sun=new THREE.DirectionalLight('#fff4e0',2.2);sun.position.set(-500,700,500);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+  Object.assign(sun.shadow.camera,{left:-700,right:700,top:700,bottom:-700,near:10,far:2500});sun.shadow.bias=-0.0006;sun.shadow.normalBias=0.8;scene.add(sun);
+  new ResizeObserver(()=>{const w=cv.clientWidth,h=cv.clientHeight;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}).observe(cv);
+  loader.load('3d/kontext.json',g=>{g.scene.traverse(o=>{if(o.isMesh){o.receiveShadow=true;o.castShadow=/kontext|bestand|baeume/.test(o.name)}});scene.add(g.scene);
+    zeige(window.__M.v,window.__M.p,true);bild.classList.add('drei')},undefined,()=>{laden.textContent='3D-Modell konnte nicht laden.'});
+  renderer.setAnimationLoop(t=>{ctl.update();for(let i=anim.length-1;i>=0;i--){const a=anim[i],k=Math.min(1,Math.max(0,(t-a.t0)/a.d));a.o.scale.y=a.von+(a.bis-a.von)*ease(k);a.o.visible=a.o.scale.y>0.003;if(k>=1)anim.splice(i,1)}renderer.render(scene,cam)});
+}
+const phaseVon=n=>{const m=n.match(/_P(\d)_/);return m?+m[1]:9};
+function setze(g,p,frisch){const t0=performance.now();let n=0;
+  g.traverse(o=>{if(!o.isMesh)return;const ph=phaseVon(o.name);const soll=ph<=p?1:0.001;
+    if(reduziert){o.scale.y=soll;o.visible=soll>0.01;return}
+    const ist=o.scale.y;if(Math.abs(ist-soll)<0.01&&!frisch)return;o.visible=true;
+    anim.push({o,von:frisch?0.001:ist,bis:soll,t0:t0+(soll>0.5?[0,70,120,160,190][Math.min(ph,4)]+(n++%3)*25:0),d:soll>0.5?560:200})})}
+function zeige(code,p,frisch){
+  if(aktiv&&aktiv.code!==code)scene.remove(aktiv.g);
+  const fertig=g=>{aktiv={code,g};if(!g.parent)scene.add(g);g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.scale.y=0.001}});setze(g,p,true);laden.hidden=true};
+  if(varianten[code])fertig(varianten[code]);
+  else{laden.hidden=false;laden.textContent=`Variante ${code} lädt …`;loader.load(`3d/${code}.json`,g=>{varianten[code]=g.scene;fertig(g.scene)})}}
+window.addEventListener('start3d',start);
+window.addEventListener('m3d',e=>{if(!gestartet||!scene)return;const {v,p}=e.detail;if(!aktiv||aktiv.code!==v)zeige(v,p,true);else setze(aktiv.g,p,false)});
 </script>
 </body>
 </html>
