@@ -212,6 +212,21 @@ export default {
       }
       return handleSplit(request, env);
     }
+    // Apple-Kalender für die Zentrale (nur lesen). Einfacher GET ohne Header, daher kein Preflight.
+    if (area === "calendar") {
+      const headers = { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" };
+      if (!(await keyMatches(key, accessKey))) return new Response("Nicht erlaubt", { status: 403, headers });
+      const days = Math.min(Number(url.searchParams.get("days")) || 8, 31);
+      const from = new Date(Date.now() - 86400000); // whole of today in any zone; the app filters by day
+      const to = new Date(Date.now() + days * 86400000);
+      try {
+        const events = await services(env).icloud.listEvents({ start: from.toISOString(), end: to.toISOString() });
+        const slim = events.map(({ titel, startIso, endeIso, ganztaegig, ort, kalender }) => ({ titel, startIso, endeIso, ganztaegig, ort, kalender }));
+        return new Response(JSON.stringify({ events: slim }), { headers });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message }), { status: 502, headers });
+      }
+    }
     // Only the start page is HTML. Anything else (e.g. Claude probing /.well-known/oauth-*
     // to see whether OAuth is needed) must get a plain 404, or the connector fails to connect.
     if (area !== "mcp" && area !== "setup") {

@@ -41,6 +41,7 @@ Dritte App im Ordner [`zentrale/`](zentrale/): **Uni, Arbeit, Privat, Partei und
 - ⛰️ **Berg zerlegen:** geführter Dialog in Mini-Schritte mit Zeitschätzung
 - 📅 **Woche:** Fristen im Überblick, Mo + Do als Dresden-Sommer-Tage markiert
 - 🔁 Fristen mit Wiederholung, 💾 Backup/Import per Datei (führt zusammen)
+- 📅 **Apple-Kalender** in Jetzt + Woche (nur lesen, über den Connector, Route `/calendar/<Schlüssel>`)
 
 📲 Öffnen: `https://<benutzername>.github.io/<repo>/zentrale/` → **Teilen → Zum Home-Bildschirm**
 🧪 Logik-Tests: `node --test zentrale/test/logic.test.js`

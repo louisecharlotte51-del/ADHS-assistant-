@@ -1,4 +1,5 @@
 'use strict';
+process.env.TZ = 'Europe/Berlin';
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const L = require('../logic.js');
@@ -90,4 +91,18 @@ test('splitEndpoint: verzeiht Text drumherum und fehlendes https://', () => {
   assert.equal(L.splitEndpoint('adhs-assistant.x.workers.dev/setup/k123'), 'https://adhs-assistant.x.workers.dev/split/k123');
   assert.equal(L.splitEndpoint('https://a.dev/mcp/k123.'), 'https://a.dev/split/k123');
   assert.equal(L.splitEndpoint('https://adhs-assistant.x.workers.dev'), null);
+});
+
+test('Kalender: Tag, Sortierung, nächster Termin', () => {
+  const ev = [
+    { titel: 'Seminar', startIso: '2026-11-23T13:00:00.000Z', ganztaegig: false },
+    { titel: 'Spät', startIso: '2026-11-23T23:30:00.000Z', ganztaegig: false }, // 00:30 Berlin = 24.11.
+    { titel: 'Feiertag', startIso: '2026-11-23T00:00:00.000Z', ganztaegig: true },
+    { titel: 'Früh', startIso: '2026-11-23T08:00:00.000Z', ganztaegig: false },
+  ];
+  assert.deepEqual(L.eventsOn(ev, '2026-11-23').map((e) => e.titel), ['Feiertag', 'Früh', 'Seminar']);
+  assert.deepEqual(L.eventsOn(ev, '2026-11-24').map((e) => e.titel), ['Spät']);
+  assert.equal(L.nextEvent(ev, Date.parse('2026-11-23T09:00:00Z')).titel, 'Seminar');
+  assert.equal(L.nextEvent(ev, Date.parse('2026-11-25T09:00:00Z')), null);
+  assert.deepEqual(L.eventsOn(undefined, '2026-11-23'), []);
 });
