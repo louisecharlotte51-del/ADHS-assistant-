@@ -18,6 +18,11 @@ ADHS-freundliche Web-App (PWA) für iPhone und iPad. Läuft komplett im Browser,
 
 👉 Connector für **privates Outlook + Apple iCloud Kalender**: siehe [connector/README.md](connector/README.md)
 
+## 🤝 Agenten-Team (mehrere Claude-Agenten parallel)
+
+Im Ordner [`agents/`](agents/): 10 Agenten in 4 Gebieten (Entwicklung, Design, Praxis, Organisation).
+In Claude Code `team builder` schreiben → Gebiete wählen → Aufgabe beschreiben. Anleitung: [agents/README.md](agents/README.md)
+
 ## 🏥 Praxis-Cockpit (Sinologikum)
 
 Zweite App im Ordner [`praxis/`](praxis/): **Buchhaltung, Lohn, Social Media, Fristen** an einem Ort.
