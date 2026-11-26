@@ -122,7 +122,7 @@ function quickAdd(fixedArea) {
     <input type="text" name="title" maxlength="120" placeholder="Was geht dir im Kopf rum?" enterkeyhint="done" aria-label="Neue Aufgabe">
     ${sel}
     <select name="due" aria-label="Frist"><option value="">Ohne Frist</option><option value="today">Heute</option><option value="tomorrow">Morgen</option><option value="week">In 1 Woche</option></select>
-    <button class="btn primary" type="submit">＋ Aufschreiben</button>
+    <button class="btn primary" type="submit">${svg('plus')}Aufschreiben</button>
   </form>`;
 }
 
@@ -148,37 +148,11 @@ function greet() {
 function renderNow() {
   const td = today();
   const open = state.tasks.filter((t) => t.status !== 'done');
-  const next = Logic.pickNext(state.tasks, td, skip);
   const week = Logic.weekDays(td);
   const overdue = open.filter((t) => t.due && t.due < td).length;
   const dueWeek = open.filter((t) => t.due && t.due >= td && t.due <= week[6]).length;
   const doneToday = state.tasks.filter((t) => t.doneAt === td).length;
 
-  let hero;
-  if (!state.tasks.length) {
-    hero = `<div class="card empty"><b>Noch nichts hier – das ist okay.</b><br>Schreib oben auf, was dir gerade im Kopf rumgeht. Ein Wort reicht. Sortieren und Zerlegen machen wir danach.</div>`;
-  } else if (!next) {
-    hero = `<div class="card hero" ${chip('adhs')}><p class="kicker">${svg('check')}<span>Alles erledigt</span></p><h2>Nichts offen.</h2><p class="why">Genieß die Pause oder schreib oben etwas Neues auf.</p></div>`;
-  } else {
-    const t = next.task;
-    const step = next.step;
-    hero = `<div class="card hero" ${chip(t.area)}>
-      <div class="hero-head"><p class="kicker">${svg(t.area)}<span>${esc(area(t.area).name)}</span></p><p class="kicker soft">Dein nächster Schritt</p></div>
-      <div class="hero-body">
-        <h2>${esc(step ? step.text : t.title)}</h2>
-        ${step && step.min ? `<div class="minutes" aria-label="ca. ${step.min} Minuten"><b>${step.min}</b><span>Min</span></div>` : ''}
-      </div>
-      <p class="why">${facts([step ? `aus ${t.title}` : 'Noch kein Schritt festgelegt, zerlege die Aufgabe', next.reason])}</p>
-      <div class="row">
-        <button class="btn primary" data-act="done" data-id="${t.id}">${svg('check')}Fertig</button>
-        <button class="btn" data-act="later" data-id="${t.id}">Später</button>
-        <button class="btn" data-act="split" data-id="${t.id}">${svg('split')}${t.steps.length ? 'Schritte' : 'Zerlegen'}</button>
-        <a class="btn" href="../index.html">${svg('clock')}Fokus</a>
-      </div>
-    </div>`;
-  }
-
-  const after = Logic.rank(state.tasks, td, skip).filter((t) => !next || t.id !== next.task.id).slice(0, 3);
   const chips = `<div class="chips">
     ${overdue ? `<button class="chip warn" data-view="week"><b>${overdue}</b><span>überfällig</span></button>` : ''}
     <button class="chip" ${chip('adhs')} data-view="week"><b>${dueWeek}</b><span>Fristen diese Woche</span></button>
@@ -192,11 +166,132 @@ function renderNow() {
       const when = min < 60 ? `in ${min} Min.` : `in ${Math.round(min / 60)} Std.`;
       return `<p class="next-event">${svg('week')}<span>Nächster Termin</span><b>${esc(hhmm(ev.startIso))} ${esc(ev.titel || '')}</b><span>${when}</span></p>`;
     })()}</header>
-    ${quickAdd()}${hero}${chips}
-    ${after.length ? `<h3>Danach</h3><div class="list">${after.map((t) => taskItem(t, { tag: true })).join('')}</div>` : ''}
-    <h3>Deine Bereiche</h3>
-    <div class="chips">${areas().map((a) => `<button class="chip" ${chip(a.id)} data-view="${a.id}"><b>${open.filter((t) => t.area === a.id).length}</b><span>${svg(a.id)}${esc(a.name)}</span></button>`).join('')}</div></div>`;
+    ${quickAdd()}
+    <div class="now-grid">${renderDeck()}
+      <div class="now-side">${chips}
+        <h3>Deine Bereiche</h3>
+        <div class="chips">${areas().map((a) => `<button class="chip" ${chip(a.id)} data-view="${a.id}"><b>${open.filter((t) => t.area === a.id).length}</b><span>${svg(a.id)}${esc(a.name)}</span></button>`).join('')}</div>
+      </div>
+    </div></div>`;
 }
+
+/* ---------- Kartendeck (Jetzt) ---------- */
+
+const RM = matchMedia('(prefers-reduced-motion: reduce)');
+const FAN = [[0, 0, 0, 1], [-14, 14, -4, 0.97], [16, 24, 3.5, 0.94], [-8, 34, -6.5, 0.91]];
+const FAN_RM = [[0, 0, 0, 1], [0, 12, 0, 0.96], [0, 22, 0, 0.92], [0, 30, 0, 0.88]];
+const pose = (i) => { const [x, y, r, sc] = (RM.matches ? FAN_RM : FAN)[Math.min(i, 3)]; return `translate3d(${x}px,${y}px,0) rotate(${r}deg) scale(${sc})`; };
+let busy = false;
+let drag = null;
+
+function deckCard(t, i) {
+  const steps = t.steps || [];
+  const k = steps.findIndex((s) => !s.done);
+  const step = steps[k];
+  return `<article class="dcard${i === 0 ? ' top' : ''}" data-card="${t.id}" style="--chip:var(--${area(t.area).id});z-index:${10 - i};transform:${pose(i)}"${i ? ' aria-hidden="true"' : ''}>
+    <div class="dtop"><span class="achip">${svg(t.area)}${esc(area(t.area).name)}</span>${step && step.min ? `<span class="num"><b>${step.min}</b>Min</span>` : ''}</div>
+    <div class="dbody">${step ? `<p class="from">aus ${esc(t.title)}</p><h2 class="step">${esc(step.text)}</h2>` : `<h2 class="step">${esc(t.title)}</h2><p class="from">Noch kein Schritt, zerlegen?</p>`}</div>
+    <div class="dfoot">${facts([step ? `Schritt ${k + 1} von ${steps.length}` : '', t.due ? Logic.dueLabel(t.due, today()) : ''])}</div>
+    <span class="stamp done">Fertig</span><span class="stamp later">Später</span>
+  </article>`;
+}
+
+function renderDeck() {
+  if (!state.tasks.length) return `<div class="deck-wrap"><div class="card deck-empty"><b>Noch nichts hier, das ist okay.</b><p>Schreib oben auf, was dir gerade im Kopf rumgeht. Ein Wort reicht. Sortieren und Zerlegen machen wir danach.</p></div></div>`;
+  const cards = Logic.rank(state.tasks, today(), skip).slice(0, 4);
+  if (!cards.length) return `<div class="deck-wrap"><div class="card deck-empty"><b>Alles erledigt.</b><p>Genieß die Pause oder schreib oben etwas Neues auf.</p></div></div>`;
+  const id = cards[0].id;
+  return `<div class="deck-wrap"><div class="deck" id="deck">${cards.map(deckCard).join('')}</div>
+    <div class="actions">
+      <button class="btn primary" data-act="done" data-id="${id}">${svg('check')}Fertig</button>
+      <button class="btn" data-act="later" data-id="${id}">${svg('later')}Später</button>
+      <button class="btn" data-act="split" data-id="${id}">${svg('split')}Zerlegen</button>
+      <a class="btn" href="../index.html">${svg('clock')}Fokus</a>
+    </div>
+    <p class="hint swipe-hint"><span>Nach links: Später</span><span>Nach rechts: Fertig</span></p></div>`;
+}
+
+// Cards start where they were (prev ids) or collapsed (prev = null), then fan out with a 40ms stagger.
+function settleDeck(prev, flown, base = 0) {
+  const els = [...document.querySelectorAll('#deck .dcard')];
+  const from = els.map((el, i) => {
+    if (!prev) return 0;
+    const j = prev.indexOf(el.dataset.card);
+    return j < 0 || el.dataset.card === flown ? i + 1 : j;
+  });
+  els.forEach((el, i) => { el.style.transition = 'none'; el.style.transform = pose(from[i]); el.style.opacity = from[i] > 3 ? 0 : 1; });
+  void document.body.offsetWidth;
+  els.forEach((el, i) => { el.style.transition = ''; el.style.transitionDelay = `${base + i * 40}ms`; el.style.transform = pose(i); el.style.opacity = 1; });
+}
+
+function stamps(el, dx) {
+  const v = Math.min(Math.abs(dx) / 110, 1);
+  el.querySelector('.stamp.done').style.opacity = dx > 0 ? v : 0;
+  el.querySelector('.stamp.later').style.opacity = dx < 0 ? v : 0;
+}
+
+// dir 1 = Fertig (rechts), -1 = Später (links)
+function swipe(dir, dx = 0, dy = 0) {
+  const el = document.querySelector('#deck .dcard.top');
+  const t = el && find(el.dataset.card);
+  if (busy || !t) return;
+  busy = true;
+  const prev = [...document.querySelectorAll('#deck .dcard')].map((c) => c.dataset.card);
+  // Lift the card out of <main> so the re-render below does not cut its flight short.
+  const r = $('#deck').getBoundingClientRect();
+  Object.assign(el.style, { position: 'fixed', inset: 'auto', left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px`, zIndex: 50, transitionDelay: '0ms' });
+  el.classList.remove('dragging', 'top');
+  document.body.appendChild(el);
+  void el.offsetWidth;
+  stamps(el, dir);
+  if (RM.matches) { el.style.transition = 'opacity 250ms ease'; }
+  else {
+    el.style.transition = 'transform 480ms cubic-bezier(.2,.75,.25,1), opacity 480ms ease';
+    const rot = dir > 0 ? Math.max(26, dx * 0.065 + 18) : Math.min(-26, dx * 0.065 - 18);
+    el.style.transform = `translate3d(${dir * (innerWidth * 0.9 + 160)}px,${dy + (dir > 0 ? 60 : -10)}px,0) rotate(${rot}deg)`;
+  }
+  el.style.opacity = 0;
+  if (dir > 0) doneStep(t); else skip.push(t.id);
+  render();
+  settleDeck(prev, t.id, RM.matches ? 0 : 110);
+  setTimeout(() => { busy = false; }, 260);
+  setTimeout(() => el.remove(), 500);
+}
+
+document.addEventListener('pointerdown', (e) => {
+  const el = e.target.closest('#deck .dcard.top');
+  if (!el || busy || drag || e.button > 0) return;
+  drag = { el, id: e.pointerId, sx: e.clientX, sy: e.clientY, dx: 0, dy: 0, s: [{ x: 0, t: e.timeStamp }] };
+  el.setPointerCapture(e.pointerId);
+  el.classList.add('dragging');
+  el.style.transitionDelay = '0ms';
+});
+document.addEventListener('pointermove', (e) => {
+  if (!drag || e.pointerId !== drag.id) return; // ignore extra touch points
+  const raw = e.clientX - drag.sx;
+  // rubber band beyond 170px so the card resists instead of tracking 1:1
+  drag.dx = Math.abs(raw) > 170 ? Math.sign(raw) * (170 + (Math.abs(raw) - 170) * 0.35) : raw;
+  drag.dy = (e.clientY - drag.sy) * 0.22;
+  drag.s.push({ x: raw, t: e.timeStamp });
+  if (drag.s.length > 8) drag.s.shift();
+  drag.el.style.transform = `translate3d(${drag.dx}px,${drag.dy}px,0) rotate(${RM.matches ? 0 : drag.dx * 0.065}deg)`;
+  stamps(drag.el, drag.dx);
+});
+function dragEnd(e) {
+  if (!drag || e.pointerId !== drag.id) return;
+  const d = drag;
+  drag = null;
+  d.el.classList.remove('dragging');
+  const last = d.s[d.s.length - 1];
+  const first = d.s.find((p) => last.t - p.t <= 90) || d.s[0];
+  const v = last.t > first.t ? (last.x - first.x) / (last.t - first.t) : 0;
+  const dir = d.dx > 0 ? 1 : -1;
+  const fling = Math.abs(v) > 0.11 && Math.sign(v) === dir && Math.abs(d.dx) > 24;
+  if (e.type !== 'pointercancel' && (Math.abs(d.dx) > 110 || fling)) swipe(dir, d.dx, d.dy);
+  else { d.el.style.transform = pose(0); stamps(d.el, 0); }
+}
+document.addEventListener('pointerup', dragEnd);
+document.addEventListener('pointercancel', dragEnd);
 
 function renderArea(id) {
   const a = area(id);
@@ -248,6 +343,7 @@ function renderSettings() {
 }
 
 function render() {
+  $('#main').classList.remove('enter');
   $('#main').innerHTML = view === 'now' ? renderNow() : view === 'week' ? renderWeek() : view === 'settings' ? renderSettings() : renderArea(view);
   renderNav();
 }
@@ -267,21 +363,36 @@ Object.assign(ICONS, {
   x: '<path d="M6 6l12 12M18 6 6 18"/>',
   clock: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/>',
   split: '<path d="M4 19h16"/><path d="M6 19l5-9 3 5 2-3 2 7"/>',
+  later: '<path d="M9 7 4.5 11.5 9 16"/><path d="M4.5 11.5H14a5.5 5.5 0 0 1 0 11"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  z: '<path d="M7 7h10L7 17h10"/>',
   spark: '<path d="M12 3c.6 4.2 2.8 6.4 7 7-4.2.6-6.4 2.8-7 7-.6-4.2-2.8-6.4-7-7 4.2-.6 6.4-2.8 7-7Z"/>',
 });
 const svg = (id) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[id] || ICONS.now}</svg>`;
 
 function renderNav() {
   const item = (id, icon, long, short, color) => `<button type="button" data-view="${id}" ${color ? chip(color) : ''}${view === id ? ' aria-current="page"' : ''}>${svg(id)}<span class="long">${long}</span><span class="short">${short}</span></button>`;
-  $('#nav').innerHTML = `<p class="brand">Zentrale</p>
+  $('#nav').innerHTML = `<p class="brand"><i>${svg('z')}</i>Zentrale</p>
     ${item('now', '', 'Jetzt', 'Jetzt')}${item('week', '', 'Woche', 'Woche')}<div class="sep"></div>
     ${areas().map((a) => item(a.id, '', esc(a.name), a.name === 'ADHS-Projekt' ? 'Projekt' : esc(a.name), a.id)).join('')}<div class="sep"></div>
     ${item('settings', '', 'Einstellungen', 'Setup')}`;
 }
 
+const navOrder = () => ['now', 'week', ...AREAS.map((a) => a.id), 'settings'];
 function go(v) {
+  const changed = v !== view;
+  const dir = navOrder().indexOf(v) >= navOrder().indexOf(view) ? 1 : -1;
   view = v; skip = []; render(); window.scrollTo(0, 0);
-  const m = $('#main'); m.classList.remove('enter'); void m.offsetWidth; m.classList.add('enter'); // replay entrance on view change only
+  if (changed) {
+    $('#main').classList.add('enter'); // entrance on view change only
+    const h = $('#main h1');
+    if (h) {
+      h.animate(RM.matches ? [{ opacity: 0 }, { opacity: 1 }]
+        : [{ opacity: 0, transform: `translateX(${dir * 48}px)`, filter: 'blur(6px)' }, { opacity: 1, transform: 'none', filter: 'blur(0)' }],
+      { duration: 260, easing: 'cubic-bezier(0.23,1,0.32,1)' });
+    }
+    if (v === 'now') settleDeck(null);
+  }
   if (v === 'now' || v === 'week') syncCalendar();
 }
 
@@ -331,7 +442,7 @@ function splitSheet(id, focus = true) {
       <label>${n ? 'Und was kommt danach?' : 'Was ist der allererste Handgriff? (unter 20 Minuten)'}</label>
       <input name="text" maxlength="120" placeholder="${n ? 'Nächster kleiner Schritt' : 'z. B. Datei öffnen und Titel tippen'}" ${focus ? 'autofocus' : ''}>
       <div class="mins" role="radiogroup" aria-label="Dauer">${[5, 10, 20].map((m, i) => `<label class="btn small"><input type="radio" name="min" value="${m}"${i === 1 ? ' checked' : ''} style="width:auto"> ${m} Min.</label>`).join('')}</div>
-      <div class="row"><button class="btn primary" type="submit">＋ Schritt</button><button class="btn" type="button" data-act="close">Fertig</button></div>
+      <div class="row"><button class="btn primary" type="submit">${svg('plus')}Schritt</button><button class="btn" type="button" data-act="close">Fertig</button></div>
     </form>
     <div id="ai-box">${getCfg().splitUrl
       ? `<button class="btn" type="button" data-act="ai" data-id="${t.id}" style="margin-top:14px">${svg('spark')}Claude schlägt Schritte vor</button>`
@@ -407,8 +518,8 @@ document.addEventListener('click', (e) => {
   if (!b) return;
   const t = b.dataset.id ? find(b.dataset.id) : null;
   switch (b.dataset.act) {
-    case 'done': if (t) { doneStep(t); render(); } break;
-    case 'later': if (t) { skip.push(t.id); render(); } break;
+    case 'done': if (t) swipe(1); break;
+    case 'later': if (t) swipe(-1); break;
     case 'split': if (t) splitSheet(t.id); break;
     case 'close': closeSheet(); break;
     case 'delete': if (t && confirm('Diese Aufgabe löschen?')) { state.tasks = state.tasks.filter((x) => x.id !== t.id); save(); closeSheet(); } break;
@@ -475,8 +586,15 @@ document.addEventListener('change', (e) => {
 });
 
 $('#sheet').addEventListener('click', (e) => { if (e.target.id === 'sheet') closeSheet(); });
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#sheet').hidden) closeSheet(); });
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !$('#sheet').hidden) return closeSheet();
+  if ((e.key === 'ArrowRight' || e.key === 'ArrowLeft') && view === 'now' && $('#sheet').hidden && !e.target.closest('input,select,textarea')) {
+    e.preventDefault();
+    swipe(e.key === 'ArrowRight' ? 1 : -1);
+  }
+});
 
 render();
+settleDeck(null);
 syncCalendar();
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
