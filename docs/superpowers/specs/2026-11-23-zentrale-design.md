@@ -4,7 +4,7 @@ Stand: 2026-11-23 · Status: wartet auf Freigabe
 
 ## Wozu (Intent)
 
-Charlotte hat ADHS (mit Medikation, wirkt nicht immer ausreichend) und jongliert viele Lebensbereiche: Uni, Werkstudentin bei Dresden Sommer (Projektmanagement Generalplanung, Mo + Do, 16 Std.), CDU / Junge Union Hamburg-Eppendorf, Privates und das Projekt „ADHS-Assistent".
+Charlotte hat ADHS (mit Medikation, wirkt nicht immer ausreichend) und jongliert viele Lebensbereiche: Uni, Werkstudentin bei Drees & Sommer (Projektmanagement Generalplanung, Mo + Do, 16 Std.), CDU / Junge Union Hamburg-Eppendorf, Privates und das Projekt „ADHS-Assistent".
 
 Ihre Probleme, in ihren Worten:
 - Sie **vergisst** viele Dinge und **Fristen**.
@@ -62,7 +62,7 @@ Charlotte hat A gewählt. Begründung: privat, schnell fertig (erste Version ca.
 
 **Ansichten (Sidebar):**
 1. 🎯 **Jetzt** – Begrüßung, eine große Karte „Dein nächster Schritt", darunter Status-Chips (Fristen diese Woche, erledigt heute, offen je Bereich).
-2. 📅 **Woche** – Mo–So-Raster mit Fristen und Aufgaben; Mo und Do als „Dresden Sommer"-Tage markiert.
+2. 📅 **Woche** – Mo–So-Raster mit Fristen und Aufgaben; Mo und Do als „Drees & Sommer"-Tage markiert.
 3. 🎓 Uni · 💼 Arbeit · 🏠 Privat · 🏛 Partei · 🧩 ADHS-Projekt – je Bereich eine Liste mit Spalten **Offen / Dran / Fertig**.
 4. ⛰️ **Berg zerlegen** – geführter Dialog, erreichbar aus jeder Aufgabe.
 5. ⚙️ **Einstellungen** – Backup, Import, Bereichsnamen.
@@ -96,6 +96,6 @@ Dann der **erste nicht erledigte Schritt**; hat die Aufgabe keine Schritte, komm
 
 - Fünf Bereiche inkl. ADHS-Projekt (du nanntest Uni, Arbeit, Privat, Partei und das ADHS-Projekt als Projekt).
 - Priorisierungsregel für „Jetzt" wie oben.
-- Mo/Do-Markierung für Dresden Sommer fest eingebaut, später einstellbar.
+- Mo/Do-Markierung für Drees & Sommer fest eingebaut, später einstellbar.
 - Keine Gamification mit Strafen; nur kleine Freude beim Abhaken.
 - Erste Version ohne Kalender-Import und ohne KI.

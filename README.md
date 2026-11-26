@@ -39,7 +39,7 @@ Dritte App im Ordner [`zentrale/`](zentrale/): **Uni, Arbeit, Privat, Partei und
 
 - 🎯 **Jetzt:** genau **ein** nächster Schritt (überfällig → nächste Frist → „Dran" → älteste)
 - ⛰️ **Berg zerlegen:** geführter Dialog in Mini-Schritte mit Zeitschätzung
-- 📅 **Woche:** Fristen im Überblick, Mo + Do als Dresden-Sommer-Tage markiert
+- 📅 **Woche:** Fristen im Überblick, Mo + Do als Drees-&-Sommer-Tage markiert
 - 🔁 Fristen mit Wiederholung, 💾 Backup/Import per Datei (führt zusammen)
 - 📅 **Apple-Kalender** in Jetzt + Woche (nur lesen, über den Connector, Route `/calendar/<Schlüssel>`)
 
