@@ -9,7 +9,7 @@ const AREAS = [
   { id: 'partei', name: 'Partei', icon: '🏛️' },
   { id: 'adhs', name: 'ADHS-Projekt', icon: '🧩' },
 ];
-const WORK_DAYS = [0, 3]; // Montag, Donnerstag (Dresden Sommer)
+const WORK_DAYS = [0, 3]; // Montag, Donnerstag (Drees & Sommer)
 const PRAISE = ['Stark! 🎉', 'Geschafft ✨', 'Ein Ding weniger 🌱', 'Gut gemacht 💜', 'Das zählt 🙌'];
 const DAYNAMES = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
 
@@ -218,7 +218,7 @@ function renderWeek() {
     <div class="week">${days.map((d, i) => {
       const items = open.filter((t) => t.due === d);
       const evs = Logic.eventsOn(cal.events, d);
-      return `<section class="day${d === td ? ' today' : ''}"><header><b>${DAYNAMES[i]} ${d.slice(8)}.${d.slice(5, 7)}.</b>${WORK_DAYS.includes(i) ? '<span class="work">💼 Dresden Sommer</span>' : ''}</header>
+      return `<section class="day${d === td ? ' today' : ''}"><header><b>${DAYNAMES[i]} ${d.slice(8)}.${d.slice(5, 7)}.</b>${WORK_DAYS.includes(i) ? '<span class="work">💼 Drees & Sommer</span>' : ''}</header>
         ${items.length || evs.length ? `<div class="list">${evs.map(eventItem).join('')}${items.map((t) => taskItem(t, { tag: true })).join('')}</div>` : '<span class="muted">–</span>'}</section>`;
     }).join('')}</div>
     <p class="hint">${undated} offene Aufgaben ohne Frist – die findest du in den Bereichen.</p>
