@@ -18,7 +18,9 @@ const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 const today = () => new Date().toLocaleDateString('sv');
 const pick = (a) => a[Math.floor(Math.random() * a.length)];
-const area = (id) => AREAS.find((a) => a.id === id) || AREAS[0];
+// Eigene Namen aus den Einstellungen; IDs und Farben bleiben fest
+const areas = () => { const n = getCfg().names || {}; return AREAS.map((a) => ({ ...a, name: n[a.id] || a.name })); };
+const area = (id) => areas().find((a) => a.id === id) || areas()[0];
 const chip = (id) => `style="--chip:var(--${area(id).id})"`;
 
 /* ---------- Speicher ---------- */
@@ -114,7 +116,7 @@ function doneStep(t) {
 
 function quickAdd(fixedArea) {
   const sel = fixedArea ? `<input type="hidden" name="area" value="${fixedArea}">`
-    : `<select name="area" aria-label="Bereich">${AREAS.map((a) => `<option value="${a.id}"${a.id === lastArea ? ' selected' : ''}>${a.icon} ${a.name}</option>`).join('')}</select>`;
+    : `<select name="area" aria-label="Bereich">${areas().map((a) => `<option value="${a.id}"${a.id === lastArea ? ' selected' : ''}>${a.icon} ${esc(a.name)}</option>`).join('')}</select>`;
   return `<form class="quick" data-quick autocomplete="off">
     <input type="text" name="title" maxlength="120" placeholder="Was geht dir im Kopf rum?" enterkeyhint="done" aria-label="Neue Aufgabe">
     ${sel}
@@ -132,7 +134,7 @@ function taskItem(t, opts = {}) {
   const meta = [t.due ? Logic.dueLabel(t.due, td) : '', steps.length ? `${doneN}/${steps.length} Schritte` : '', t.repeat ? '🔁' : ''].filter(Boolean).join(' · ');
   return `<button class="item${late ? ' late' : ''}${t.status === 'done' ? ' done' : ''}" ${chip(t.area)} data-open="${t.id}">
     <span class="t"><b>${esc(t.title)}</b><span class="m">${esc(meta)}</span>${progress}</span>
-    ${opts.tag ? `<span class="tag" ${chip(t.area)}>${area(t.area).icon} ${area(t.area).name}</span>` : ''}
+    ${opts.tag ? `<span class="tag" ${chip(t.area)}>${area(t.area).icon} ${esc(area(t.area).name)}</span>` : ''}
   </button>`;
 }
 
@@ -161,13 +163,14 @@ function renderNow() {
     const t = next.task;
     const stepText = next.step ? next.step.text : null;
     hero = `<div class="card hero" ${chip(t.area)}>
-      <p class="kicker">${area(t.area).icon} ${area(t.area).name} · Dein nächster Schritt</p>
+      <p class="kicker">${area(t.area).icon} ${esc(area(t.area).name)} · Dein nächster Schritt</p>
       <h2>${esc(stepText || t.title)}</h2>
       <p class="why">${stepText ? `Aus: ${esc(t.title)}${next.step.min ? ` · ca. ${next.step.min} Min.` : ''}<br>` : 'Noch kein Schritt festgelegt – zerlege die Aufgabe, dann wird sie klein.<br>'}${esc(next.reason)}</p>
       <div class="row">
         <button class="btn primary" data-act="done" data-id="${t.id}">✅ Fertig</button>
         <button class="btn" data-act="later" data-id="${t.id}">⏭ Später</button>
         <button class="btn" data-act="split" data-id="${t.id}">⛰️ ${t.steps.length ? 'Schritte ändern' : 'Zu groß? Zerlegen'}</button>
+        <a class="btn" href="../index.html">⏱️ Fokus starten</a>
       </div>
     </div>`;
   }
@@ -189,7 +192,7 @@ function renderNow() {
     ${quickAdd()}${hero}${chips}
     ${after.length ? `<h3>Danach</h3><div class="list">${after.map((t) => taskItem(t, { tag: true })).join('')}</div>` : ''}
     <h3>Deine Bereiche</h3>
-    <div class="chips">${AREAS.map((a) => `<button class="chip" ${chip(a.id)} data-view="${a.id}"><b>${open.filter((t) => t.area === a.id).length}</b><span>${a.icon} ${a.name}</span></button>`).join('')}</div></div>`;
+    <div class="chips">${areas().map((a) => `<button class="chip" ${chip(a.id)} data-view="${a.id}"><b>${open.filter((t) => t.area === a.id).length}</b><span>${a.icon} ${esc(a.name)}</span></button>`).join('')}</div></div>`;
 }
 
 function renderArea(id) {
@@ -201,7 +204,7 @@ function renderArea(id) {
   const todo = sortOpen(mine.filter((t) => t.status === 'todo'));
   const done = mine.filter((t) => t.status === 'done').sort((x, y) => (y.updatedAt || 0) - (x.updatedAt || 0));
   const sec = (title, list, limit) => list.length ? `<h3>${title} (${list.length})</h3><div class="list">${list.slice(0, limit).map((t) => taskItem(t)).join('')}</div>${list.length > limit ? `<p class="hint">… und ${list.length - limit} weitere</p>` : ''}` : '';
-  return `<div class="inner"><header class="top"><h1>${a.icon} ${a.name}</h1><p class="lead">${doing.length + todo.length} offen</p></header>
+  return `<div class="inner"><header class="top"><h1>${a.icon} ${esc(a.name)}</h1><p class="lead">${doing.length + todo.length} offen</p></header>
     ${quickAdd(id)}
     ${!mine.length ? '<div class="empty">Hier ist noch nichts. Schreib oben die erste Aufgabe auf.</div>' : ''}
     ${sec('Dran', doing, 5)}${sec('Offen', todo, 8)}${sec('Fertig', done, 5)}</div>`;
@@ -235,6 +238,9 @@ function renderSettings() {
       <p class="muted">Füge hier deinen <b>Connector-Link</b> ein (der mit <b>/mcp/…</b> oder <b>/setup/…</b>). Beim Zerlegen wird nur der <b>Titel</b> der Aufgabe (und deine Notiz) an Claude gesendet.</p>
       <form class="quick" data-cfg autocomplete="off"><input type="text" name="url" placeholder="https://adhs-assistant.….workers.dev/setup/…" value="${esc(getCfg().splitUrl ? '(gespeichert)' : '')}" aria-label="Connector-Link"><button class="btn primary" type="submit">Speichern</button></form>
       ${getCfg().splitUrl ? `<p class="hint">✅ Verbunden.</p><div class="row"><a class="btn primary" href="${esc(getCfg().splitUrl.replace('/split/', '/setup/'))}" target="_blank" rel="noopener">🔑 Einrichtungsseite öffnen (API-Key)</a><button class="btn small" data-act="cfg-clear">Trennen</button></div>` : ''}</div>
+    <div class="card" style="margin-top:14px"><h2>🏷️ Bereiche benennen</h2>
+      <p class="muted">Leer lassen = Standardname.</p>
+      <form class="quick" data-names autocomplete="off">${areas().map((a, i) => `<input type="text" name="${a.id}" maxlength="30" value="${esc(a.name)}" placeholder="${AREAS[i].icon} ${AREAS[i].name}" aria-label="Name für ${AREAS[i].name}">`).join('')}<button class="btn primary" type="submit">Speichern</button></form></div>
     <p class="hint">Bitte keine sensiblen Daten (Gesundheit, Passwörter) eintragen.</p></div>`;
 }
 
@@ -247,7 +253,7 @@ function renderNav() {
   const item = (id, icon, long, short, color) => `<button type="button" data-view="${id}" ${color ? chip(color) : 'style="--chip:var(--line)"'}${view === id ? ' aria-current="page"' : ''}><i>${icon}</i><span class="long">${long}</span><span class="short">${short}</span></button>`;
   $('#nav').innerHTML = `<p class="brand">Zentrale</p>
     ${item('now', '🎯', 'Jetzt', 'Jetzt')}${item('week', '📅', 'Woche', 'Woche')}<div class="sep"></div>
-    ${AREAS.map((a) => item(a.id, a.icon, a.name, a.id === 'adhs' ? 'Projekt' : a.name, a.id)).join('')}<div class="sep"></div>
+    ${areas().map((a) => item(a.id, a.icon, esc(a.name), a.name === 'ADHS-Projekt' ? 'Projekt' : esc(a.name), a.id)).join('')}<div class="sep"></div>
     ${item('settings', '⚙️', 'Einstellungen', 'Setup')}`;
 }
 
@@ -279,7 +285,7 @@ function editSheet(id) {
   const opt = (v, label, cur) => `<option value="${v}"${v === (cur || '') ? ' selected' : ''}>${label}</option>`;
   openSheet(`<h2>Aufgabe</h2>
     <label>Titel</label><input data-f="title" value="${esc(t.title)}" maxlength="120">
-    <label>Bereich</label><select data-f="area">${AREAS.map((a) => opt(a.id, `${a.icon} ${a.name}`, t.area)).join('')}</select>
+    <label>Bereich</label><select data-f="area">${areas().map((a) => opt(a.id, `${a.icon} ${esc(a.name)}`, t.area)).join('')}</select>
     <label>Frist</label><input type="date" data-f="due" value="${t.due || ''}">
     <label>Wiederholen</label><select data-f="repeat">${opt('', 'Nie', t.repeat)}${opt('weekly', 'Jede Woche', t.repeat)}${opt('monthly', 'Jeden Monat', t.repeat)}</select>
     <label>Status</label><select data-f="status">${opt('todo', 'Offen', t.status)}${opt('doing', 'Dran', t.status)}${opt('done', 'Fertig', t.status)}</select>
@@ -384,7 +390,7 @@ document.addEventListener('click', (e) => {
     case 'ai': if (t) aiSuggest(t); break;
     case 'ai-take': takeAi(b.dataset.id); break;
     case 'cal-sync': syncCalendar(true); toast('Lade Termine …'); break;
-    case 'cfg-clear': setCfg({}); render(); toast('Getrennt'); break;
+    case 'cfg-clear': { const { splitUrl, ...rest } = getCfg(); setCfg(rest); } render(); toast('Getrennt'); break;
     default:
   }
 });
@@ -406,6 +412,12 @@ document.addEventListener('submit', (e) => {
     if (!url) return toast('Link ohne Schlüssel: Er muss /mcp/… oder /setup/… mit dem langen Code danach enthalten.');
     setCfg({ ...getCfg(), splitUrl: url });
     render(); toast('Verbunden ✅'); syncCalendar(true);
+  } else if (f.matches('[data-names]')) {
+    e.preventDefault();
+    const names = {};
+    AREAS.forEach((a) => { const v = f.elements[a.id].value.trim().slice(0, 30); if (v && v !== a.name) names[a.id] = v; });
+    setCfg({ ...getCfg(), names });
+    render(); toast('Namen gespeichert ✅');
   } else if (f.matches('[data-split]')) {
     e.preventDefault();
     const t = find(f.dataset.split);
