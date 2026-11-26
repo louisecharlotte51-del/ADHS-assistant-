@@ -373,7 +373,7 @@ document.addEventListener('submit', (e) => {
   } else if (f.matches('[data-cfg]')) {
     e.preventDefault();
     const url = Logic.splitEndpoint(f.elements.url.value);
-    if (!url) return toast('Das ist kein gültiger Connector-Link (https://…/mcp/… oder /setup/…)');
+    if (!url) return toast('Link ohne Schlüssel: Er muss /mcp/… oder /setup/… mit dem langen Code danach enthalten.');
     setCfg({ ...getCfg(), splitUrl: url });
     render(); toast('Verbunden ✅');
   } else if (f.matches('[data-split]')) {

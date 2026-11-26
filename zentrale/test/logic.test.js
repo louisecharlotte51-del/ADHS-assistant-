@@ -84,3 +84,10 @@ test('splitEndpoint: ungültige Eingaben ergeben null', () => {
   assert.equal(L.splitEndpoint('https://a.dev/'), null);
   assert.equal(L.splitEndpoint('http://a.dev/mcp/k'), null);
 });
+
+test('splitEndpoint: verzeiht Text drumherum und fehlendes https://', () => {
+  assert.equal(L.splitEndpoint('URL: https://a.dev/mcp/k123 kopiert'), 'https://a.dev/split/k123');
+  assert.equal(L.splitEndpoint('adhs-assistant.x.workers.dev/setup/k123'), 'https://adhs-assistant.x.workers.dev/split/k123');
+  assert.equal(L.splitEndpoint('https://a.dev/mcp/k123.'), 'https://a.dev/split/k123');
+  assert.equal(L.splitEndpoint('https://adhs-assistant.x.workers.dev'), null);
+});

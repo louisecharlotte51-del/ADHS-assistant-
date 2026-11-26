@@ -86,7 +86,11 @@
 
   function splitEndpoint(raw) {
     let u;
-    try { u = new URL(String(raw || '').trim()); } catch (e) { return null; }
+    // Pasted text may carry extra words, a missing "https://" or a trailing dot.
+    let text = String(raw || '').trim();
+    const at = text.search(/https?:\/\//i);
+    text = (at >= 0 ? text.slice(at) : 'https://' + text).split(/\s/)[0].replace(/[.,;)]+$/, '');
+    try { u = new URL(text); } catch (e) { return null; }
     if (u.protocol !== 'https:') return null;
     const seg = u.pathname.split('/').filter(Boolean);
     const i = seg.findIndex((x) => x === 'mcp' || x === 'setup' || x === 'split');
