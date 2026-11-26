@@ -158,19 +158,19 @@ function renderNow() {
   if (!state.tasks.length) {
     hero = `<div class="card empty"><b>Noch nichts hier – das ist okay.</b><br>Schreib oben auf, was dir gerade im Kopf rumgeht. Ein Wort reicht. Sortieren und Zerlegen machen wir danach.</div>`;
   } else if (!next) {
-    hero = `<div class="card hero" ${chip('adhs')}><p class="kicker">Alles erledigt</p><h2>Nichts offen. 🎉</h2><p class="why">Genieß die Pause oder schreib oben etwas Neues auf.</p></div>`;
+    hero = `<div class="card hero" ${chip('adhs')}><div class="core" aria-hidden="true"><i></i></div><p class="kicker">Alles erledigt</p><h2>Nichts offen. 🎉</h2><p class="why">Genieß die Pause oder schreib oben etwas Neues auf.</p></div>`;
   } else {
     const t = next.task;
     const stepText = next.step ? next.step.text : null;
-    hero = `<div class="card hero" ${chip(t.area)}>
+    hero = `<div class="card hero" ${chip(t.area)}><div class="core" aria-hidden="true"><i></i></div>
       <p class="kicker">${area(t.area).icon} ${esc(area(t.area).name)} · Dein nächster Schritt</p>
       <h2>${esc(stepText || t.title)}</h2>
       <p class="why">${stepText ? `Aus: ${esc(t.title)}${next.step.min ? ` · ca. ${next.step.min} Min.` : ''}<br>` : 'Noch kein Schritt festgelegt – zerlege die Aufgabe, dann wird sie klein.<br>'}${esc(next.reason)}</p>
       <div class="row">
-        <button class="btn primary" data-act="done" data-id="${t.id}">✅ Fertig</button>
-        <button class="btn" data-act="later" data-id="${t.id}">⏭ Später</button>
-        <button class="btn" data-act="split" data-id="${t.id}">⛰️ ${t.steps.length ? 'Schritte ändern' : 'Zu groß? Zerlegen'}</button>
-        <a class="btn" href="../index.html">⏱️ Fokus starten</a>
+        <button class="btn primary" data-act="done" data-id="${t.id}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5 10 17l9-10"/></svg>Fertig</button>
+        <button class="btn" data-act="later" data-id="${t.id}">Später</button>
+        <button class="btn" data-act="split" data-id="${t.id}">${t.steps.length ? 'Schritte ändern' : 'Zu groß? Zerlegen'}</button>
+        <a class="btn" href="../index.html">Fokus starten</a>
       </div>
     </div>`;
   }
@@ -204,7 +204,7 @@ function renderArea(id) {
   const todo = sortOpen(mine.filter((t) => t.status === 'todo'));
   const done = mine.filter((t) => t.status === 'done').sort((x, y) => (y.updatedAt || 0) - (x.updatedAt || 0));
   const sec = (title, list, limit) => list.length ? `<h3>${title} (${list.length})</h3><div class="list">${list.slice(0, limit).map((t) => taskItem(t)).join('')}</div>${list.length > limit ? `<p class="hint">… und ${list.length - limit} weitere</p>` : ''}` : '';
-  return `<div class="inner"><header class="top"><h1>${a.icon} ${esc(a.name)}</h1><p class="lead">${doing.length + todo.length} offen</p></header>
+  return `<div class="inner"><header class="top"><h1>${esc(a.name)}</h1><p class="lead">${doing.length + todo.length} offen</p></header>
     ${quickAdd(id)}
     ${!mine.length ? '<div class="empty">Hier ist noch nichts. Schreib oben die erste Aufgabe auf.</div>' : ''}
     ${sec('Dran', doing, 5)}${sec('Offen', todo, 8)}${sec('Fertig', done, 5)}</div>`;
@@ -216,7 +216,7 @@ function renderWeek() {
   const open = state.tasks.filter((t) => t.status !== 'done');
   const late = open.filter((t) => t.due && t.due < td);
   const undated = open.filter((t) => !t.due).length;
-  return `<div class="inner"><header class="top"><h1>📅 Diese Woche</h1><p class="lead">Fristen und Termine auf einen Blick</p></header>
+  return `<div class="inner"><header class="top"><h1>Diese Woche</h1><p class="lead">Fristen und Termine auf einen Blick</p></header>
     ${late.length ? `<div class="card" style="margin-bottom:12px"><h2>⚠️ Überfällig</h2><div class="list">${late.map((t) => taskItem(t, { tag: true })).join('')}</div></div>` : ''}
     <div class="week">${days.map((d, i) => {
       const items = open.filter((t) => t.due === d);
@@ -229,7 +229,7 @@ function renderWeek() {
 }
 
 function renderSettings() {
-  return `<div class="inner"><header class="top"><h1>⚙️ Einstellungen</h1><p class="lead">Deine Daten bleiben nur auf diesem Gerät.</p></header>
+  return `<div class="inner"><header class="top"><h1>Einstellungen</h1><p class="lead">Deine Daten bleiben nur auf diesem Gerät.</p></header>
     <div class="card"><h2>💾 Backup</h2>
       <p class="muted">Speichere eine Datei (z. B. in iCloud Drive), um Daten zwischen iPad, iPhone und Mac zu tauschen. Beim Laden wird <b>zusammengeführt</b>, nichts überschrieben.</p>
       <div class="row"><button class="btn primary" data-act="export">Datei speichern</button>
@@ -249,15 +249,31 @@ function render() {
   renderNav();
 }
 
+const ICONS = {
+  now: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  week: '<rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18"/>',
+  uni: '<path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 2.5 9 2.5 12 0v-5"/>',
+  arbeit: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/>',
+  privat: '<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+  partei: '<path d="M3 21h18M4 10h16M12 3l9 5H3l9-5Z"/><path d="M6 10v8M10 10v8M14 10v8M18 10v8"/>',
+  adhs: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
+  settings: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+};
+const svg = (id) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[id] || ICONS.now}</svg>`;
+
 function renderNav() {
-  const item = (id, icon, long, short, color) => `<button type="button" data-view="${id}" ${color ? chip(color) : 'style="--chip:var(--line)"'}${view === id ? ' aria-current="page"' : ''}><i>${icon}</i><span class="long">${long}</span><span class="short">${short}</span></button>`;
+  const item = (id, icon, long, short, color) => `<button type="button" data-view="${id}" ${color ? chip(color) : ''}${view === id ? ' aria-current="page"' : ''}>${svg(id)}<span class="long">${long}</span><span class="short">${short}</span></button>`;
   $('#nav').innerHTML = `<p class="brand">Zentrale</p>
     ${item('now', '🎯', 'Jetzt', 'Jetzt')}${item('week', '📅', 'Woche', 'Woche')}<div class="sep"></div>
     ${areas().map((a) => item(a.id, a.icon, esc(a.name), a.name === 'ADHS-Projekt' ? 'Projekt' : esc(a.name), a.id)).join('')}<div class="sep"></div>
     ${item('settings', '⚙️', 'Einstellungen', 'Setup')}`;
 }
 
-function go(v) { view = v; skip = []; render(); window.scrollTo(0, 0); if (v === 'now' || v === 'week') syncCalendar(); }
+function go(v) {
+  view = v; skip = []; render(); window.scrollTo(0, 0);
+  const m = $('#main'); m.classList.remove('enter'); void m.offsetWidth; m.classList.add('enter'); // replay entrance on view change only
+  if (v === 'now' || v === 'week') syncCalendar();
+}
 
 /* ---------- Sheet + Toast ---------- */
 
