@@ -3,14 +3,14 @@
 
 const STORE_KEY = 'zentrale-v1';
 const AREAS = [
-  { id: 'uni', name: 'Uni', icon: '🎓' },
-  { id: 'arbeit', name: 'Arbeit', icon: '💼' },
-  { id: 'privat', name: 'Privat', icon: '🏠' },
-  { id: 'partei', name: 'Partei', icon: '🏛️' },
-  { id: 'adhs', name: 'ADHS-Projekt', icon: '🧩' },
+  { id: 'uni', name: 'Uni' },
+  { id: 'arbeit', name: 'Arbeit' },
+  { id: 'privat', name: 'Privat' },
+  { id: 'partei', name: 'Partei' },
+  { id: 'adhs', name: 'ADHS-Projekt' },
 ];
 const WORK_DAYS = [0, 3]; // Montag, Donnerstag (Drees & Sommer)
-const PRAISE = ['Stark! 🎉', 'Geschafft ✨', 'Ein Ding weniger 🌱', 'Gut gemacht 💜', 'Das zählt 🙌'];
+const PRAISE = ['Stark.', 'Geschafft.', 'Ein Ding weniger.', 'Gut gemacht.', 'Das zählt.'];
 const DAYNAMES = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
 
 const $ = (sel) => document.querySelector(sel);
@@ -21,6 +21,7 @@ const pick = (a) => a[Math.floor(Math.random() * a.length)];
 // Eigene Namen aus den Einstellungen; IDs und Farben bleiben fest
 const areas = () => { const n = getCfg().names || {}; return AREAS.map((a) => ({ ...a, name: n[a.id] || a.name })); };
 const area = (id) => areas().find((a) => a.id === id) || areas()[0];
+const facts = (arr) => arr.filter(Boolean).map((x) => `<span>${esc(x)}</span>`).join('');
 const chip = (id) => `style="--chip:var(--${area(id).id})"`;
 
 /* ---------- Speicher ---------- */
@@ -64,7 +65,7 @@ async function syncCalendar(force) {
   if (view === 'now' || view === 'week') render();
 }
 const hhmm = (iso) => new Date(iso).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-const eventItem = (ev) => `<div class="item ev" style="--chip:var(--line)"><span class="t"><b>${ev.ganztaegig ? 'ganztägig' : esc(hhmm(ev.startIso))} · ${esc(ev.titel || '(ohne Titel)')}</b><span class="m">${esc([ev.ort, ev.kalender].filter(Boolean).join(' · '))}</span></span><span class="tag" style="--chip:var(--line)">📅</span></div>`;
+const eventItem = (ev) => `<div class="item ev" style="--chip:var(--adhs)"><span class="t"><b><span class="time">${ev.ganztaegig ? 'ganztägig' : esc(hhmm(ev.startIso))}</span>${esc(ev.titel || '(ohne Titel)')}</b><span class="m">${facts([ev.ort, ev.kalender])}</span></span><span class="tag" style="--chip:var(--adhs)">${svg('week')}Termin</span></div>`;
 
 /* ---------- Zustand der Ansicht ---------- */
 
@@ -116,7 +117,7 @@ function doneStep(t) {
 
 function quickAdd(fixedArea) {
   const sel = fixedArea ? `<input type="hidden" name="area" value="${fixedArea}">`
-    : `<select name="area" aria-label="Bereich">${areas().map((a) => `<option value="${a.id}"${a.id === lastArea ? ' selected' : ''}>${a.icon} ${esc(a.name)}</option>`).join('')}</select>`;
+    : `<select name="area" aria-label="Bereich">${areas().map((a) => `<option value="${a.id}"${a.id === lastArea ? ' selected' : ''}>${esc(a.name)}</option>`).join('')}</select>`;
   return `<form class="quick" data-quick autocomplete="off">
     <input type="text" name="title" maxlength="120" placeholder="Was geht dir im Kopf rum?" enterkeyhint="done" aria-label="Neue Aufgabe">
     ${sel}
@@ -130,11 +131,10 @@ function taskItem(t, opts = {}) {
   const late = t.due && t.due < td && t.status !== 'done';
   const steps = t.steps || [];
   const doneN = steps.filter((s) => s.done).length;
-  const progress = steps.length ? `<div class="bar" aria-hidden="true"><i style="width:${Math.round((doneN / steps.length) * 100)}%"></i></div>` : '';
-  const meta = [t.due ? Logic.dueLabel(t.due, td) : '', steps.length ? `${doneN}/${steps.length} Schritte` : '', t.repeat ? '🔁' : ''].filter(Boolean).join(' · ');
+  const meta = facts([t.due ? Logic.dueLabel(t.due, td) : '', steps.length ? `Schritt ${Math.min(doneN + 1, steps.length)} von ${steps.length}` : '', t.repeat ? (t.repeat === 'weekly' ? 'jede Woche' : 'jeden Monat') : '']);
   return `<button class="item${late ? ' late' : ''}${t.status === 'done' ? ' done' : ''}" ${chip(t.area)} data-open="${t.id}">
-    <span class="t"><b>${esc(t.title)}</b><span class="m">${esc(meta)}</span>${progress}</span>
-    ${opts.tag ? `<span class="tag" ${chip(t.area)}>${area(t.area).icon} ${esc(area(t.area).name)}</span>` : ''}
+    <span class="t"><b>${esc(t.title)}</b><span class="m">${meta}</span></span>
+    ${opts.tag ? `<span class="tag" ${chip(t.area)}>${svg(t.area)}${esc(area(t.area).name)}</span>` : ''}
   </button>`;
 }
 
@@ -158,19 +158,22 @@ function renderNow() {
   if (!state.tasks.length) {
     hero = `<div class="card empty"><b>Noch nichts hier – das ist okay.</b><br>Schreib oben auf, was dir gerade im Kopf rumgeht. Ein Wort reicht. Sortieren und Zerlegen machen wir danach.</div>`;
   } else if (!next) {
-    hero = `<div class="card hero" ${chip('adhs')}><div class="core" aria-hidden="true"><i></i></div><p class="kicker">Alles erledigt</p><h2>Nichts offen. 🎉</h2><p class="why">Genieß die Pause oder schreib oben etwas Neues auf.</p></div>`;
+    hero = `<div class="card hero" ${chip('adhs')}><p class="kicker">${svg('check')}<span>Alles erledigt</span></p><h2>Nichts offen.</h2><p class="why">Genieß die Pause oder schreib oben etwas Neues auf.</p></div>`;
   } else {
     const t = next.task;
-    const stepText = next.step ? next.step.text : null;
-    hero = `<div class="card hero" ${chip(t.area)}><div class="core" aria-hidden="true"><i></i></div>
-      <p class="kicker">${area(t.area).icon} ${esc(area(t.area).name)} · Dein nächster Schritt</p>
-      <h2>${esc(stepText || t.title)}</h2>
-      <p class="why">${stepText ? `Aus: ${esc(t.title)}${next.step.min ? ` · ca. ${next.step.min} Min.` : ''}<br>` : 'Noch kein Schritt festgelegt – zerlege die Aufgabe, dann wird sie klein.<br>'}${esc(next.reason)}</p>
+    const step = next.step;
+    hero = `<div class="card hero" ${chip(t.area)}>
+      <div class="hero-head"><p class="kicker">${svg(t.area)}<span>${esc(area(t.area).name)}</span></p><p class="kicker soft">Dein nächster Schritt</p></div>
+      <div class="hero-body">
+        <h2>${esc(step ? step.text : t.title)}</h2>
+        ${step && step.min ? `<div class="minutes" aria-label="ca. ${step.min} Minuten"><b>${step.min}</b><span>Min</span></div>` : ''}
+      </div>
+      <p class="why">${facts([step ? `aus ${t.title}` : 'Noch kein Schritt festgelegt, zerlege die Aufgabe', next.reason])}</p>
       <div class="row">
-        <button class="btn primary" data-act="done" data-id="${t.id}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5 10 17l9-10"/></svg>Fertig</button>
+        <button class="btn primary" data-act="done" data-id="${t.id}">${svg('check')}Fertig</button>
         <button class="btn" data-act="later" data-id="${t.id}">Später</button>
-        <button class="btn" data-act="split" data-id="${t.id}">${t.steps.length ? 'Schritte ändern' : 'Zu groß? Zerlegen'}</button>
-        <a class="btn" href="../index.html">Fokus starten</a>
+        <button class="btn" data-act="split" data-id="${t.id}">${svg('split')}${t.steps.length ? 'Schritte' : 'Zerlegen'}</button>
+        <a class="btn" href="../index.html">${svg('clock')}Fokus</a>
       </div>
     </div>`;
   }
@@ -187,12 +190,12 @@ function renderNow() {
       if (!ev) return '';
       const min = Math.round((Date.parse(ev.startIso) - Date.now()) / 60000);
       const when = min < 60 ? `in ${min} Min.` : `in ${Math.round(min / 60)} Std.`;
-      return `<p class="lead">📅 Nächster Termin: <b>${esc(hhmm(ev.startIso))} ${esc(ev.titel || '')}</b> (${when})</p>`;
+      return `<p class="next-event">${svg('week')}<span>Nächster Termin</span><b>${esc(hhmm(ev.startIso))} ${esc(ev.titel || '')}</b><span>${when}</span></p>`;
     })()}</header>
     ${quickAdd()}${hero}${chips}
     ${after.length ? `<h3>Danach</h3><div class="list">${after.map((t) => taskItem(t, { tag: true })).join('')}</div>` : ''}
     <h3>Deine Bereiche</h3>
-    <div class="chips">${areas().map((a) => `<button class="chip" ${chip(a.id)} data-view="${a.id}"><b>${open.filter((t) => t.area === a.id).length}</b><span>${a.icon} ${esc(a.name)}</span></button>`).join('')}</div></div>`;
+    <div class="chips">${areas().map((a) => `<button class="chip" ${chip(a.id)} data-view="${a.id}"><b>${open.filter((t) => t.area === a.id).length}</b><span>${svg(a.id)}${esc(a.name)}</span></button>`).join('')}</div></div>`;
 }
 
 function renderArea(id) {
@@ -217,30 +220,30 @@ function renderWeek() {
   const late = open.filter((t) => t.due && t.due < td);
   const undated = open.filter((t) => !t.due).length;
   return `<div class="inner"><header class="top"><h1>Diese Woche</h1><p class="lead">Fristen und Termine auf einen Blick</p></header>
-    ${late.length ? `<div class="card" style="margin-bottom:12px"><h2>⚠️ Überfällig</h2><div class="list">${late.map((t) => taskItem(t, { tag: true })).join('')}</div></div>` : ''}
+    ${late.length ? `<div class="card" style="margin-bottom:12px"><h2>Überfällig</h2><div class="list">${late.map((t) => taskItem(t, { tag: true })).join('')}</div></div>` : ''}
     <div class="week">${days.map((d, i) => {
       const items = open.filter((t) => t.due === d);
       const evs = Logic.eventsOn(cal.events, d);
-      return `<section class="day${d === td ? ' today' : ''}"><header><b>${DAYNAMES[i]} ${d.slice(8)}.${d.slice(5, 7)}.</b>${WORK_DAYS.includes(i) ? '<span class="work">💼 Drees & Sommer</span>' : ''}</header>
+      return `<section class="day${d === td ? ' today' : ''}"><header><b>${DAYNAMES[i]} ${d.slice(8)}.${d.slice(5, 7)}.</b>${WORK_DAYS.includes(i) ? '<span class="work">Drees & Sommer</span>' : ''}</header>
         ${items.length || evs.length ? `<div class="list">${evs.map(eventItem).join('')}${items.map((t) => taskItem(t, { tag: true })).join('')}</div>` : '<span class="muted">–</span>'}</section>`;
     }).join('')}</div>
     <p class="hint">${undated} offene Aufgaben ohne Frist – die findest du in den Bereichen.</p>
-    <p class="hint">${getCfg().splitUrl ? `📅 Apple-Kalender${cal.at ? ` · Stand ${esc(hhmm(new Date(cal.at).toISOString()))}` : ''}${cal.error ? ` · ⚠️ ${esc(cal.error)}` : ''} <button class="btn small" data-act="cal-sync">Neu laden</button>` : '📅 Termine anzeigen: unter Setup den Connector verbinden.'}</p></div>`;
+    <p class="hint">${getCfg().splitUrl ? `Apple-Kalender${cal.at ? `, Stand ${esc(hhmm(new Date(cal.at).toISOString()))} Uhr` : ''}${cal.error ? `<br>${esc(cal.error)}` : ''} <button class="btn small" data-act="cal-sync">Neu laden</button>` : 'Termine anzeigen: unter Setup den Connector verbinden.'}</p></div>`;
 }
 
 function renderSettings() {
   return `<div class="inner"><header class="top"><h1>Einstellungen</h1><p class="lead">Deine Daten bleiben nur auf diesem Gerät.</p></header>
-    <div class="card"><h2>💾 Backup</h2>
+    <div class="card"><h2>Backup</h2>
       <p class="muted">Speichere eine Datei (z. B. in iCloud Drive), um Daten zwischen iPad, iPhone und Mac zu tauschen. Beim Laden wird <b>zusammengeführt</b>, nichts überschrieben.</p>
       <div class="row"><button class="btn primary" data-act="export">Datei speichern</button>
       <label class="btn" style="cursor:pointer">Datei laden<input type="file" accept="application/json,.json" data-import hidden></label></div></div>
-    <div class="card" style="margin-top:14px"><h2>✨ Claude zerlegt für dich</h2>
+    <div class="card" style="margin-top:14px"><h2>Claude zerlegt für dich</h2>
       <p class="muted">Füge hier deinen <b>Connector-Link</b> ein (der mit <b>/mcp/…</b> oder <b>/setup/…</b>). Beim Zerlegen wird nur der <b>Titel</b> der Aufgabe (und deine Notiz) an Claude gesendet.</p>
       <form class="quick" data-cfg autocomplete="off"><input type="text" name="url" placeholder="https://adhs-assistant.….workers.dev/setup/…" value="${esc(getCfg().splitUrl ? '(gespeichert)' : '')}" aria-label="Connector-Link"><button class="btn primary" type="submit">Speichern</button></form>
-      ${getCfg().splitUrl ? `<p class="hint">✅ Verbunden.</p><div class="row"><a class="btn primary" href="${esc(getCfg().splitUrl.replace('/split/', '/setup/'))}" target="_blank" rel="noopener">🔑 Einrichtungsseite öffnen (API-Key)</a><button class="btn small" data-act="cfg-clear">Trennen</button></div>` : ''}</div>
-    <div class="card" style="margin-top:14px"><h2>🏷️ Bereiche benennen</h2>
+      ${getCfg().splitUrl ? `<p class="hint">Verbunden</p><div class="row"><a class="btn primary" href="${esc(getCfg().splitUrl.replace('/split/', '/setup/'))}" target="_blank" rel="noopener">Einrichtungsseite öffnen</a><button class="btn small" data-act="cfg-clear">Trennen</button></div>` : ''}</div>
+    <div class="card" style="margin-top:14px"><h2>Bereiche benennen</h2>
       <p class="muted">Leer lassen = Standardname.</p>
-      <form class="quick" data-names autocomplete="off">${areas().map((a, i) => `<input type="text" name="${a.id}" maxlength="30" value="${esc(a.name)}" placeholder="${AREAS[i].icon} ${AREAS[i].name}" aria-label="Name für ${AREAS[i].name}">`).join('')}<button class="btn primary" type="submit">Speichern</button></form></div>
+      <form class="quick" data-names autocomplete="off">${areas().map((a, i) => `<input type="text" name="${a.id}" maxlength="30" value="${esc(a.name)}" placeholder="${AREAS[i].name}" aria-label="Name für ${AREAS[i].name}">`).join('')}<button class="btn primary" type="submit">Speichern</button></form></div>
     <p class="hint">Bitte keine sensiblen Daten (Gesundheit, Passwörter) eintragen.</p></div>`;
 }
 
@@ -256,17 +259,24 @@ const ICONS = {
   arbeit: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/>',
   privat: '<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
   partei: '<path d="M3 21h18M4 10h16M12 3l9 5H3l9-5Z"/><path d="M6 10v8M10 10v8M14 10v8M18 10v8"/>',
-  adhs: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
+  adhs: '<circle cx="12" cy="12" r="2.5"/><path d="M12 9.5C10 6 10 3.5 12 3c2 .5 2 3 0 6.5ZM12 14.5c2 3.5 2 6 0 6.5-2-.5-2-3 0-6.5ZM9.5 12C6 14 3.5 14 3 12c.5-2 3-2 6.5 0ZM14.5 12c3.5-2 6-2 6.5 0-.5 2-3 2-6.5 0Z"/>',
   settings: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
 };
+Object.assign(ICONS, {
+  check: '<path d="M5 12.5 10 17l9-10"/>',
+  x: '<path d="M6 6l12 12M18 6 6 18"/>',
+  clock: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/>',
+  split: '<path d="M4 19h16"/><path d="M6 19l5-9 3 5 2-3 2 7"/>',
+  spark: '<path d="M12 3c.6 4.2 2.8 6.4 7 7-4.2.6-6.4 2.8-7 7-.6-4.2-2.8-6.4-7-7 4.2-.6 6.4-2.8 7-7Z"/>',
+});
 const svg = (id) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[id] || ICONS.now}</svg>`;
 
 function renderNav() {
   const item = (id, icon, long, short, color) => `<button type="button" data-view="${id}" ${color ? chip(color) : ''}${view === id ? ' aria-current="page"' : ''}>${svg(id)}<span class="long">${long}</span><span class="short">${short}</span></button>`;
   $('#nav').innerHTML = `<p class="brand">Zentrale</p>
-    ${item('now', '🎯', 'Jetzt', 'Jetzt')}${item('week', '📅', 'Woche', 'Woche')}<div class="sep"></div>
-    ${areas().map((a) => item(a.id, a.icon, esc(a.name), a.name === 'ADHS-Projekt' ? 'Projekt' : esc(a.name), a.id)).join('')}<div class="sep"></div>
-    ${item('settings', '⚙️', 'Einstellungen', 'Setup')}`;
+    ${item('now', '', 'Jetzt', 'Jetzt')}${item('week', '', 'Woche', 'Woche')}<div class="sep"></div>
+    ${areas().map((a) => item(a.id, '', esc(a.name), a.name === 'ADHS-Projekt' ? 'Projekt' : esc(a.name), a.id)).join('')}<div class="sep"></div>
+    ${item('settings', '', 'Einstellungen', 'Setup')}`;
 }
 
 function go(v) {
@@ -301,13 +311,13 @@ function editSheet(id) {
   const opt = (v, label, cur) => `<option value="${v}"${v === (cur || '') ? ' selected' : ''}>${label}</option>`;
   openSheet(`<h2>Aufgabe</h2>
     <label>Titel</label><input data-f="title" value="${esc(t.title)}" maxlength="120">
-    <label>Bereich</label><select data-f="area">${areas().map((a) => opt(a.id, `${a.icon} ${esc(a.name)}`, t.area)).join('')}</select>
+    <label>Bereich</label><select data-f="area">${areas().map((a) => opt(a.id, esc(a.name), t.area)).join('')}</select>
     <label>Frist</label><input type="date" data-f="due" value="${t.due || ''}">
     <label>Wiederholen</label><select data-f="repeat">${opt('', 'Nie', t.repeat)}${opt('weekly', 'Jede Woche', t.repeat)}${opt('monthly', 'Jeden Monat', t.repeat)}</select>
     <label>Status</label><select data-f="status">${opt('todo', 'Offen', t.status)}${opt('doing', 'Dran', t.status)}${opt('done', 'Fertig', t.status)}</select>
     <h3>Schritte</h3>
-    ${t.steps.map((s) => `<div class="stepline${s.done ? ' done' : ''}"><input type="checkbox" data-step="${s.id}"${s.done ? ' checked' : ''} aria-label="erledigt"><span>${esc(s.text)}${s.min ? ` · ${s.min} Min.` : ''}</span><button class="btn small" data-rmstep="${s.id}" aria-label="Schritt löschen">✕</button></div>`).join('') || '<p class="muted">Noch keine Schritte.</p>'}
-    <div class="row" style="margin-top:16px"><button class="btn" data-act="split" data-id="${t.id}">⛰️ Zerlegen</button><button class="btn primary" data-act="close">Fertig</button><button class="btn danger" data-act="delete" data-id="${t.id}">Löschen</button></div>`);
+    ${t.steps.map((s) => `<div class="stepline${s.done ? ' done' : ''}"><input type="checkbox" data-step="${s.id}"${s.done ? ' checked' : ''} aria-label="erledigt"><span>${esc(s.text)}</span>${s.min ? `<em>${s.min} Min</em>` : ''}<button class="btn small" data-rmstep="${s.id}" aria-label="Schritt löschen">${svg('x')}</button></div>`).join('') || '<p class="muted">Noch keine Schritte.</p>'}
+    <div class="row" style="margin-top:16px"><button class="btn" data-act="split" data-id="${t.id}">${svg('split')}Zerlegen</button><button class="btn primary" data-act="close">Fertig</button><button class="btn danger" data-act="delete" data-id="${t.id}">Löschen</button></div>`);
   $('#sheet-card').dataset.id = id;
 }
 
@@ -315,8 +325,8 @@ function splitSheet(id, focus = true) {
   const t = find(id);
   if (!t) return closeSheet();
   const n = t.steps.length;
-  openSheet(`<h2>⛰️ ${esc(t.title)}</h2>
-    ${t.steps.map((s) => `<div class="stepline"><span>${n ? '👣' : ''} ${esc(s.text)}${s.min ? ` · ${s.min} Min.` : ''}</span></div>`).join('')}
+  openSheet(`<h2>${esc(t.title)}</h2>
+    ${t.steps.map((s) => `<div class="stepline"><span>${esc(s.text)}</span>${s.min ? `<em>${s.min} Min</em>` : ''}</div>`).join('')}
     <form data-split="${t.id}" autocomplete="off">
       <label>${n ? 'Und was kommt danach?' : 'Was ist der allererste Handgriff? (unter 20 Minuten)'}</label>
       <input name="text" maxlength="120" placeholder="${n ? 'Nächster kleiner Schritt' : 'z. B. Datei öffnen und Titel tippen'}" ${focus ? 'autofocus' : ''}>
@@ -324,8 +334,8 @@ function splitSheet(id, focus = true) {
       <div class="row"><button class="btn primary" type="submit">＋ Schritt</button><button class="btn" type="button" data-act="close">Fertig</button></div>
     </form>
     <div id="ai-box">${getCfg().splitUrl
-      ? `<button class="btn" type="button" data-act="ai" data-id="${t.id}" style="margin-top:14px">✨ Claude schlägt Schritte vor</button>`
-      : '<p class="hint">✨ Automatische Vorschläge: in den Einstellungen verbinden.</p>'}</div>
+      ? `<button class="btn" type="button" data-act="ai" data-id="${t.id}" style="margin-top:14px">${svg('spark')}Claude schlägt Schritte vor</button>`
+      : '<p class="hint">Automatische Vorschläge: in den Einstellungen verbinden.</p>'}</div>
     <p class="hint">Kleine Schritte zuerst – du musst nicht alle kennen. Du kannst später ergänzen.</p>`);
   const input = $('#sheet-card input[name=text]');
   if (input) input.focus();
@@ -336,13 +346,13 @@ function splitSheet(id, focus = true) {
 let aiProposal = [];
 async function aiSuggest(t) {
   const box = $('#ai-box');
-  box.innerHTML = '<p class="hint">⏳ Claude überlegt …</p>';
+  box.innerHTML = '<p class="hint">Claude überlegt …</p>';
   try {
     const res = await fetch(getCfg().splitUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title: t.title }) });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || `Fehler ${res.status}`);
     aiProposal = data.steps;
-    box.innerHTML = `<h3>Vorschlag</h3>${aiProposal.map((s) => `<div class="stepline"><span>👣 ${esc(s.text)} · ${s.min} Min.</span></div>`).join('')}
+    box.innerHTML = `<h3>Vorschlag</h3>${aiProposal.map((s) => `<div class="stepline"><span>${esc(s.text)}</span><em>${s.min} Min</em></div>`).join('')}
       <div class="row" style="margin-top:12px"><button class="btn primary" type="button" data-act="ai-take" data-id="${t.id}">Übernehmen</button><button class="btn" type="button" data-act="ai" data-id="${t.id}">Nochmal</button></div>`;
   } catch (err) {
     const offline = err instanceof TypeError;
@@ -357,7 +367,7 @@ function takeAi(id) {
   aiProposal = [];
   touch(t);
   splitSheet(id);
-  toast('Schritte übernommen ✅');
+  toast('Schritte übernommen');
 }
 
 /* ---------- Backup ---------- */
@@ -375,7 +385,7 @@ function importFile(file) {
   r.onload = () => {
     try {
       state = Logic.mergeData(state, JSON.parse(r.result));
-      save(); render(); toast('Daten zusammengeführt ✅');
+      save(); render(); toast('Daten zusammengeführt');
     } catch (e) { toast('Datei nicht lesbar – nichts wurde geändert'); }
   };
   r.readAsText(file);
@@ -420,20 +430,20 @@ document.addEventListener('submit', (e) => {
     if (!title.trim()) return;
     lastArea = el.area.value;
     addTask(title, el.area.value, el.due.value);
-    render(); toast('Aufgeschrieben – aus dem Kopf raus ✅');
+    render(); toast('Aufgeschrieben. Aus dem Kopf raus.');
     const inp = $('[data-quick] input[type=text]'); if (inp) inp.focus();
   } else if (f.matches('[data-cfg]')) {
     e.preventDefault();
     const url = Logic.splitEndpoint(f.elements.url.value);
     if (!url) return toast('Link ohne Schlüssel: Er muss /mcp/… oder /setup/… mit dem langen Code danach enthalten.');
     setCfg({ ...getCfg(), splitUrl: url });
-    render(); toast('Verbunden ✅'); syncCalendar(true);
+    render(); toast('Verbunden'); syncCalendar(true);
   } else if (f.matches('[data-names]')) {
     e.preventDefault();
     const names = {};
     AREAS.forEach((a) => { const v = f.elements[a.id].value.trim().slice(0, 30); if (v && v !== a.name) names[a.id] = v; });
     setCfg({ ...getCfg(), names });
-    render(); toast('Namen gespeichert ✅');
+    render(); toast('Namen gespeichert');
   } else if (f.matches('[data-split]')) {
     e.preventDefault();
     const t = find(f.dataset.split);
