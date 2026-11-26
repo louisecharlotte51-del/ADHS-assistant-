@@ -53,9 +53,10 @@ export async function handleSplit(request, env, fetchImpl = fetch) {
   if (request.method !== "POST") return reply({ error: "Nur POST erlaubt." }, 405);
   // Also accept ANTHROPIC_API_KEY_2 etc.: Cloudflare forces a new name if the plain one is taken.
   const apiKey = Object.keys(env).filter((k) => k.startsWith("ANTHROPIC_API_KEY")).sort()
-    .map((k) => env[k]).find((v) => typeof v === "string" && v.trim());
+    .map((k) => env[k]).find((v) => typeof v === "string" && v.trim())
+    || (await env.STORE.get("anthropic_api_key")); // saved via the setup page
   if (!apiKey) {
-    return reply({ error: "Noch kein API-Key im Server eingetragen (ANTHROPIC_API_KEY)." }, 503);
+    return reply({ error: "Noch kein API-Key eingetragen. Öffne deine Einrichtungsseite (/setup/…) und füge ihn bei Schritt 4 ein." }, 503);
   }
 
   let input;
@@ -84,4 +85,16 @@ export async function handleSplit(request, env, fetchImpl = fetch) {
   } catch (err) {
     return reply({ error: "Die Antwort von Claude war nicht lesbar. Bitte nochmal versuchen." }, 502);
   }
+}
+
+// Setup page action: check the key with a free call, then keep it in KV.
+export async function saveApiKey(body, env, fetchImpl = fetch) {
+  const key = String(body?.key ?? "").trim();
+  if (!key.startsWith("sk-ant-")) return { status: 400, body: { error: "Der Key muss mit sk-ant- beginnen." } };
+  const res = await fetchImpl("https://api.anthropic.com/v1/models", {
+    headers: { "x-api-key": key, "anthropic-version": "2023-06-01" },
+  });
+  if (!res.ok) return { status: 400, body: { error: `Anthropic lehnt den Key ab (${res.status}). Bitte neu kopieren.` } };
+  await env.STORE.put("anthropic_api_key", key);
+  return { status: 200, body: { saved: true } };
 }
