@@ -43,6 +43,27 @@ const CFG_KEY = 'zentrale-cfg-v1';
 function getCfg() { try { return JSON.parse(localStorage.getItem(CFG_KEY)) || {}; } catch (e) { return {}; } }
 function setCfg(c) { try { localStorage.setItem(CFG_KEY, JSON.stringify(c)); } catch (e) { toast('Speichern nicht möglich'); } }
 
+/* ---------- Apple-Kalender (nur lesen, über den Connector) ---------- */
+
+const CAL_KEY = 'zentrale-cal-v1';
+let cal = (() => { try { return JSON.parse(localStorage.getItem(CAL_KEY)) || { at: 0, events: [] }; } catch (e) { return { at: 0, events: [] }; } })();
+async function syncCalendar(force) {
+  const base = getCfg().splitUrl;
+  if (!base || (!force && Date.now() - cal.at < 15 * 60000)) return;
+  try {
+    const res = await fetch(base.replace('/split/', '/calendar/') + '?days=8');
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || `Fehler ${res.status}`);
+    cal = { at: Date.now(), events: data.events || [] };
+  } catch (e) {
+    cal = { ...cal, error: e instanceof TypeError ? 'Keine Verbindung – zeige zuletzt geladene Termine.' : e.message };
+  }
+  try { localStorage.setItem(CAL_KEY, JSON.stringify(cal)); } catch (e) { /* ignorieren */ }
+  if (view === 'now' || view === 'week') render();
+}
+const hhmm = (iso) => new Date(iso).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+const eventItem = (ev) => `<div class="item ev" style="--chip:var(--line)"><span class="t"><b>${ev.ganztaegig ? 'ganztägig' : esc(hhmm(ev.startIso))} · ${esc(ev.titel || '(ohne Titel)')}</b><span class="m">${esc([ev.ort, ev.kalender].filter(Boolean).join(' · '))}</span></span><span class="tag" style="--chip:var(--line)">📅</span></div>`;
+
 /* ---------- Zustand der Ansicht ---------- */
 
 let view = 'now';
@@ -158,7 +179,13 @@ function renderNow() {
     <button class="chip" ${chip('arbeit')}><b>${doneToday}</b><span>heute erledigt</span></button>
   </div>`;
 
-  return `<div class="inner"><header class="top"><h1>${greet()}, Charlotte</h1><p class="lead">${new Date().toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' })}</p></header>
+  return `<div class="inner"><header class="top"><h1>${greet()}, Charlotte</h1><p class="lead">${new Date().toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' })}</p>${(() => {
+      const ev = Logic.nextEvent(cal.events, Date.now());
+      if (!ev) return '';
+      const min = Math.round((Date.parse(ev.startIso) - Date.now()) / 60000);
+      const when = min < 60 ? `in ${min} Min.` : `in ${Math.round(min / 60)} Std.`;
+      return `<p class="lead">📅 Nächster Termin: <b>${esc(hhmm(ev.startIso))} ${esc(ev.titel || '')}</b> (${when})</p>`;
+    })()}</header>
     ${quickAdd()}${hero}${chips}
     ${after.length ? `<h3>Danach</h3><div class="list">${after.map((t) => taskItem(t, { tag: true })).join('')}</div>` : ''}
     <h3>Deine Bereiche</h3>
@@ -190,10 +217,12 @@ function renderWeek() {
     ${late.length ? `<div class="card" style="margin-bottom:12px"><h2>⚠️ Überfällig</h2><div class="list">${late.map((t) => taskItem(t, { tag: true })).join('')}</div></div>` : ''}
     <div class="week">${days.map((d, i) => {
       const items = open.filter((t) => t.due === d);
+      const evs = Logic.eventsOn(cal.events, d);
       return `<section class="day${d === td ? ' today' : ''}"><header><b>${DAYNAMES[i]} ${d.slice(8)}.${d.slice(5, 7)}.</b>${WORK_DAYS.includes(i) ? '<span class="work">💼 Dresden Sommer</span>' : ''}</header>
-        ${items.length ? `<div class="list">${items.map((t) => taskItem(t, { tag: true })).join('')}</div>` : '<span class="muted">–</span>'}</section>`;
+        ${items.length || evs.length ? `<div class="list">${evs.map(eventItem).join('')}${items.map((t) => taskItem(t, { tag: true })).join('')}</div>` : '<span class="muted">–</span>'}</section>`;
     }).join('')}</div>
-    <p class="hint">${undated} offene Aufgaben ohne Frist – die findest du in den Bereichen.</p></div>`;
+    <p class="hint">${undated} offene Aufgaben ohne Frist – die findest du in den Bereichen.</p>
+    <p class="hint">${getCfg().splitUrl ? `📅 Apple-Kalender${cal.at ? ` · Stand ${esc(hhmm(new Date(cal.at).toISOString()))}` : ''}${cal.error ? ` · ⚠️ ${esc(cal.error)}` : ''} <button class="btn small" data-act="cal-sync">Neu laden</button>` : '📅 Termine anzeigen: unter Setup den Connector verbinden.'}</p></div>`;
 }
 
 function renderSettings() {
@@ -222,7 +251,7 @@ function renderNav() {
     ${item('settings', '⚙️', 'Einstellungen', 'Setup')}`;
 }
 
-function go(v) { view = v; skip = []; render(); window.scrollTo(0, 0); }
+function go(v) { view = v; skip = []; render(); window.scrollTo(0, 0); if (v === 'now' || v === 'week') syncCalendar(); }
 
 /* ---------- Sheet + Toast ---------- */
 
@@ -354,6 +383,7 @@ document.addEventListener('click', (e) => {
     case 'export': exportData(); break;
     case 'ai': if (t) aiSuggest(t); break;
     case 'ai-take': takeAi(b.dataset.id); break;
+    case 'cal-sync': syncCalendar(true); toast('Lade Termine …'); break;
     case 'cfg-clear': setCfg({}); render(); toast('Getrennt'); break;
     default:
   }
@@ -375,7 +405,7 @@ document.addEventListener('submit', (e) => {
     const url = Logic.splitEndpoint(f.elements.url.value);
     if (!url) return toast('Link ohne Schlüssel: Er muss /mcp/… oder /setup/… mit dem langen Code danach enthalten.');
     setCfg({ ...getCfg(), splitUrl: url });
-    render(); toast('Verbunden ✅');
+    render(); toast('Verbunden ✅'); syncCalendar(true);
   } else if (f.matches('[data-split]')) {
     e.preventDefault();
     const t = find(f.dataset.split);
@@ -410,4 +440,5 @@ $('#sheet').addEventListener('click', (e) => { if (e.target.id === 'sheet') clos
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#sheet').hidden) closeSheet(); });
 
 render();
+syncCalendar();
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});

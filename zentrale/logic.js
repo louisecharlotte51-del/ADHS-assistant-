@@ -98,7 +98,16 @@
     return `${u.origin}/split/${seg[i + 1]}`;
   }
 
-  const api = { splitEndpoint, toIso, addDays, daysBetween, nextDue, weekDays, dueLabel, rank, pickNext, mergeData };
+  // Local calendar day of an event; all-day events carry a UTC-midnight date.
+  const eventDay = (ev) => (ev.ganztaegig ? ev.startIso.slice(0, 10) : new Date(ev.startIso).toLocaleDateString('sv'));
+  const eventsOn = (events, day) => (events || []).filter((ev) => eventDay(ev) === day)
+    .sort((a, b) => (b.ganztaegig - a.ganztaegig) || a.startIso.localeCompare(b.startIso));
+  function nextEvent(events, nowMs) {
+    return (events || []).filter((ev) => !ev.ganztaegig && Date.parse(ev.startIso) > nowMs && Date.parse(ev.startIso) - nowMs < 86400000)
+      .sort((a, b) => a.startIso.localeCompare(b.startIso))[0] || null;
+  }
+
+  const api = { eventDay, eventsOn, nextEvent, splitEndpoint, toIso, addDays, daysBetween, nextDue, weekDays, dueLabel, rank, pickNext, mergeData };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.Logic = api;
 })(typeof self !== 'undefined' ? self : this);
