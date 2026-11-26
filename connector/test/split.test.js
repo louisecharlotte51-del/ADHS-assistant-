@@ -65,3 +65,11 @@ test("handleSplit: Fehler der API wird zu 502, Titel leer zu 400", async () => {
   assert.equal((await handleSplit(post({ title: "t" }), env, claude("x", false))).status, 502);
   assert.equal((await handleSplit(post({ title: "" }), env, claude("{}"))).status, 400);
 });
+
+test("handleSplit: findet auch ANTHROPIC_API_KEY_2", async () => {
+  let sent;
+  const spy = async (_url, init) => { sent = init.headers["x-api-key"]; return claude('{"steps":[{"text":"a","min":5}]}')(); };
+  const res = await handleSplit(post({ title: "t" }), { STORE: kv(), ANTHROPIC_API_KEY_2: " sk-2 " }, spy);
+  assert.equal(res.status, 200);
+  assert.equal(sent, "sk-2");
+});
