@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { parseSteps, readInput, handleSplit } from "../src/split.js";
+import { parseSteps, readInput, handleSplit, saveApiKey } from "../src/split.js";
 
 const kv = () => {
   const m = new Map();
@@ -72,4 +72,17 @@ test("handleSplit: findet auch ANTHROPIC_API_KEY_2", async () => {
   const res = await handleSplit(post({ title: "t" }), { STORE: kv(), ANTHROPIC_API_KEY_2: " sk-2 " }, spy);
   assert.equal(res.status, 200);
   assert.equal(sent, "sk-2");
+});
+
+test("saveApiKey: prüft, speichert in KV, handleSplit nutzt ihn", async () => {
+  const env = { STORE: kv() };
+  const ok = async () => new Response("{}", { status: 200 });
+  assert.equal((await saveApiKey({ key: "falsch" }, env, ok)).status, 400);
+  assert.equal((await saveApiKey({ key: "sk-ant-x" }, env, async () => new Response("{}", { status: 401 }))).status, 400);
+  assert.equal(await env.STORE.get("anthropic_api_key"), null);
+  assert.equal((await saveApiKey({ key: " sk-ant-x " }, env, ok)).status, 200);
+  let sent;
+  const spy = async (_u, init) => { sent = init.headers["x-api-key"]; return claude('{"steps":[{"text":"a","min":5}]}')(); };
+  assert.equal((await handleSplit(post({ title: "t" }), env, spy)).status, 200);
+  assert.equal(sent, "sk-ant-x");
 });

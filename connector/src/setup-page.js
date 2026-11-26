@@ -81,6 +81,17 @@ export function setupPage(mcpUrl) {
     <button id="btn-copy">URL kopieren</button>
     <div class="msg" id="m-copy"></div>
   </section>
+  <section>
+    <h2>✨ 4. Claude zerlegt (Zentrale) <span class="badge" id="b-ai">offen</span></h2>
+    <ol>
+      <li><a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → <b>API Keys</b> → <b>Create Key</b></li>
+      <li>Key (beginnt mit <b>sk-ant-</b>) kopieren und hier einfügen</li>
+    </ol>
+    <label for="aikey">Anthropic API-Key</label>
+    <input id="aikey" type="password" placeholder="sk-ant-…" autocomplete="off">
+    <button id="btn-ai">Key speichern</button>
+    <div class="msg" id="m-ai"></div>
+  </section>
 </main>
 <script>
   const base = location.pathname.replace(/\\/$/, "");
@@ -96,7 +107,7 @@ export function setupPage(mcpUrl) {
 
   async function refresh() {
     const s = await api("status");
-    badge("b-icloud", s.icloud); badge("b-ms", s.outlook);
+    badge("b-icloud", s.icloud); badge("b-ms", s.outlook); badge("b-ai", s.anthropic);
     if (s.icloudUser) $("user").value = s.icloudUser;
   }
 
@@ -124,6 +135,13 @@ export function setupPage(mcpUrl) {
       };
       setTimeout(poll, (r.interval || 5) * 1000);
     } catch (e) { msg("m-ms", "❌ " + e.message, false); $("btn-ms").disabled = false; }
+  };
+
+  $("btn-ai").onclick = async () => {
+    $("btn-ai").disabled = true; msg("m-ai", "⏳ Prüfe Key…", true);
+    try { await api("anthropic", { key: $("aikey").value }); msg("m-ai", "✅ Gespeichert. Die Zentrale kann jetzt zerlegen.", true); $("aikey").value = ""; badge("b-ai", true); }
+    catch (e) { msg("m-ai", "❌ " + e.message, false); }
+    $("btn-ai").disabled = false;
   };
 
   $("btn-copy").onclick = async () => {

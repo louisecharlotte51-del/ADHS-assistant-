@@ -5,7 +5,7 @@ import { createIcloud } from "./icloud.js";
 import { SCOPES, createOutlook } from "./outlook.js";
 import { registerTools } from "./tools.js";
 import { setupPage } from "./setup-page.js";
-import { handleSplit } from "./split.js";
+import { handleSplit, saveApiKey } from "./split.js";
 
 const MS_BASE = "https://login.microsoftonline.com/consumers/oauth2/v2.0";
 const SCOPE = SCOPES.join(" ");
@@ -88,7 +88,13 @@ async function handleSetupApi(action, request, env) {
       env.STORE.get("icloud_user"),
       env.STORE.get("icloud_password"),
     ]);
-    return json({ outlook: Boolean(ms), icloud: Boolean(user && pw), icloudUser: user });
+    const anthropic = Boolean(await env.STORE.get("anthropic_api_key"));
+    return json({ outlook: Boolean(ms), icloud: Boolean(user && pw), icloudUser: user, anthropic });
+  }
+
+  if (action === "anthropic") {
+    const r = await saveApiKey(body, env);
+    return json(r.body, r.status);
   }
 
   if (action === "icloud") {
