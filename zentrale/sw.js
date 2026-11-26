@@ -1,5 +1,5 @@
 // Offline-Cache: Zentrale funktioniert nach dem ersten Öffnen auch ohne Internet
-const CACHE = 'zentrale-v1';
+const CACHE = 'zentrale-v2';
 const FILES = [
   './', 'index.html', 'style.css', 'logic.js', 'app.js', 'manifest.webmanifest',
   'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',
