@@ -205,7 +205,7 @@ function renderSettings() {
     <div class="card" style="margin-top:14px"><h2>✨ Claude zerlegt für dich</h2>
       <p class="muted">Füge hier deinen <b>Connector-Link</b> ein (der mit <b>/mcp/…</b> oder <b>/setup/…</b>). Beim Zerlegen wird nur der <b>Titel</b> der Aufgabe (und deine Notiz) an Claude gesendet.</p>
       <form class="quick" data-cfg autocomplete="off"><input type="text" name="url" placeholder="https://adhs-assistant.….workers.dev/setup/…" value="${esc(getCfg().splitUrl ? '(gespeichert)' : '')}" aria-label="Connector-Link"><button class="btn primary" type="submit">Speichern</button></form>
-      ${getCfg().splitUrl ? '<p class="hint">✅ Verbunden. <button class="btn small" data-act="cfg-clear">Trennen</button></p>' : ''}</div>
+      ${getCfg().splitUrl ? `<p class="hint">✅ Verbunden.</p><div class="row"><a class="btn primary" href="${esc(getCfg().splitUrl.replace('/split/', '/setup/'))}" target="_blank" rel="noopener">🔑 Einrichtungsseite öffnen (API-Key)</a><button class="btn small" data-act="cfg-clear">Trennen</button></div>` : ''}</div>
     <p class="hint">Bitte keine sensiblen Daten (Gesundheit, Passwörter) eintragen.</p></div>`;
 }
 
