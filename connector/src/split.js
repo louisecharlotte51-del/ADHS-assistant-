@@ -51,7 +51,10 @@ async function underLimit(env) {
 export async function handleSplit(request, env, fetchImpl = fetch) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
   if (request.method !== "POST") return reply({ error: "Nur POST erlaubt." }, 405);
-  if (!env.ANTHROPIC_API_KEY) {
+  // Also accept ANTHROPIC_API_KEY_2 etc.: Cloudflare forces a new name if the plain one is taken.
+  const apiKey = Object.keys(env).filter((k) => k.startsWith("ANTHROPIC_API_KEY")).sort()
+    .map((k) => env[k]).find((v) => typeof v === "string" && v.trim());
+  if (!apiKey) {
     return reply({ error: "Noch kein API-Key im Server eingetragen (ANTHROPIC_API_KEY)." }, 503);
   }
 
@@ -66,7 +69,7 @@ export async function handleSplit(request, env, fetchImpl = fetch) {
   try {
     const res = await fetchImpl("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      headers: { "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "content-type": "application/json" },
+      headers: { "x-api-key": apiKey.trim(), "anthropic-version": "2023-06-01", "content-type": "application/json" },
       body: JSON.stringify({
         model: MODEL,
         max_tokens: 600,
