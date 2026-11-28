@@ -17,6 +17,7 @@ Grundlage ist das Handblatt der Entwerferin (Skizze bleibt das Gerüst):
 |---|---|---|
 | V1–V5 | 5 Bebauungsvarianten, Regeln, Phasen, Blender | https://claude.ai/artifact/7XSSdVs4tovei1V22WfnYk |
 | V6–V8 | 3 Varianten ohne Höfe, Nutzungskonzept, Phase 1 im Detail | https://claude.ai/artifact/GSak6PnuiRjjSXa6nLtkD7 |
+| Fünf Quartiere | Neuer Plan (A, Q1–5, Stadtwald): Typologien je Quartier, Achsenschnitte, Wasserkette, Q4-Themen, DXF für Vectorworks (`fuenf_quartiere/`) | https://claude.ai/artifact/HzCV9feEQuiFhYSDUQ6FZs |
 | S1–S6 | 6 Schwarzpläne (Typologie-Mix), Höhenpläne, Schnitte A–D, 3D-Modell, Luftbilder, Schnittperspektiven, 5 Situationsskizzen | https://claude.ai/artifact/QEXWAqikMT72k4kAQZ23eb |
 
 Dateien zum Weitergeben: `schwarzplaene_S1-S6.pdf`, `situationen_renderings.pdf`, `bergfrieden_3d_FBX.zip`, `bergfrieden_3d_OBJ.zip`, `3d/bergfrieden_typologien_S1-S6.blend`.
@@ -33,3 +34,5 @@ Kennwerte: EG 4,2 m, OG 3,1 m, 88 m² BGF/WE, 1,9 EW/WE, Abstandsflächen 0,4 H 
 ## Offen / letzte Frage an die Nutzerin
 - Passen die Situationsskizzen (z. B. Bewegungsader)? Welche Variante soll weiter ausgearbeitet werden?
 - Skizzen-Staffage ist Blockfiguren-Niveau (Arbeitsstand).
+
+Miro-Board des Teams: https://miro.com/app/board/uXjVEQYDCGs=/ (Frame 3: S-Bahn-Ideen, Konzept I „Grüne Adern“, Leitideen/Phasen)

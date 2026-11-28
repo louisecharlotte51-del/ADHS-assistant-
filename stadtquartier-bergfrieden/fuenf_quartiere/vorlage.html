@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bergfrieden – Fünf Quartiere</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+/* VOICE work: Entwurfsheft, Vorschläge zum Weiterzeichnen, ruhig und genau
+   IDEA ein Typologie-Katalog wie ein Steckbrief-Heft: je Quartier eine Farbe, eine Versorgung, eine Grünqualität
+   PICTURE euer Plan mit den Quartieren + Verlauf Nord → Süd; je Quartier eine Axonometrie
+   COLOUR Papier #fbfaf6, Tinte, Quartiersfarben aus eurem Plan (orange, violett, ocker, gelb, blau)
+   TYPE Archivo 800/400 + Caveat für die Leitsätze
+   LAYOUT Kopf: Text links, Plan rechts; Steckbriefe Bild 1/2 + Text 1/2; unter 860px gestapelt */
+:root{color-scheme:light dark;--bg:light-dark(#fbfaf6,#141613);--ink:light-dark(#1d1d1b,#ecebe4);--soft:light-dark(#5d5f58,#a7aaa1);
+--rule:light-dark(#dcd8cd,#30342d);--panel:light-dark(#f2efe6,#1b1e1a);--gruen:light-dark(#2e8b3a,#4fae5a);--wasser:#3d8fc9}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.55 Archivo,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-weight:800;line-height:1.05;letter-spacing:-.02em;text-wrap:balance;margin:0}
+h1{font-size:clamp(32px,4.6vw,50px)}h2{font-size:clamp(24px,3vw,34px);margin-bottom:10px}h3{font-size:18px;margin:0 0 6px}
+p{margin:0 0 12px;max-width:68ch}
+.band{padding:clamp(28px,4vw,56px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+.alt{background:var(--panel)}
+.top{border-top:12px solid #d7562b}
+.kopf{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(18px,3vw,40px);align-items:start}
+.lead{font-size:18.5px;max-width:60ch;margin-top:12px}
+.hand{font-family:Caveat,cursive;font-size:24px;line-height:1.1;color:var(--gruen)}
+.plan img{width:100%;display:block;border-radius:8px;border:1px solid var(--rule);background:#fff}
+figcaption{font-size:13.5px;color:var(--soft);margin-top:6px}
+nav.scroll{display:flex;gap:4px;padding:8px max(5vw,16px);border-block:1px solid var(--rule);background:var(--bg);white-space:nowrap;overflow-x:auto}
+nav.scroll a{flex:none;color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;padding:10px 12px;border-radius:8px}
+nav.scroll a:hover{background:var(--panel)}nav.scroll a:focus-visible{outline:3px solid var(--wasser)}
+@media(min-width:900px){nav.scroll{position:sticky;top:0;z-index:20}}
+.fig{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:10px}
+.fig svg{display:block;width:100%;height:auto}
+.q{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.6vw,36px);align-items:start}
+.q .kz{display:grid;gap:2px;background:var(--rule);border:1px solid var(--rule);margin:10px 0 14px}
+.q .kz div{background:var(--bg);padding:8px 10px;display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:10px;font-size:15px}
+.q .kz b{font-size:13px;color:var(--soft);font-weight:600}
+.badge{display:inline-grid;place-items:center;min-width:34px;height:34px;padding:0 8px;border-radius:8px;color:#fff;font-weight:800;margin-right:8px;vertical-align:4px}
+.leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;margin-top:8px;color:var(--soft)}
+.leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px;border:1px solid rgba(0,0,0,.25)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:600;color:var(--soft);font-size:13.5px}
+.ref{font-size:14px;color:var(--soft)}
+.opt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 26px}
+.opt article{border-top:5px solid var(--c);padding-top:10px}
+.opt .tag{font:700 12px Archivo,sans-serif;padding:2px 8px;border-radius:999px;background:var(--c);color:#fff;display:inline-block;margin-bottom:6px}
+.zwei{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.6vw,32px)}
+.regeln ol{padding-left:20px}.regeln li{margin-bottom:8px}
+.dl{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;background:var(--ink);color:var(--bg);text-decoration:none;font-weight:700}
+a{color:var(--wasser)}
+footer{font-size:14px;color:var(--soft)}
+@media(max-width:860px){.kopf,.q,.zwei,.opt{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){table{font-size:13.5px}th,td{padding:6px 5px}.q .kz div{grid-template-columns:minmax(0,1fr)}
+ .stack thead{display:none}.stack tr{display:grid;padding-block:8px;border-bottom:1px solid var(--rule)}.stack td{display:block;border:0;padding:3px 0}.stack td::before{content:attr(data-l);display:block;font-weight:600;color:var(--soft);font-size:12.5px}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+<header class="band top"><div class="wrap kopf">
+<div>
+<h1>Fünf Quartiere: Typologien für den neuen Plan</h1>
+<p class="lead">Jedes Quartier bekommt eine eigene Art der Versorgung und eine eigene Grünqualität. Von der S-Bahn zum Kanal nehmen Publikum, Höhe und Autoverkehr ab, das Grün nimmt zu. Ein Quartier fällt aus dem Muster: Am Kanal steigt das Publikum wieder.</p>
+<p class="hand">laut oben, leise unten, Wasser dazwischen</p>
+<div class="fig" style="margin-top:14px" id="verlauf"></div>
+<figcaption>Verlauf Nord → Süd. Balkenlänge relativ, Höhe in Geschossen.</figcaption>
+</div>
+<figure class="plan" style="margin:0"><img src="plan.jpg" alt="Euer Plan mit Ankunftsbereich, Quartieren 1 bis 5 und Stadtwald"><figcaption>Euer Plan: Ankunft unter der S-Bahn, Quartiere 1–5, das Dreieck unten wird Stadtwald.</figcaption></figure>
+</div></header>
+
+<nav class="scroll" aria-label="Abschnitte" id="nav"></nav>
+
+<div id="quartiere"></div>
+
+<section class="band alt" id="q4"><div class="wrap">
+<h2>Quartier 4: drei Themen zur Auswahl</h2>
+<p>Quartier 4 liegt zwischen Hauptplatz, Bestand im Norden und Kanal. Es braucht ein Thema, das Publikum verträgt, aber nicht dominiert, und das mit Quartier 5 und dem Wasser zusammenhängt.</p>
+<div class="opt">
+<article style="--c:#c9b632"><span class="tag">Empfehlung</span><h3>Gartenwerk: Lebensmittel</h3><p>Gemeinschaftsgärten, Dachgewächshäuser, Verarbeitung, Food-Lab. Es liefert an die Markthalle am Kanal. Das Gartenwerk erzählt die Geschichte der Kleingärten weiter, und der Food Campus Berlin liegt in Tempelhof gleich nebenan.</p><p class="ref">Publikum: tagsüber, mittel · Grün: produktiv · Wasser: Gießteich, Zisternen</p></article>
+<article style="--c:#d9739b"><span class="tag">Option</span><h3>Kultur am Wasser</h3><p>Probenräume, Ateliers, offene Bühne, Werkstattkino, wie die ufaFabrik am Teltowkanal. Abends viel Publikum. Lärm verlangt Abstand zum Wohnen in Quartier 2.</p><p class="ref">Publikum: abends, hoch · Grün: Festwiese · Wasser: Bühne am Teich</p></article>
+<article style="--c:#3d8fc9"><span class="tag">Option</span><h3>Sport und Baden</h3><p>Sporthalle, Kletterhalle, Badehaus, das mit Quartier 5 zusammen den Kanal erschließt („Kanal so sauber, dass man badet“). Großvolumig, passt an die Hauptachse.</p><p class="ref">Publikum: ganztags · Grün: Bewegungslandschaft · Wasser: Badeteich</p></article>
+</div>
+<p style="margin-top:14px">In allen drei Fällen gilt: Der Hof öffnet sich nach Norden und spiegelt den offenen Hof der Bestandsbebauung. So entsteht ein gemeinsamer Doppelhof statt zweier Rückseiten.</p>
+</div></section>
+
+<section class="band" id="landmarken"><div class="wrap zwei">
+<div><h2>Zwei Landmarken an den Enden</h2>
+<h3>S-Bahn-Station als Brücke zum Feld</h3>
+<ul><li>Landschaftsbrücke direkt aufs Tempelhofer Feld, Feldbalkon über den Gleisen</li><li>Holzdach als leuchtende Landmarke (Ede-Wageningen, Assen)</li><li>Regendach mit Kaskade zum Ankunftsplatz: hier beginnt die Wasserkette</li><li>Mobilitätshub unter der Brücke (Fahrradparkhaus Utrecht)</li></ul>
+<p class="ref">Aus eurem Miro-Board, Frame „Ideen S-Bahn-Station als Brücke zum Feld“. Referenzen: Køge Nord, Natur-Park Südgelände, Park am Gleisdreieck.</p></div>
+<div><h3 style="margin-top:46px">Kran am Teltowkanal</h3>
+<ul><li>Der Kran bleibt als Gegenpol zur Station am Südende der Achse</li><li>Aussichtsplattform oder Kranbar, nachts ein Lichtzeichen</li><li>Darunter das Wasserhaus mit Stegen und später einer Badestelle</li><li>Ein Steg über den Kanal verbindet zur anderen Seite</li></ul>
+<p class="hand">Station oben, Kran unten: die Achse hat zwei Enden, die man sieht.</p></div>
+</div></section>
+
+<section class="band alt" id="achsen"><div class="wrap">
+<h2>Achsen im Schnitt</h2>
+<p>Alle Schnitte haben denselben Maßstab. Von Nord nach Süd werden die Seitenachsen schmaler und ruhiger: erst Quartiersstraße, dann Fahrradstraße, dann autofreier Wohnweg.</p>
+<div id="schnitte" class="zwei"></div>
+<div class="leg"><span><i style="background:#ddd6ca"></i>Gehweg</span><span><i style="background:#9a9ea3"></i>Fahrbahn</span><span><i style="background:#5fa684"></i>Radweg</span><span><i style="background:#c3a6d8"></i>Stauden</span><span><i style="background:#7fc0e0"></i>Mulde / Retention</span><span><i style="background:#e8875b"></i>Erdgeschoss Läden</span></div>
+</div></section>
+
+<section class="band" id="wasser"><div class="wrap">
+<h2>Die Wasserkette: eine Ader aus Punkten</h2>
+<p>Ein durchgehender Bach geht nicht. Stattdessen bekommt jede Grünfläche einen Wasserpunkt, und jeder sieht anders aus. Zusammen lesen sie sich von der S-Bahn bis zum Kanal als Wasserader.</p>
+<div class="fig" id="kette"></div>
+<div class="scroll" style="margin-top:14px"><table class="stack" id="ktab"></table></div>
+<p class="ref" style="margin-top:10px">Faustwert für die Größe: Muldenfläche etwa 10–20 % der angeschlossenen versiegelten Fläche bei rund 30 cm Einstau. Für den Entwurf reicht das; die genaue Bemessung macht später die Fachplanung.</p>
+</div></section>
+
+<section class="band alt regeln" id="regeln"><div class="wrap zwei">
+<div><h2>Regeln für die Baufelder</h2>
+<ol>
+<li><b>Wege zwischen den Baufeldern:</b> 6 m reichen (3,5 m befahrbar für Rettung, 2,5 m Mulde). Bei 4 Geschossen brauchen die Häuser aber rund 11 m Abstand zueinander. Also 2,5 m Vorgarten je Seite, oder ein Pocket Park mit 15–25 m.</li>
+<li><b>Abstandsflächen:</b> 0,4 H je Haus (BauO Bln). Sie dürfen bis zur Mitte eines öffentlichen Weges reichen.</li>
+<li><b>Hauptachse:</b> geschlossene Kante, 6–7 Geschosse, Hochpunkte nur an der S-Bahn und an Kreuzungen. Erdgeschoss 4,5 m hoch, Läden durchgehend.</li>
+<li><b>Gefälle Nord → Süd:</b> Geschosse 7 → 3, Erdgeschoss-Nutzung Läden → Gemeinschaft → Wohnen mit Vorgarten.</li>
+<li><b>Jede Grünfläche hat einen Wasserpunkt.</b> Retention auch in den Seitenachsen.</li>
+<li><b>Kein geschlossener Hof:</b> Cluster bleiben zu mindestens einer Seite offen, zum Park oder zur Achse.</li>
+<li><b>Pflege:</b> Bewohner und Quartiersmanagement (aus eurem Board).</li>
+</ol></div>
+<div><h2>Für Vectorworks</h2>
+<p>Alle Typologien als DXF in Metern, Maßstab 1:1. Jede Nutzung liegt auf einem eigenen Layer (TYP_wohnen, TYP_publikum …), dazu Wasser, Bäume und Beschriftung mit Geschossen und Maßen.</p>
+<p><b>Datei:</b> typologien_fuenf_quartiere.dxf. Sie liegt im Chat und im Repository unter stadtquartier-bergfrieden/fuenf_quartiere/out/.</p>
+<p class="ref">Die Typologien stehen auf einem Musterfeld von 100 × 90 m, nicht auf euren Baufeldern. Zum Einpassen in Vectorworks kopieren und drehen.</p>
+<h3 style="margin-top:20px">Quellen</h3>
+<p class="ref">Euer Plan und Miro-Board (S-Bahn-Ideen, Leitideen, Grünflächentypen, Wasserräume-Katalog). ecovillage Hannover von cityförster: Cluster aus verschiedenen Typologien, CYC-Hub am Dorfplatz, Allmende als grünes Herz mit Retention. Prinz-Eugen-Park München: Holzbau, Genossenschaften und Baugemeinschaften, Gemeinschaftsräume am Quartiersplatz.</p></div>
+</div></section>
+
+<footer class="band"><div class="wrap"><p>Gartenquartier Bergfrieden · Typologie-Katalog „Fünf Quartiere“ · Vorschläge zum Weiterzeichnen, keine fertige Planung</p></div></footer>
+
+<script>
+{
+const D=/*DATA*/;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ORD=['A','1','2','4','3','5'];
+const Q=ORD.map(id=>D.quartiere.find(q=>q.id===id));
+$('verlauf').innerHTML=D.verlauf;
+$('nav').innerHTML=Q.map(q=>`<a href="#q_${q.id}">${q.id==='A'?'Ankunft':'Quartier '+q.id}</a>`).join('')+'<a href="#q4">Thema Q4</a><a href="#landmarken">Landmarken</a><a href="#achsen">Achsen</a><a href="#wasser">Wasser</a><a href="#regeln">Regeln + DXF</a>';
+const LEG=Object.entries(D.namen).map(([k,v])=>`<span><i style="background:${D.farben[k]}"></i>${esc(v)}</span>`).join('');
+$('quartiere').innerHTML=Q.map((q,i)=>`<section class="band${i%2?' alt':''}" id="q_${q.id}"><div class="wrap q">
+<div><div class="fig">${q.axo}</div><div class="leg">${LEG}</div></div>
+<div><h2><span class="badge" style="background:${q.farbe}">${q.id}</span>${esc(q.name)}</h2>
+<div class="kz"><div><b>Versorgung</b><span>${esc(q.versorgung)}</span></div><div><b>Grünqualität</b><span>${esc(q.gruen)}</span></div>
+<div><b>Wasserpunkt</b><span>${esc(q.wasser)}</span></div><div><b>Höhe · Verkehr</b><span>${esc(q.hoehe)} · ${esc(q.verkehr)}</span></div></div>
+<div class="scroll"><table class="stack"><thead><tr><th>Typologie</th><th>Maße</th><th>Warum hier</th></tr></thead><tbody>
+${q.typen.map(([n,m,w])=>`<tr><td><b>${esc(n)}</b></td><td>${esc(m)}</td><td>${esc(w)}</td></tr>`).join('')}</tbody></table></div>
+<p class="ref" style="margin-top:10px">Referenzen: ${esc(q.ref)}</p></div></div></section>`).join('');
+$('schnitte').innerHTML=D.schnitte.map(s=>`<div class="fig">${s.svg}</div>`).join('');
+$('kette').innerHTML=D.wasser;
+const K=[['A','Quelle','Regendach der Station, Kaskade auf den Ankunftsplatz'],['1','Wasserplatz','abgesenkter Sport- und Spielplatz, läuft bei Starkregen voll'],['2','Amphitheater-Mulde','Sitzstufen am Hauptplatz, nach Regen ein flacher See'],['4','Gießteich','sammelt Dachwasser zum Gießen der Gärten'],['Fugen','Regengärten','in den Pocket Parks zwischen den Baufeldern und in den Seitenachsen'],['3','Waldtümpel','Feuchtwiese im Stadtwald, das Wasser bleibt und kühlt'],['5','Mündung','Schilfgarten reinigt das Wasser, dann fließt es in den Kanal']];
+$('ktab').innerHTML='<thead><tr><th>Ort</th><th>Wasserpunkt</th><th>Wie er aussieht</th></tr></thead><tbody>'+K.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')+'</tbody>';
+}
+</script>
+</body>
+</html>
