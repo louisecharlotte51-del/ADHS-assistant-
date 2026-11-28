@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Konzept I Stand 2</title>
+<style>
+/* VOICE: Planblatt im Designsystem „Südring Tempelhof“: kurze Sätze, Nomen zuerst, Befund vor Bild.
+   IDEA: ein A1-Blatt in Lesereihenfolge: Lageplan, Regelwerk, Begründung, Bahnhof, Kanal, Bilder.
+   PICTURE: der Lageplan 1:2000 selbst, groß im ersten Bild; daneben der Blattkopf mit den Zahlen.
+   COLOUR and TYPE: Papier #FEFEFD, Anthrazit #46494B, Titel Altrosa dunkel #8F4F56, Altrosa #C4797F nur für Hinweise; Helvetica.
+   LAYOUT: Blattkopf, Bänder je Thema, Tabellen als Steckbriefe, Bilder volle Breite. */
+:root{color-scheme:light dark;--bg:light-dark(#FEFEFD,#1b1c1d);--ink:light-dark(#46494B,#e6e6e3);--tit:light-dark(#8F4F56,#e1a3a8);
+--rule:light-dark(#D1D5D7,#3a3c3e);--card:light-dark(#ffffff,#232526);--rosa:light-dark(#F8DEDF,#3a2b2d);--akz:#C4797F;--mut:light-dark(#75797C,#a6aaad)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.56 "Helvetica Neue",Helvetica,Arial,sans-serif;overflow-x:clip}
+h1,h2,h3{color:var(--tit);line-height:1.1;text-wrap:balance;margin:0 0 .5em;font-weight:500}
+h1{font-size:clamp(32px,4.6vw,48px)}h2{font-size:clamp(24px,2.8vw,30px)}h3{font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink)}
+.band{padding:clamp(26px,4vw,56px) max(5vw,16px)}.wrap{max-width:1240px;margin:0 auto}.band+.band{border-top:1px solid var(--rule)}
+.nav{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;padding:12px max(5vw,16px);border-bottom:1px solid var(--rule);background:var(--bg)}
+.nav a{color:var(--ink);text-decoration:none;flex:none}.nav a:hover{color:var(--tit)}
+@media(min-width:900px){.nav{position:sticky;top:0;z-index:5}}html{scroll-padding-top:60px}
+.kopf{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(20px,3vw,44px);align-items:start}
+figure{margin:0}figure img{width:100%;display:block;border:1px solid var(--rule);background:#fff}
+figcaption{font-size:13px;color:var(--mut);margin-top:6px}
+.lead{font-size:18px;max-width:64ch}.mut{color:var(--mut);font-size:14px}
+.zahlen{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin:20px 0}
+.zahlen div{background:var(--card);padding:13px 15px}.zahlen b{display:block;font-size:clamp(24px,3vw,32px);font-weight:500;color:var(--tit);white-space:nowrap}
+.zahlen span{font-size:13px;color:var(--mut)}
+.jetzt{border:1px solid var(--akz);background:var(--rosa);padding:12px 16px;margin:16px 0}
+.zwei{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.breit{margin-top:22px}
+ul.kurz{padding-left:1.2em;max-width:72ch}ul.kurz li{margin:.35em 0}
+table{border-collapse:collapse;width:100%;font-size:14.5px;background:var(--card)}
+th,td{text-align:left;vertical-align:top;padding:9px 11px;border-bottom:1px solid var(--rule)}
+th{font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--mut)}td:first-child{font-weight:700;white-space:nowrap}
+td.n{text-align:right;white-space:nowrap}
+.bilder{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.prompt{font-size:13px;background:var(--rosa);padding:9px 12px;margin-top:8px;white-space:pre-wrap}
+button.copy{font:600 13px "Helvetica Neue",Arial,sans-serif;border:1px solid var(--ink);background:transparent;color:var(--ink);padding:6px 12px;min-height:36px;margin-top:6px;cursor:pointer}
+button.copy:focus-visible{outline:2px solid var(--tit);outline-offset:2px}
+.quelle{font-size:13px;color:var(--mut)}.quelle a{color:var(--tit);overflow-wrap:anywhere}
+@media(max-width:900px){.kopf,.zwei,.bilder{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start;white-space:normal}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--mut);font-weight:400}.stack td:empty{display:none}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+<nav class="nav scroll" aria-label="Abschnitte"><a href="#plan">Lageplan</a><a href="#regelwerk">Regelwerk</a><a href="#warum">Begründung</a><a href="#bahnhof">Bahnhof</a><a href="#kanal">Kanal</a><a href="#bilder">Perspektiven</a><a href="#quellen">Quellen</a><a href="#fragen">Rückfragen</a></nav>
+
+<section class="band" id="plan"><div class="wrap kopf">
+<figure><img src="web/lageplan_2000.jpg" alt="Lageplan 1:2000 Stand 2 im Designsystem: weiße Baukörper, Höfe rosa, Altrosa-Pfeile für Bewegung"><figcaption>Plan 01 · Lageplan · M 1:2000 im PDF · Schatten Stufe 1–3, Licht oben links</figcaption></figure>
+<div>
+<h1>Konzept I „Grüne Adern“, Stand 2: volle Baufelder mit Regeln</h1>
+<p class="lead">Jedes Baufeld folgt sechs Grundregeln. Jedes Quartier hat eine eigene, im Schwarzplan ablesbare Typologie, passend zu seiner Freiraumqualität. Die Häuser stehen auf der Feldgrenze, auch an beiden Randachsen. Die Höfe bilden eine Ost-West-Kette.</p>
+<div class="zahlen">
+<div><b>ca. 1.810</b><span>Wohnungen (Stand 1: ca. 1.150)</span></div>
+<div><b>ca. 3.400</b><span>Einwohner</span></div>
+<div><b>GFZ 2,2</b><span>netto auf 9,3 ha Baufeldern (Stand 1: 1,5); brutto 0,91</span></div>
+<div><b>23 %</b><span>Nicht-Wohnen: Markthalle, Werkhallen, Schule, Kita, Gartenhalle, Glashäuser</span></div>
+<div><b>6</b><span>Typologien: eine je Quartier, A bis Q5</span></div>
+<div><b>90°</b><span>Bahnhof gedreht: Blattdach längs über den Gleisen</span></div>
+</div>
+<div class="jetzt"><b>Was sich geändert hat:</b> Die Felder links (1.3, 1.5, 2.1, 3.1) sind jetzt bebaut. Der Bahnhof ist gedreht und spektakulärer. Am Kanal gibt es eine Badebucht mit Steg. Gezeichnet ist alles in eurem Designsystem.</div>
+</div></div></section>
+
+<section class="band" id="regelwerk"><div class="wrap">
+<h2>Regelwerk der Baufelder</h2>
+<figure><img src="web/regelwerk_kacheln.jpg" alt="Sechs Kacheln, je eine Typologie pro Quartier, darunter die sechs Grundregeln"><figcaption>Blatt Regelwerk · gestrichelt = Baufeld, rosa = halböffentlicher Hof, Pfeil = Hofkette Ost-West</figcaption></figure>
+<table class="stack breit"><thead><tr><th>Quartier</th><th>Typologie</th><th>Freiraumqualität</th><th>Erschließung</th><th>Schließt</th><th>Öffnet</th><th>GFZ · WE</th></tr></thead><tbody>
+<tr><td>A Ankunft</td><td>Sockel, Scheibe, Turm: Markthalle 2 G, Scheibe 9 G, Turm 14 G</td><td>Bahnhofsplatz, hart, mit Bäumen und Regenkaskade</td><td>vom Bahnhofsplatz und der Germaniastraße; Anlieferung Halle von der Rampe Ost</td><td>Scheibe gegen Bahn und A100 (Lärm)</td><td>Halle als Passage zum Bahnhof, Turm zur Komturachse</td><td class="n">4,6 · 210</td></tr>
+<tr><td>Q1 Werk + Schule</td><td>Werkblock: Rand 6–7 G, Werkhallen 2 G im Hof; Schule als L 4 G, Sporthalle, Kita</td><td>Werkhof befestigt mit Rigolen, Dachgärten auf den Hallen, Schulpark</td><td>Anlieferung durch die Tore; Wohnungen von der Straße</td><td>Komturstraße, Schulpark</td><td>Werkhof über die Ost-West-Tore</td><td class="n">2,1 · 534</td></tr>
+<tr><td>Q2 Hauptplatz</td><td>Platzrand und Winkel: Kanten 6–7 G, Winkel in schmalen Feldern</td><td>Hauptplatz mit Retention, Gemeinschaftsgärten</td><td>Eingänge vom Platz, Café an den Ecken</td><td>Kante zum Platz und zur Westachse</td><td>Gärten nach Süden</td><td class="n">3,2 · 241</td></tr>
+<tr><td>Q3 Wald</td><td>Zeilenhof: Kopfbauten 5 G, Stadthäuser 3 G (6,5 × 10,5 m, Gruppen à 6), Punkthäuser 6 G am Waldrand</td><td>private Gärten, Wiesenhof, Waldrand</td><td>Nord-Süd-Wohnwege zwischen den Gruppen, autofrei</td><td>Nordkante zur Erholungsachse</td><td>nach Süden zum Wald</td><td class="n">1,45 · 255</td></tr>
+<tr><td>Q4 Garten · Food</td><td>Gartenhof: U 5–6 G offen nach Süden, Glashäuser in der Öffnung, Gartenhalle am Gartenplatz</td><td>produktive Gärten, Gewächshäuser, Gastro</td><td>Tor Ost-West durch den Hof, Gastro am Gartenplatz</td><td>Komturstraße, Sachsenhauser Str.</td><td>Süden: Sonne für die Beete</td><td class="n">1,75 · 302</td></tr>
+<tr><td>Q5 Kanal</td><td>Kamm: Rücken 6 G an der Straße, Finger 5 G zum Wasser</td><td>Ufer, Badebucht, Uferpark</td><td>Eingänge vom Rücken, Höfe zum Ufer offen</td><td>Straße im Norden</td><td>Süden zum Kanal</td><td class="n">2,6 · 294</td></tr>
+</tbody></table>
+</div></section>
+
+<section class="band" id="warum"><div class="wrap zwei">
+<div>
+<h2>Warum die Häuser so sitzen</h2>
+<ul class="kurz">
+<li><b>Baulinie auf der Feldgrenze.</b> Die Häuser fassen Straße, Achse, Platz und Park. So reichen sie auch an die West- und Ostachse. Das macht die Felder links voll.</li>
+<li><b>Nordseite hoch, Südseite niedrig oder offen.</b> Die Sonne fällt in den Hof. Die hohe Kante schützt vor Lärm und Wind. Das folgt eurem Regelwerk „Der doppelte Hof“.</li>
+<li><b>Hofkette Ost-West.</b> Tore im Erdgeschoss auf Höhe der Feldmitte machen aus den Höfen eine Passage (Bürklin/Peterek: Hoffolge = Passage). Die Fassade bleibt dabei geschlossen.</li>
+<li><b>Höhe folgt Raumbreite.</b> An Achse und Platz ist es hoch, an schmalen Fugen niedrig. Abstandsflächen 0,4 H reichen bis zur Wegmitte. Deshalb stehen an engen Wohnwegen 3–4 G.</li>
+<li><b>Erst die Plätze, dann die Häuser</b> (Regel aus dem Hunziker Areal Zürich). Öffentliche Nutzungen liegen zum Platz, die Hauseingänge auf der abgewandten Seite.</li>
+<li><b>Höfe unterbaufrei, Parken in zwei Quartiersgaragen</b> („Kiste“ an A100 und Teilestraße). Die Höfe bleiben Schwamm und dritter Ort.</li>
+</ul>
+</div>
+<div>
+<h2>Vorbilder, die tragen</h2>
+<ul class="kurz">
+<li><b>Oberbillwerder Hamburg:</b> fünf Quartierstypen (Bahn-, Garten-, Grünes, Blaues Quartier), GFZ 1,2–2,8, Mobility Hubs, grüner Loop als Retention. Das direkteste Vorbild für eure fünf Quartiere.</li>
+<li><b>Ecovillage Hannover:</b> 12 Nachbarschaften mit je ca. 40 Wohnungen um einen Hof, Loop, Dorfplatz mit CYC-Hub. <b>Achtung:</b> nie gebaut. Die Genossenschaft ging 2024 in die Insolvenz, die Stadt kaufte das Gelände 2025 zurück. Taugt als Planungsidee, nicht als gebautes Beispiel.</li>
+<li><b>Kalkbreite Zürich:</b> Infrastruktur unten, gemeinsamer Hof oben. Das ist das Prinzip der Werkhallen in Q1 und der Markthalle in A.</li>
+<li><b>BIGH Brüssel:</b> Markthalle unten, Gewächshaus auf dem Dach. Das ist das Prinzip von Q4.</li>
+<li><b>Möckernkiez Berlin:</b> Wegering, Hausgruppen um gemeinsame Höfe, 98 Stellplätze für 471 Wohnungen.</li>
+</ul>
+</div></div></section>
+
+<section class="band" id="bahnhof"><div class="wrap zwei">
+<figure><img src="web/vertiefung_ankunft_1000.jpg" alt="Vertiefung 1:1000 Ankunft: Blattdach längs über den Gleisen, Landschaftsbrücken, Bahnhofsplatz, Markthalle, Turm"><figcaption>Plan 02 · Vertiefung Ankunft · M 1:1000 im PDF</figcaption></figure>
+<div>
+<h2>Bahnhof: um 90° gedreht, als Blatt über den Gleisen</h2>
+<ul class="kurz">
+<li><b>Dach:</b> ein Blatt längs über Bahnsteig und Einschnitt, 190 × 60 m. Holz-Gitterschale mit drei Wellen, First 26 m, nachts eine Laterne.</li>
+<li><b>Regendach:</b> Die Südkante kragt über den Bahnhofsplatz. Das Dachwasser fällt als Kaskade auf den Platz. Dort beginnt die Wasserader zum Kanal.</li>
+<li><b>Zugänge:</b> Querbrücke unter dem Dach mit Treppen, Rolltreppen und 2 Aufzügen. Mittelbahnsteig 152 × 10 m auf −7,5 m.</li>
+<li><b>Landschaftsbrücken:</b> zwei, an den Dachenden (West 32 m breit, Ost 26 m), Spannweite ca. 48 m. Kioske nur an den Brückenköpfen.</li>
+<li><b>Plätze:</b> Bahnhofsplatz auf dem A100-Deckel, Platzteppich über die Germaniastraße, dann der Eingangsplatz.</li>
+</ul>
+</div></div></section>
+
+<section class="band" id="kanal"><div class="wrap zwei">
+<div>
+<h2>Kanal: Badebucht, Steg, Kanalhof</h2>
+<ul class="kurz">
+<li><b>Befund:</b> Der Teltowkanal ist eine Bundeswasserstraße der Klasse IV. Mindestens 37 m Wasserspiegel bleiben für die Schiffe frei. Baden im Kanal ist verboten.</li>
+<li><b>Badebucht hinter der Uferlinie:</b> 70 × 20 m, ausgehoben südlich von Q5. Darin liegt ein Badeschiff 32,5 × 8,2 m mit eigenem, gefiltertem Wasser (Prinzip Spree-Badeschiff). Holzdecks rundum wie in Islands Brygge, Kopenhagen.</li>
+<li><b>Steg:</b> 4 m Holzsteg über die Buchtmündung. Der Uferweg läuft durch.</li>
+<li><b>Uferweg 5 m mit Sitzstufen:</b> schließt eine Lücke im Teltowkanalweg (Grüner Hauptweg 17). Der ist an diesem Abschnitt heute vom Ufer weg über die Teilestraße umgeleitet.</li>
+<li><b>Kanalhof mit Portalkran</b> als Landmarke, darunter eine Bühne. Dazu schwimmende Pflanzeninseln (Vorbild Rotterdam Floating Park).</li>
+<li><b>Genehmigung:</b> strom- und schifffahrtspolizeiliche Genehmigung nach § 31 WaStrG beim WSA Spree-Havel.</li>
+</ul>
+</div>
+<figure><img src="web/vertiefung_kanal_1000.jpg" alt="Vertiefung 1:1000 Kanal: Q5 als Kamm zum Wasser, Badebucht mit Badeschiff, Uferweg"><figcaption>Plan 03 · Vertiefung Kanal · M 1:1000 im PDF</figcaption></figure>
+</div></section>
+
+<section class="band" id="bilder"><div class="wrap">
+<h2>Perspektiven als Vorlage für Nano Banana</h2>
+<p class="lead">Die Bilder zeigen das weiße Arbeitsmodell mit Skizzenlinien. Bild laden, Prompt kopieren, Stil anpassen. Geometrie und Kamera bleiben gleich.</p>
+<div class="bilder" id="bilderliste"></div>
+</div></section>
+
+<section class="band" id="quellen"><div class="wrap">
+<h2>Quellen</h2>
+<p class="quelle">Euer Drive: „Südring: Konzepte für Hannover“ (Hof-Regelwerk „Der doppelte Hof“), „Südring: Literaturzusammenfassung“ (Bürklin/Peterek, Basics Stadtbausteine, S. 20–36). Kanal: <a href="https://de.wikipedia.org/wiki/Teltowkanal">Teltowkanal</a>, <a href="https://de.wikipedia.org/wiki/Teltowkanalweg">Teltowkanalweg</a>, <a href="https://www.berlin.de/sen/uvk/presse/pressemitteilungen/2026/pressemitteilung.1672248.php">SenUVK 2026 zum Baden</a>, <a href="https://www.gdws.wsv.bund.de/DE/wasserstrassen/genehmigungen/ssg/ssg.html">GDWS Genehmigungen</a>, <a href="https://en.wikipedia.org/wiki/Copenhagen_Harbour_Baths">Copenhagen Harbour Baths</a>, <a href="https://de.wikipedia.org/wiki/Badeschiff_(Berlin)">Badeschiff Berlin</a>. Typologien: <a href="https://de.wikipedia.org/wiki/Ecovillage_hannover">Ecovillage Hannover</a>, <a href="https://www.iba-hamburg.de/en/projects/oberbillwerder/overview">Oberbillwerder</a>, <a href="https://www.bwo.admin.ch/de/hunziker-areal">Hunziker Areal</a>, <a href="https://de.wikipedia.org/wiki/Wohn-_und_Gewerbebau_Kalkbreite">Kalkbreite</a>, <a href="https://agfundernews.com/bigh-raises-e4-3m-largest-urban-rooftop-farm-europe">BIGH Brüssel</a>, <a href="https://landezine-award.com/mockernkiez/">Möckernkiez</a>.</p>
+</div></section>
+
+<section class="band" id="fragen"><div class="wrap">
+<h2>Rückfragen</h2>
+<ul class="kurz">
+<li><b>Q3 Wald</b> bleibt mit GFZ 1,45 bewusst das ruhigste Quartier. Mehr Dichte ginge über Punkthäuser 6 G statt Stadthäusern. Wollt ihr das?</li>
+<li><b>Badebucht:</b> Sie braucht Land zwischen Q5 und dem Ufer, das heute frei ist. Gehört es zu eurem Gebiet?</li>
+<li><b>A100-Deckel</b> bleibt als Annahme für den Bahnhofsplatz. Ist er ok?</li>
+</ul>
+<p class="mut">Dateien im Chat: Pläne maßstäblich als PDF (1:2000, 1:1000, Regelwerk), DXF für Vectorworks (Nullpunkt 391250 / 5813550), 3D als FBX/OBJ + .blend.</p>
+</div></section>
+
+<script>
+{
+const B=[
+["ankunft","Ankunft: Blattdach vom Feldbalkon","Turn this white massing model into a hand-drawn architectural competition rendering: fine black ink lines, light pencil hatching, soft watercolour washes in dusty rose, sage green and aqua. Keep the exact geometry and camera. A long leaf-shaped timber gridshell roof with three waves over a railway cutting, glowing like a lantern at dusk, planted landscape bridges, a station square with trees and a water cascade, people and bicycles. No text."],
+["bahnhofsplatz","Bahnhofsplatz und Markthalle","Hand-drawn architectural perspective, ink line and watercolour, eye level. Keep geometry and camera. A station square on a motorway lid, a market hall with open arcades, a 14-storey timber-hybrid tower at the end of the avenue, the leaf-shaped station roof behind, plane trees, people with bikes and children, a rain channel in the paving. Soft autumn light, Berlin. No text."],
+["hauptplatz","Hauptplatz","Architectural watercolour sketch, eye level. Keep geometry and camera. A green main square with a retention pond and wooden decks, six-storey mixed-use street walls with cafés on the corners, an avenue with trees and cyclists, people sitting at the water edge, summer evening. Dusty rose and sage tones. No text."],
+["gartenhof","Gartenhof in Q4","Hand-drawn rendering with ink lines and watercolour. Keep geometry and camera. A U-shaped courtyard open to the south with raised vegetable beds, small greenhouses in the opening, long tables, neighbours harvesting, five-storey timber buildings around. Warm late-summer light. No text."],
+["badebucht","Badebucht am Teltowkanal","Hand-drawn competition rendering, ink and watercolour. Keep geometry and camera. A small harbour bay cut into the canal bank with a floating pool barge, wooden decks and a boardwalk bridge across the mouth, a red portal crane as landmark, comb-shaped housing opening to the water, people swimming and sitting on steps, barges passing on the canal. Summer afternoon. No text."],
+["luft","Luftbild von Südwesten","Axonometric-style aerial in a hand-drawn competition style: fine ink lines, grey existing buildings, white new buildings with roof lines, dusty rose courtyards, sage parks, aqua water chain from the station to the canal. Keep geometry and camera exactly. No text."]];
+const esc=s=>s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const box=document.getElementById("bilderliste");
+box.innerHTML=B.map(([n,t,p],i)=>`<figure><img src="web/k2_${n}.jpg" alt="${esc(t)}" loading="lazy"><figcaption>${esc(t)}</figcaption><div class="prompt" id="p${i}">${esc(p)}</div><button class="copy" data-i="${i}" type="button">Prompt kopieren</button></figure>`).join("");
+box.addEventListener("click",async e=>{const b=e.target.closest("button.copy");if(!b)return;const t=document.getElementById("p"+b.dataset.i).textContent;
+try{await navigator.clipboard.writeText(t);b.textContent="Kopiert"}catch(_){b.textContent="Bitte markieren und kopieren"}setTimeout(()=>b.textContent="Prompt kopieren",1800)});
+}
+</script>
+</body>
+</html>

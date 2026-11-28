@@ -263,7 +263,7 @@ def abstand_verstoesse(haeuser):
     return n
 
 
-def durchsetzen(haeuser, ausnahme=None):
+def durchsetzen(haeuser, ausnahme=None, angebaut=1.0):
     """Regel-Durchsetzung Abstandsflächen: höheres Haus um je 1 G senken (min. 2 G),
     reicht das nicht, entfällt das kleinere Haus. Gibt Anzahl der Eingriffe zurück."""
     from shapely.strtree import STRtree
@@ -281,7 +281,7 @@ def durchsetzen(haeuser, ausnahme=None):
                 if b <= a or b in weg:
                     continue
                 d = ga.distance(geos[b])
-                if d < 1.0 or (ausnahme and ausnahme(haeuser[a], haeuser[b])):
+                if d < angebaut or (ausnahme and ausnahme(haeuser[a], haeuser[b])):
                     continue
                 soll = max(3, 0.4 * hoehe(haeuser[a]["g"])) + max(3, 0.4 * hoehe(haeuser[b]["g"]))
                 if d < soll - 0.5:

@@ -30,6 +30,16 @@ Ergebnisse in `konzept1/out/`: Pläne maßstäblich als PDF, DXF (lokaler Nullpu
 Kennwerte A: ca. 1.150 WE, GFZ 1,51 netto / 0,62 brutto, Feuerwehr 109/109. B: ca. 1.100 WE.
 Offen: Variante wählen; DXF der Baufelder aus Vectorworks; A100-Deckel bestätigen; Hallen im Stadtwald (8.400 m²) entfallen?; Literatur-Ordner fehlt; Konzept II „Höfe“ folgt.
 
+## Konzept I, Stand 2 (28.11. abends) – aktueller Stand
+Feedback der Nutzerin: zu wenig Bebauung, Typologien zu ähnlich, Bahnhof 90° drehen + spektakulärer, Kanal mit Steg, Designsystem nutzen.
+Reihenfolge: `bebauung2.py` (Regelwerk R1–R6, Typologie je Quartier) → `ufer.py` → `plaene2.py` (Designsystem) → `K=2 python3 szene_k1.py` →
+`blender -b --python blender_k1.py -- --render --k2` / `--export --k2` → `K=2 python3 dxf_export.py`. Ergebnisse in `konzept1/out2/`. Seite: https://claude.ai/artifact/HhQmM6PExudPfZ1krNhhY6
+Kennwerte: GFZ 2,22 netto / 0,91 brutto, ca. 1.810 WE. Typologien: A Sockel+Scheibe+Turm, Q1 Werkblock, Q2 Platzrand+Winkel,
+Q3 Zeilenhof (Kopfbau, Stadthäuser, Punkthäuser am Wald), Q4 Gartenhof offen nach Süden, Q5 Kamm zum Wasser.
+Bahnhof: Blattdach 190 × 60 m längs der Gleise. Ufer: Badebucht 70 × 20 m mit Badeschiff 32,5 × 8,2 m hinter der Uferlinie.
+Designsystem: https://claude.ai/artifact/SV9KP2gEM8xT9AKPRm693y · Drive: „Südring: Konzepte für Hannover“ (Hof-Regelwerk), „Literaturzusammenfassung“.
+Hinweis: Ecovillage Hannover wurde nie gebaut (Insolvenz 2024); Oberbillwerder Hamburg ist das bessere Vorbild.
+
 ## Skripte (Reihenfolge)
 1. `entwurf.py` Gerüst (Adern, Baufelder, Phasen) aus `daten/` (Geoportal Berlin, EPSG:25833)
 2. `varianten.py` V1–V5 · `varianten2.py` V6–V8 · `nutzungen.py` Nutzungen · `typologien.py` S1–S6

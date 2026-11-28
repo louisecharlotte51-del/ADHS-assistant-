@@ -47,8 +47,17 @@ def main():
         poly(msp, P, "BAUFELD")
         c = P.representative_point()
         msp.add_text(name, height=4, dxfattribs={"layer": "TEXT"}).set_placement((c.x - OX, c.y - OY))
-    for var in "AB":
-        for h in B[var]["haeuser"]:
+    import json as _j
+    V2 = os.environ.get("K") == "2"
+    quellen = [("NEU", _j.load(open(os.path.join(PL.HIER, "bebauung2.json")))["haeuser"])] if V2 else [(v, B[v]["haeuser"]) for v in "AB"]
+    if V2:
+        import ufer as U
+        doc.layers.add("GEB_NEU", true_color=ezdxf.colors.rgb2int((30, 30, 30)))
+        doc.layers.add("UFER", true_color=ezdxf.colors.rgb2int((60, 140, 190)))
+        for g in (U.UFERWEG, U.BUCHT, U.BADESCHIFF, U.STEG, U.KRAN, *U.INSELN):
+            poly(msp, g, "UFER")
+    for var, liste in quellen:
+        for h in liste:
             g = shape(h["geo"])
             poly(msp, g, f"GEB_{var}", hoehe(h["g"]))
             c = g.representative_point()
@@ -68,9 +77,10 @@ def main():
         poly(msp, g, "STATION")
     for g in (ST.BRUECKE_W, ST.BRUECKE_O):
         poly(msp, g, "BRUECKE")
-    poly(msp, shape(G["A"]["privat"]), "PRIVAT_A")
-    poly(msp, shape(G["A"]["halb"]), "HALBOEFF_A")
-    p = os.path.join(PL.OUT, "konzept1_lageplan.dxf")
+    if not V2:
+        poly(msp, shape(G["A"]["privat"]), "PRIVAT_A")
+        poly(msp, shape(G["A"]["halb"]), "HALBOEFF_A")
+    p = os.path.join(PL.OUT if not V2 else os.path.join(PL.HIER, "out2"), "konzept1_stand2.dxf" if V2 else "konzept1_lageplan.dxf")
     doc.saveas(p)
     return p
 

@@ -43,18 +43,23 @@ def flaeche(g, art, z=0.0):
     return out
 
 
-hs = B["A"]["haeuser"]
+V2 = os.environ.get("K") == "2"                      # Stand 2: dichtere Bebauung, Blattdach, Badebucht
+if V2:
+    import ufer as U
+    hs = json.load(open(os.path.join(HIER, "bebauung2.json")))["haeuser"]
+else:
+    hs = B["A"]["haeuser"]
 geb = unary_union([shape(h["geo"]) for h in hs])
 ret = unary_union([retention(g) for n, g in PARKS if n != "Stadtwald"])
 mulde = GA.parallel_offset(4.5, "left").buffer(1.6)
 parks = unary_union([g for n, g in PARKS if n != "Stadtwald"]).difference(ret)
 wald = unary_union([g for n, g in PARKS if n == "Stadtwald"])
 plaetze = unary_union([PLATZ_VOR, PLATZ_EIN, TOR, ST.DECKEL.difference(ST.HANG)])
-privat = shape(G["A"]["privat"])
-halb = shape(G["A"]["halb"])
+privat = shape(G["A"]["privat"]) if not V2 else Polygon()
+halb = shape(G["A"]["halb"]) if not V2 else FELD_U
 strassen = unary_union([g.buffer(PL.BREITE(n) / 2, cap_style=2) for n, g in PL.STRASSEN.items()])
 grube = ST.EINSCHNITT.union(ST.A100_TROG).intersection(CLIP)
-boden = CLIP.difference(grube)
+boden = CLIP.difference(grube).difference(U.BUCHT if V2 else Polygon()).difference(PL.WASSER)
 weg_ga = GA.buffer(2, cap_style=2).difference(FELD_U).difference(ST.HALLE)
 
 S = dict(flaechen=[], haeuser=[], kontext=[], baeume=[], station={}, kameras={})
@@ -71,6 +76,10 @@ F += flaeche(wald, "wald", 0.05)
 F += flaeche(weg_ga.difference(ret), "weg", 0.08)
 F += flaeche(ret.union(mulde).difference(geb), "wasser", -0.3)
 F += flaeche(PL.WASSER, "wasser", -1.0)
+if V2:
+    F += flaeche(U.UFERWEG, "weg", 0.08)
+    F += flaeche(U.DECKS.union(U.STEG), "bruecke", 0.5)
+    F += flaeche(unary_union(U.INSELN), "wiese", -0.7)
 F += flaeche(ST.HANG, "wiese", 0.05)
 for b in (ST.BRUECKE_W, ST.BRUECKE_O):
     F += flaeche(b, "bruecke", 0.6)
@@ -100,7 +109,18 @@ bm += [(p, 3) for p, r in PL.baumraster(PLATZ_VOR.buffer(-6), 14, 0.5, seed=5)]
 S["baeume"] = [[round(p.x - OX, 1), round(p.y - OY, 1), round(6 + r * 2.4, 1)] for p, r in bm if not p.within(geb.buffer(2))]
 
 # Station: Halle (Brücke), Dach-Ellipse, Kioske, Radstation, Grube (Einschnitt + Trog)
-S["station"] = dict(halle=ring(ST.HALLE), dach=ring(ST.DACH.simplify(0.5)), kioske=[ring(k) for k in ST.KIOSKE], radstation=ring(ST.RADSTATION),
+import numpy as np
+_rows = []
+for su in np.linspace(-1, 1, 41):                       # Blattdach als Gitterschale: drei Wellen, First 26 m
+    u = su * ST.DACH_A
+    hb = ST.DACH_B * (1 - su ** 2) ** 0.75
+    row = []
+    for sv in np.linspace(-1, 1, 11):
+        x, y = ST.w(u, ST.DACH_VC + sv * hb)
+        z = 7 + 15 * (1 - su ** 2) * (1 - 0.45 * sv ** 2) + 4 * np.sin(3 * np.pi * (su + 1) / 2) ** 2 * (1 - abs(su))
+        row.append([round(x - OX, 2), round(y - OY, 2), round(float(z), 2)])
+    _rows.append(row)
+S["station"] = dict(dach_grid=_rows if V2 else None, halle=ring(ST.HALLE), dach=ring(ST.DACH.simplify(0.5)), kioske=[ring(k) for k in ST.KIOSKE], radstation=ring(ST.RADSTATION),
                     grube=[ring(p) for p in getattr(grube, "geoms", [grube])], deckel=ring(ST.DECKEL),
                     bahnsteig=ring(ST.BAHNSTEIG), gleise=[[[round(x - OX, 1), round(y - OY, 1)] for x, y in l.coords] for l in ST.GLEISE],
                     winkel=-26)
@@ -118,5 +138,22 @@ kam("schulpark", (_n["park1"].x - 25, _n["park1"].y - 20), (_n["park1"].x + 60, 
 kam("hauptplatz", (_n["haupt"].x - 19, _n["haupt"].y - 33), (_n["haupt"].x + 60, _n["haupt"].y + 50), 22, zz=4)
 kam("gartenplatz", (_n["garten"].x - 10, _n["garten"].y + 25), (_n["garten"].x + 30, _n["garten"].y - 60), 22, zz=3)
 kam("luft", (390850, 5813050), (391280, 5813680), 35, z=520, zz=0)
-json.dump(S, open(os.path.join(OUT, "szene_k1.json"), "w"))
+if V2:
+    S["ufer"] = dict(bucht=ring(U.BUCHT), badeschiff=ring(U.BADESCHIFF), kran=ring(U.KRAN))
+    S["kameras"] = {}
+    kam("ankunft", ST.w(-150, 70), ST.w(10, -40), 26, z=30, zz=8)                       # vom Feldbalkon über das Blattdach
+    kam("bahnhofsplatz", ST.w(-40, -160), ST.w(10, -10), 22, z=1.7, zz=10)
+    kam("hauptplatz", (_n["haupt"].x - 19, _n["haupt"].y - 33), (_n["haupt"].x + 60, _n["haupt"].y + 50), 22, zz=4)
+    _p43 = [p for n, q, p in FELDER if n == "4.3"][0]
+    _geb = unary_union([shape(h["geo"]) for h in hs if h["feld"] == "4.3"])
+    _hof = _p43.difference(_geb.buffer(6)).buffer(-1)
+    _hof = max(getattr(_hof, "geoms", [_hof]), key=lambda g: g.area)
+    _gh = [shape(h["geo"]) for h in hs if h["typ"] == "gartenhalle"]
+    _ziel = _gh[0].centroid if _gh else Point(_p43.centroid.x, _p43.bounds[3])
+    _pos = min([Point(c) for c in _hof.exterior.coords], key=lambda p: p.distance(Point(_ziel.x, _p43.bounds[1])))
+    kam("gartenhof", (_pos.x, _pos.y), (_ziel.x, _ziel.y), 20, zz=7)
+    _e = U.UFER.interpolate(U.UFER.project(U.BUCHT.centroid) + 70)                   # auf dem Uferweg östlich, Blick nach Westen
+    kam("badebucht", (_e.x, _e.y + 3), (U.BUCHT.centroid.x - 10, U.BUCHT.centroid.y + 12), 24, z=3.5, zz=5)
+    kam("luft", (390850, 5813050), (391280, 5813680), 35, z=520, zz=0)
+json.dump(S, open(os.path.join(OUT, "szene_k2.json" if V2 else "szene_k1.json"), "w"))
 print("Flächen", len(F), "Häuser", len(S["haeuser"]), "Kontext", len(S["kontext"]), "Bäume", len(S["baeume"]))

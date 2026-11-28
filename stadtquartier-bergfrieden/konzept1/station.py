@@ -11,6 +11,7 @@ Idee: A100-Deckel trägt den Bahnhofsplatz -> Brücken spannen nur über den Rin
   Radstation         1.200 Plätze im Hang zwischen Deckel und Ring, Eingang vom Bahnhofsplatz
 """
 import math, os, sys
+import numpy as np
 _GQ = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../gartenquartier")
 if _GQ not in sys.path:
     sys.path.insert(0, _GQ)
@@ -46,16 +47,26 @@ DECKEL = R(-125, -72, 65, -36)                          # A100-Deckel = Bahnhofs
 HANG = R(-125, -36, 65, -24)
 BAHNSTEIG = R(-76, -5, 76, 5)
 GLEISE = [LineString([w(-420, v), w(420, v)]) for v in (-15, -9, 9, 15)]
-HALLE = R(-16, -40, 16, 36)                             # Stationsbrücke
-DACH = affinity.scale(Point(C).buffer(1, 64), 26, 43, origin=C)
-DACH = affinity.rotate(DACH, math.degrees(T), origin=C)
-DACH = affinity.translate(DACH, *(V[0] * -2, V[1] * -2))
-BRUECKE_W = R(-122, -36, -90, 30)
-BRUECKE_O = R(58, -36, 84, 30)
-FELDBALKON = R(-150, 24, 110, 38)
-RADSTATION = R(-60, -36, -22, -26)
-KIOSKE = [R(u, v, u + 9, v + 6) for u, v in [(-121, -46), (-104, -46), (59, -46), (74, -46), (-115, 31), (66, 31)]]
-KASKADE = LineString([w(-6, -44), w(-10, -60), w(-22, -84), w(-40, -104)])
+HALLE = R(-14, -40, 14, 36)                             # Querbrücke (Zugänge), liegt unter dem Dach
+# Dach um 90° gedreht: langes Blatt ENTLANG der Gleise (190 x 60 m), Holz-Gitterschale mit drei Wellen, First 26 m.
+# Es überdeckt Bahnsteig und Einschnitt und kragt als Regendach über den Bahnhofsplatz aus.
+DACH_A, DACH_B, DACH_VC = 95.0, 30.0, -4.0
+
+
+def _blatt(a=DACH_A, b=DACH_B, vc=DACH_VC, n=72):
+    """Blattform (Vesica): halbe Breite b(u) = b * (1 - (u/a)^2) ** 0.75."""
+    oben = [w(u, vc + b * (1 - (u / a) ** 2) ** 0.75) for u in np.linspace(-a, a, n)]
+    unten = [w(u, vc - b * (1 - (u / a) ** 2) ** 0.75) for u in np.linspace(a, -a, n)]
+    return Polygon(oben + unten)
+
+
+DACH = _blatt()
+BRUECKE_W = R(-152, -36, -120, 30)                      # Grünachse -> Tempelhofer Feld
+BRUECKE_O = R(112, -36, 138, 30)                        # Rad/Fuß -> Feld
+FELDBALKON = R(-175, 24, 150, 38)
+RADSTATION = R(-90, -36, -45, -26)
+KIOSKE = [R(u, v, u + 9, v + 6) for u, v in [(-151, -46), (-134, -46), (113, -46), (128, -46), (-145, 31), (120, 31)]]
+KASKADE = LineString([w(-30, -33), w(-34, -55), w(-38, -84), w(-40, -104)])
 SEITE_WEST = LineString([(391086, 5813881), (391079, 5813466)])
 NAMEN = {}
 
@@ -85,15 +96,15 @@ def zeichne_daecher(bl):
     a(DACH, fill="none", stroke="#1d1d1b", stroke_width="1.1")
     # Diagrid des Holzdachs
     linien = []
-    for s in range(-120, 121, 12):
+    for s in range(-200, 201, 10):
         linien += [LineString([w(s - 60, -60), w(s + 60, 60)]), LineString([w(s + 60, -60), w(s - 60, 60)])]
     a(unary_union(linien).intersection(DACH), fill="none", stroke="#1d1d1b", stroke_width=".35")
     t = bl.text
     p = w(0, 50)
     t(*p, "S Komturstraße", 9, "#1d1d1b", weight=800)
-    for s, (u, v), r in [("Landschaftsbrücke West", (-106, 0), -26 + 90), ("Landschaftsbrücke Ost", (71, 0), 64),
+    for s, (u, v), r in [("Landschaftsbrücke West", (-136, 0), -26 + 90), ("Landschaftsbrücke Ost", (125, 0), 64),
                          ("Bahnhofsplatz auf dem A100-Deckel", (-60, -55), -26), ("Feldbalkon", (-40, 31), -26),
-                         ("Radstation 1.200", (-41, -31), -26), ("Ringbahn", (200, 0), -26), ("A100 im Trog", (200, -54), -26)]:
+                         ("Radstation 1.200", (-67, -31), -26), ("Ringbahn", (200, 0), -26), ("A100 im Trog", (200, -54), -26)]:
         bl.text(*w(u, v), s, 6.5, "#4a4740", rot=-r if r != -26 else 26, italic=True)
 
 

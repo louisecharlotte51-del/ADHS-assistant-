@@ -11,7 +11,9 @@ ARGS = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 MODUS = "--export" if "--export" in ARGS else "--render"
 HIER = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HIER, "3d")
-S = json.load(open(os.path.join(OUT, "szene_k1.json")))
+K2 = "--k2" in ARGS
+S = json.load(open(os.path.join(OUT, "szene_k2.json" if K2 else "szene_k1.json")))
+PRE = "k2_" if K2 else "k1_"
 EG_H, OG_H = 4.2, 3.1
 rnd = random.Random(7)
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -133,50 +135,98 @@ obj("station_massiv", bm, [mat("weiss_station", "#f4f2ee"), mat("beton", "#d5d1c
 bm = bmesh.new()
 prisma(bm, st["halle"], 0.4, 6.4, 0)
 obj("halle_glas", bm, [mat("glas", "#b9d3df", 0.08, 0.35)], STN)
-# Dach: Ellipsen-Kuppel als Raster, Diagrid über Wireframe-Modifier, Hülle halbtransparent
-d = st["dach"]
-cx = sum(p[0] for p in d) / len(d)
-cy = sum(p[1] for p in d) / len(d)
-bm = bmesh.new()
-ringe = 9
-verts = []
-for k in range(ringe + 1):
-    t = k / ringe
-    reihe = []
-    for p in d:
-        x = cx + (p[0] - cx) * (1 - t * 0.97)
-        y = cy + (p[1] - cy) * (1 - t * 0.97)
-        z = 6.0 + 12.0 * math.sin(t * math.pi / 2)
-        reihe.append(bm.verts.new((x, y, z)))
-    verts.append(reihe)
-n = len(d)
-for k in range(ringe):
-    for i in range(n):
-        j = (i + 1) % n
-        bm.faces.new((verts[k][i], verts[k][j], verts[k + 1][j], verts[k + 1][i]))
-bmesh.ops.triangulate(bm, faces=list(bm.faces))
-me_d = obj("dach_diagrid", bm, [mat("holz", "#c89b64", 0.6)], STN)
-wf = me_d.modifiers.new("Diagrid", "WIREFRAME")
-wf.thickness = 0.45
-huelle = me_d.copy()
-huelle.data = me_d.data.copy()
-huelle.modifiers.clear()
-huelle.name = "dach_huelle"
-huelle.data.materials[0] = mat("dachglas", "#dfe9ee", 0.1, 0.25)
-STN.objects.link(huelle)
+if st.get("dach_grid"):
+    bm = bmesh.new()
+    gr = st["dach_grid"]
+    vs = [[bm.verts.new(tuple(p)) for p in row] for row in gr]
+    for i in range(len(vs) - 1):
+        for j in range(len(vs[0]) - 1):
+            bm.faces.new((vs[i][j], vs[i + 1][j], vs[i + 1][j + 1], vs[i][j + 1]))
+    bmesh.ops.triangulate(bm, faces=list(bm.faces))
+    me_d = obj("dach_diagrid", bm, [mat("holz", "#c89b64", 0.6)], STN)
+    wf = me_d.modifiers.new("Diagrid", "WIREFRAME")
+    wf.thickness = 0.5
+    huelle = me_d.copy()
+    huelle.data = me_d.data.copy()
+    huelle.modifiers.clear()
+    huelle.name = "dach_huelle"
+    huelle.data.materials[0] = mat("dachglas", "#dfe9ee", 0.1, 0.25)
+    STN.objects.link(huelle)
+    d = [gr[i][0][:2] for i in range(len(gr))] + [gr[i][-1][:2] for i in range(len(gr) - 1, -1, -1)]
+    cx = sum(p[0] for p in d) / len(d)
+    cy = sum(p[1] for p in d) / len(d)
+else:
+    # Dach: Ellipsen-Kuppel als Raster, Diagrid über Wireframe-Modifier, Hülle halbtransparent
+    d = st["dach"]
+    cx = sum(p[0] for p in d) / len(d)
+    cy = sum(p[1] for p in d) / len(d)
+    bm = bmesh.new()
+    ringe = 9
+    verts = []
+    for k in range(ringe + 1):
+        t = k / ringe
+        reihe = []
+        for p in d:
+            x = cx + (p[0] - cx) * (1 - t * 0.97)
+            y = cy + (p[1] - cy) * (1 - t * 0.97)
+            z = 6.0 + 12.0 * math.sin(t * math.pi / 2)
+            reihe.append(bm.verts.new((x, y, z)))
+        verts.append(reihe)
+    n = len(d)
+    for k in range(ringe):
+        for i in range(n):
+            j = (i + 1) % n
+            bm.faces.new((verts[k][i], verts[k][j], verts[k + 1][j], verts[k + 1][i]))
+    bmesh.ops.triangulate(bm, faces=list(bm.faces))
+    me_d = obj("dach_diagrid", bm, [mat("holz", "#c89b64", 0.6)], STN)
+    wf = me_d.modifiers.new("Diagrid", "WIREFRAME")
+    wf.thickness = 0.45
+    huelle = me_d.copy()
+    huelle.data = me_d.data.copy()
+    huelle.modifiers.clear()
+    huelle.name = "dach_huelle"
+    huelle.data.materials[0] = mat("dachglas", "#dfe9ee", 0.1, 0.25)
+    STN.objects.link(huelle)
+
 # Stützen der Halle (Baumstützen)
 bm = bmesh.new()
-for p in d[:: max(1, len(d) // 10)]:
+for p in d[:: max(1, len(d) // (14 if K2 else 10))]:
     x, y = cx + (p[0] - cx) * 0.9, cy + (p[1] - cy) * 0.9
     bmesh.ops.create_cone(bm, cap_ends=True, segments=8, radius1=0.35, radius2=0.25, depth=6.4,
                           matrix=Matrix.Translation((x, y, 3.2)))
 obj("stuetzen", bm, [mat("holz", "#c89b64")], STN)
 
+if K2 and S.get("ufer"):
+    uf = S["ufer"]
+    bm = bmesh.new()
+    r = uf["bucht"]
+    a2 = sum(r[i][0] * r[(i + 1) % len(r)][1] - r[(i + 1) % len(r)][0] * r[i][1] for i in range(len(r)))
+    rr = r if a2 > 0 else r[::-1]
+    for i in range(len(rr)):
+        j = (i + 1) % len(rr)
+        q = [bm.verts.new((rr[i][0], rr[i][1], -2.6)), bm.verts.new((rr[j][0], rr[j][1], -2.6)),
+             bm.verts.new((rr[j][0], rr[j][1], 0)), bm.verts.new((rr[i][0], rr[i][1], 0))]
+        bm.faces.new(q[::-1])
+    obj("bucht_wand", bm, [mat("spundwand", "#8d8a84", 0.5)], STN)
+    bm = bmesh.new()
+    prisma(bm, r, -1.0, -1.0, 0)
+    obj("bucht_wasser", bm, [mat("fl_wasser", "#8fc0d6", 0.15)], STN)
+    bm = bmesh.new()
+    prisma(bm, uf["badeschiff"], -1.6, 0.4, 0)
+    obj("badeschiff", bm, [mat("weiss_station", "#f4f2ee")], STN)
+    k = uf["kran"]
+    bm = bmesh.new()
+    for p in k:                                            # vier Stützen, Träger oben: Portalkran 16 m
+        bmesh.ops.create_cube(bm, size=1, matrix=Matrix.Translation((p[0], p[1], 8)) @ Matrix.Diagonal((0.9, 0.9, 16, 1)))
+    prisma(bm, k, 15.0, 16.8, 0)
+    obj("portalkran", bm, [mat("kranrot", "#b9473b", 0.5)], STN)
+
 # ---------------- Gebäude ----------------
 GB = koll("Bebauung")
 WAND = {"A": "#efe6dc", "1": "#e9e9e6", "2": "#f1ebe1", "3": "#efe4d2", "4": "#eee8da", "5": "#efe3d6"}
 SONDER = {"markthalle": "#e6d5bd", "werkhalle": "#dedcd6", "sporthalle": "#e7e3da", "gartenhalle": "#d9e6d0", "foodlab": "#d9e6d0",
-          "wasserhaus": "#d8e3e6", "kita": "#f0e3c8", "pavillon": "#f0e3c8", "hochpunkt": "#f6f3ee"}
+          "wasserhaus": "#d8e3e6", "kita": "#f0e3c8", "pavillon": "#f0e3c8", "hochpunkt": "#f6f3ee", "glashaus": "#dfeee4",
+          "schule": "#f2ead8", "finger": "#efe3d6", "stadthaus": "#efe4d2"}
 wm = [mat("wand_" + q, c) for q, c in WAND.items()] + [mat("wand_" + t, c) for t, c in SONDER.items()]
 idx = {k: i for i, k in enumerate(list(WAND) + list(SONDER))}
 bw, bd, bf = bmesh.new(), bmesh.new(), bmesh.new()
@@ -292,7 +342,7 @@ if MODUS == "--render":
         sc.render.line_thickness = 0.45 if name == "luft" else 0.9
         sc.render.resolution_x, sc.render.resolution_y = (480, 300) if klein else (1440, 900)
         sc.cycles.samples = 4 if klein else 16
-        sc.render.filepath = os.path.join(OUT, f"k1_{name}{'_klein' if klein else ''}.png")
+        sc.render.filepath = os.path.join(OUT, f"{PRE}{name}{'_klein' if klein else ''}.png")
         bpy.ops.render.render(write_still=True)
         print("RENDER", name, flush=True)
 else:
@@ -305,11 +355,11 @@ else:
         for ob in obs:
             ob.select_set(True)
         bpy.context.view_layer.objects.active = obs[0]
-        bpy.ops.export_scene.fbx(filepath=os.path.join(ziel, "FBX", f"k1_{name}.fbx"), use_selection=True, object_types={"MESH"},
+        bpy.ops.export_scene.fbx(filepath=os.path.join(ziel, "FBX", f"{PRE}{name}.fbx"), use_selection=True, object_types={"MESH"},
                                  apply_scale_options="FBX_SCALE_UNITS", mesh_smooth_type="FACE", use_mesh_modifiers=True,
                                  add_leaf_bones=False, bake_anim=False)
-        bpy.ops.wm.obj_export(filepath=os.path.join(ziel, "OBJ", f"k1_{name}.obj"), export_selected_objects=True, forward_axis="Y",
+        bpy.ops.wm.obj_export(filepath=os.path.join(ziel, "OBJ", f"{PRE}{name}.obj"), export_selected_objects=True, forward_axis="Y",
                               up_axis="Z", export_uv=False, export_normals=True, export_materials=True, apply_modifiers=True)
         print("EXPORT", name, len(obs), flush=True)
-    bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT, "konzept1_variante_A.blend"), compress=True)
+    bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT, "konzept1_stand2.blend" if K2 else "konzept1_variante_A.blend"), compress=True)
 print("FERTIG", flush=True)
