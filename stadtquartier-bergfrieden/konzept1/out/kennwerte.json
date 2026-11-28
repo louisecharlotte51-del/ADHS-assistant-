@@ -1,0 +1,170 @@
+{
+ "A": {
+  "kennwerte": {
+   "baufelder_ha": 9.29,
+   "gebiet_ha": 22.7,
+   "grz": 0.37,
+   "gfz": 1.53,
+   "gfz_brutto": 0.63,
+   "bgf": 141648,
+   "nicht_wohnen": 28,
+   "we": 1160,
+   "ew": 2205,
+   "ew_ha": 97,
+   "quartiere": {
+    "A": {
+     "grz": 0.92,
+     "gfz": 4.95,
+     "g_max": 14,
+     "haeuser": 8
+    },
+    "1": {
+     "grz": 0.37,
+     "gfz": 1.39,
+     "g_max": 8,
+     "haeuser": 29
+    },
+    "2": {
+     "grz": 0.34,
+     "gfz": 1.43,
+     "g_max": 5,
+     "haeuser": 10
+    },
+    "3": {
+     "grz": 0.27,
+     "gfz": 0.96,
+     "g_max": 4,
+     "haeuser": 35
+    },
+    "4": {
+     "grz": 0.35,
+     "gfz": 1.58,
+     "g_max": 5,
+     "haeuser": 18
+    },
+    "5": {
+     "grz": 0.27,
+     "gfz": 0.99,
+     "g_max": 5,
+     "haeuser": 9
+    }
+   }
+  },
+  "typen": {
+   "A": {
+    "kante": 6,
+    "hochpunkt": 1,
+    "markthalle": 1
+   },
+   "1": {
+    "schule": 4,
+    "sporthalle": 1,
+    "kante": 18,
+    "werkhalle": 4,
+    "stadthaus": 2
+   },
+   "2": {
+    "kante": 9,
+    "kammfinger": 1
+   },
+   "3": {
+    "kante": 10,
+    "reihenhaus": 25
+   },
+   "4": {
+    "kante": 16,
+    "gartenhalle": 1,
+    "gartenhof": 1
+   },
+   "5": {
+    "kante": 8,
+    "wasserhaus": 1
+   }
+  }
+ },
+ "B": {
+  "kennwerte": {
+   "baufelder_ha": 9.29,
+   "gebiet_ha": 22.7,
+   "grz": 0.35,
+   "gfz": 1.42,
+   "gfz_brutto": 0.58,
+   "bgf": 132218,
+   "nicht_wohnen": 26,
+   "we": 1105,
+   "ew": 2100,
+   "ew_ha": 93,
+   "quartiere": {
+    "A": {
+     "grz": 0.92,
+     "gfz": 4.95,
+     "g_max": 14,
+     "haeuser": 8
+    },
+    "1": {
+     "grz": 0.36,
+     "gfz": 1.34,
+     "g_max": 8,
+     "haeuser": 28
+    },
+    "2": {
+     "grz": 0.32,
+     "gfz": 1.34,
+     "g_max": 5,
+     "haeuser": 9
+    },
+    "3": {
+     "grz": 0.28,
+     "gfz": 0.99,
+     "g_max": 4,
+     "haeuser": 33
+    },
+    "4": {
+     "grz": 0.28,
+     "gfz": 1.27,
+     "g_max": 5,
+     "haeuser": 15
+    },
+    "5": {
+     "grz": 0.22,
+     "gfz": 0.82,
+     "g_max": 4,
+     "haeuser": 9
+    }
+   }
+  },
+  "typen": {
+   "A": {
+    "kante": 6,
+    "hochpunkt": 1,
+    "markthalle": 1
+   },
+   "1": {
+    "schule": 4,
+    "sporthalle": 1,
+    "kante": 17,
+    "werkhalle": 4,
+    "stadthaus": 2
+   },
+   "2": {
+    "kante": 9
+   },
+   "3": {
+    "kante": 10,
+    "reihenhaus": 19,
+    "stadthaus": 4
+   },
+   "4": {
+    "kante": 12,
+    "gartenhalle": 1,
+    "gartenhof": 1,
+    "stadthaus": 1
+   },
+   "5": {
+    "kante": 7,
+    "uferzeile": 1,
+    "wasserhaus": 1
+   }
+  }
+ }
+}

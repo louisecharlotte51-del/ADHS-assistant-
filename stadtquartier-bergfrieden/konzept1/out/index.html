@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Konzept I Grüne Adern</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: Wettbewerbsblatt, sachlich, Planerhand – Befund zuerst, dann Regeln.
+   IDEA: ein Planblatt 90 x 130 cm in Lesereihenfolge: Lageplan, Bahnhof, Typologien, Regelwerk, Schnitte, Bilder.
+   PICTURE: der Lageplan 1:2000 selbst, groß im ersten Bild, Kennzahlen daneben wie ein Plankopf.
+   COLOUR and TYPE: Papierweiß, Tusche #1d1d1b, Salbeigrün der Parks, Ziegelrot der Achsen als einziger Akzent; Archivo + Inter.
+   LAYOUT: Plankopf-Band, dann Bänder je Thema, Bilder in voller Breite, Tabellen als Steckbriefe. */
+:root{color-scheme:light dark;--bg:light-dark(#fbfaf7,#151613);--ink:light-dark(#1d1d1b,#ecebe6);--mut:light-dark(#5f5c55,#a9a69e);
+--rule:light-dark(#dcd8cf,#34352f);--gr:light-dark(#dfe8cc,#2a3324);--rot:#b9473b;--card:light-dark(#ffffff,#1d1e1a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.58 Inter,Arial,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Archivo,Arial,sans-serif;line-height:1.08;text-wrap:balance;margin:0 0 .5em}
+h1{font-size:clamp(34px,5vw,52px);font-weight:800}h2{font-size:clamp(26px,3vw,34px);font-weight:800}h3{font-size:19px;font-weight:600}
+.band{padding:clamp(28px,4vw,60px) max(5vw,16px)}.wrap{max-width:1240px;margin:0 auto}
+.band+.band{border-top:1px solid var(--rule)}
+.nav{display:flex;gap:18px;flex-wrap:wrap;font:600 14px Archivo,sans-serif;padding:12px max(5vw,16px);border-bottom:1px solid var(--rule);background:var(--bg)}
+.nav a{color:var(--ink);text-decoration:none;flex:none}.nav a:hover{color:var(--rot)}
+@media(min-width:900px){.nav{position:sticky;top:0;z-index:5}}
+html{scroll-padding-top:60px}
+.kopf{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:clamp(20px,3vw,44px);align-items:start}
+.kopf img{width:100%;display:block;border:1px solid var(--rule);background:#fbfaf7}
+.lead{font-size:18px;max-width:62ch}.mut{color:var(--mut);font-size:14px}
+.zahlen{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin:22px 0}
+.zahlen div{background:var(--card);padding:14px 16px}.zahlen b{display:block;font:800 clamp(24px,3vw,32px)/1.05 Archivo,sans-serif;white-space:nowrap}
+.zahlen span{font-size:13px;color:var(--mut)}
+.jetzt{border-left:4px solid var(--rot);padding:10px 16px;background:var(--card);margin:18px 0}
+.zwei{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+figure{margin:0}figure img{width:100%;display:block;border:1px solid var(--rule);background:#fff}
+figcaption{font-size:14px;color:var(--mut);margin-top:6px}
+.breit{margin-top:22px}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--card)}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--rule)}
+th{font:600 13px Archivo,sans-serif;color:var(--mut)}td:first-child{font-weight:600;white-space:nowrap}
+td.n,th.n{text-align:right;white-space:nowrap}
+ol.regel{padding-left:1.3em;max-width:78ch}ol.regel li{margin:.45em 0}
+.pikto{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.bilder{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.prompt{font:13px/1.5 Inter,sans-serif;background:var(--gr);padding:10px 12px;margin-top:8px;white-space:pre-wrap}
+button.copy{font:600 13px Archivo,sans-serif;border:1px solid var(--ink);background:transparent;color:var(--ink);padding:6px 12px;min-height:36px;margin-top:6px;cursor:pointer}
+button.copy:focus-visible{outline:2px solid var(--rot);outline-offset:2px}
+.frage{background:var(--card);border:1px solid var(--rule);padding:14px 18px;margin:10px 0}
+@media(max-width:900px){.kopf,.zwei,.bilder{grid-template-columns:minmax(0,1fr)}.pikto{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start;white-space:normal}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--mut);font-weight:400}.stack td:empty{display:none}}
+@media(prefers-reduced-motion:no-preference){figure img{transition:transform .3s}figure img:hover{transform:scale(1.01)}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+<nav class="nav scroll" aria-label="Abschnitte"><a href="#plan">Lageplan</a><a href="#bahnhof">S-Bahn</a><a href="#typologien">Typologien</a><a href="#regelwerk">Regelwerk</a><a href="#wasser">Wasser</a><a href="#schnitte">Schnitte</a><a href="#bilder">Perspektiven</a><a href="#fragen">Rückfragen</a></nav>
+
+<section class="band" id="plan"><div class="wrap kopf">
+<figure><img src="web/lageplan_A_2000.jpg" alt="Lageplan 1:2000, Variante A: Bahnhof im Norden, Grünachse zum Teltowkanal, fünf Quartiere"><figcaption>Lageplan Variante A „Kante und Garten“ · M 1:2000 im PDF · Bestand grau, Schatten 45°</figcaption></figure>
+<div>
+<h1>Konzept I „Grüne Adern“: Kante an Achsen und Plätzen, dahinter Gärten</h1>
+<p class="lead">Jedes Baufeld hat eine geschlossene Seite zur Komturstraße, zu den Plätzen und zum Bahnhof. Dahinter wird es kleiner: Gewerbehof, Kamm, Reihenhaus, Gartenhof, Punkthaus, je Quartier eine Typologie. Eine Grünachse sammelt das Regenwasser vom Bahnhofsdach bis zum Teltowkanal.</p>
+<div class="zahlen">
+<div><b>ca. 1.150</b><span>Wohnungen (Var. A) · B: ca. 1.100</span></div>
+<div><b>ca. 2.200</b><span>Einwohner · 97 EW/ha brutto</span></div>
+<div><b>GFZ 1,5</b><span>netto Baufelder · 0,62 brutto (22,7 ha)</span></div>
+<div><b>28 %</b><span>Nicht-Wohnen: Markthalle, Werkhallen, Schule, Kita, Gastro</span></div>
+<div><b>109 / 109</b><span>Häuser ≤ 50 m an befahrbarer Fläche (Feuerwehr)</span></div>
+<div><b>14 G</b><span>Hochpunkt 45 m am Ende der Komturachse</span></div>
+</div>
+<p class="mut">Dichte ähnlich Prinz-Eugen-Park (ca. 60 WE/ha brutto; hier 51). Zahlen aus dem Rechenmodell, Stand 28.11.2026; EG 4,2 m, OG 3,1 m, 88 m² BGF je Wohnung, 1,9 EW je Wohnung.</p>
+<div class="jetzt"><b>Nächster Schritt:</b> Variante wählen (A oder B) und die DXF der Baufelder aus Vectorworks schicken. Dann ersetze ich die digitalisierten Felder.</div>
+</div></div></section>
+
+<section class="band" id="bahnhof"><div class="wrap">
+<h2>S-Bahn: kurze Brücken, ein Deckel, zwei Plätze</h2>
+<p class="lead">Befund aus den Daten: Zwischen Bahnhof und Baufeld A.1 liegt die A100 im Trog (ca. 32 m). Ein Deckel über der A100 trägt den Bahnhofsplatz. Die Brücken spannen dann nur über den Ring-Einschnitt (ca. 48 m), sind also nicht zu lang.</p>
+<div class="zwei">
+<figure><img src="web/vertiefung_A_1000.jpg" alt="Vertiefung 1:1000 Ankunftsquartier mit Station, Landschaftsbrücken, Bahnhofsplatz, Platzteppich und Eingangsplatz"><figcaption>Vertiefung Ankunft + Q1 · M 1:1000 im PDF</figcaption></figure>
+<div>
+<table class="stack"><thead><tr><th>Baustein</th><th>Annahme</th><th>Rolle</th></tr></thead><tbody>
+<tr><td>Stationsbrücke</td><td>32 × 76 m, Halle unter Holz-Diagrid-Dach 52 × 86 m, First 18 m</td><td>Landmarke, nachts Laterne; Treppen, Rolltreppen, 2 Aufzüge</td></tr>
+<tr><td>Bahnsteig</td><td>Mittelbahnsteig 152 × 10 m, −7,5 m</td><td>S-Bahn-Vollzug Ring</td></tr>
+<tr><td>Landschaftsbrücke West</td><td>32 m breit, Spannweite ca. 48 m</td><td>Grünachse läuft aufs Tempelhofer Feld</td></tr>
+<tr><td>Landschaftsbrücke Ost</td><td>26 m breit</td><td>Rad und Fuß zum Feld</td></tr>
+<tr><td>Kioske</td><td>6 Pavillons 9 × 6 m, nur an den Brückenköpfen</td><td>Seoullo-Idee im kleinen Maßstab: Kaffee, Blumen, Reparatur</td></tr>
+<tr><td>A100-Deckel</td><td>190 × 36 m</td><td>Bahnhofsplatz, Hangwiese zum Ring</td></tr>
+<tr><td>Radstation</td><td>1.200 Plätze im Hang</td><td>Eingang direkt vom Bahnhofsplatz</td></tr>
+<tr><td>Feldbalkon</td><td>14 m tiefe Terrasse an der Feldkante</td><td>Blick über die Gleise</td></tr>
+<tr><td>Regendach</td><td>Dachwasser fällt als Kaskade auf den Platz</td><td>Quelle der Wasserkette bis zum Kanal</td></tr>
+</tbody></table>
+<h3 style="margin-top:20px">Zwei Plätze, eine Straße dazwischen</h3>
+<p><b>Bahnhofsplatz</b> (Westteil A.1 + Deckel) → <b>Platzteppich</b> über die Germaniastraße (Mischfläche, Tempo 10, durchgehender Belag) → <b>Eingangsplatz</b> (Westteil A.2 + Park). Zusammen ein Ankunftsquartier. Der Ostteil von A.1 ist das Ankunftshaus: Markthalle als Passage vom Bahnhof zur Komturstraße, Hochpunkt 14 G an der Südspitze.</p>
+</div></div>
+<figure class="breit"><img src="web/schnitt_BB_500.jpg" alt="Schnitt B–B durch Feldbalkon, Station, Bahnhofsplatz, Germaniastraße und Eingangsplatz"><figcaption>Schnitt B–B · M 1:500 im PDF</figcaption></figure>
+</div></section>
+
+<section class="band" id="typologien"><div class="wrap">
+<h2>Typologien je Quartier: so ordnen sich die Häuser im Baufeld</h2>
+<div class="zwei">
+<figure><img src="web/lageplan_A_2000.jpg" alt="Variante A Kante und Garten"><figcaption>A „Kante und Garten“: durchgehende Kanten, ruhige Gärten</figcaption></figure>
+<figure><img src="web/lageplan_B_2000.jpg" alt="Variante B Nachbarschaften"><figcaption>B „Nachbarschaften“: Seitenachsen mit Kopfbauten, dahinter Hausgruppen um Gemeinschaftsgärten</figcaption></figure>
+</div>
+<table class="stack breit"><thead><tr><th>Quartier</th><th>Kante (zu Achse, Platz)</th><th>Dahinter</th><th>Maße</th><th class="n">GRZ / GFZ (A)</th></tr></thead><tbody>
+<tr><td>A Ankunft</td><td>8–9 G Riegel zur Rampe, Torhaus A.2 7–9 G</td><td>Markthalle 2 G, Hochpunkt 14 G</td><td>Hochpunkt 21 × 21 m, Halle ca. 1.500 m²</td><td class="n">0,93 / 4,7</td></tr>
+<tr><td>Q1 Werk + Schule</td><td>6 G, Ecken 8 G, zur Komturstraße und zum Schulpark</td><td>Werkhallen 2 G direkt hinter der Kante, Hof in der Mitte; Grundschule 4 G als L, Sporthalle, Kita 2 G</td><td>Hallen 15 m tief, Sporthalle 27 × 45 m</td><td class="n">0,37 / 1,39</td></tr>
+<tr><td>Q2 Mischquartier</td><td>5 G, Ecken 6 G, zum Hauptplatz</td><td>A: Kammfinger 4 G · B: Hausgruppen 3 G um einen Gemeinschaftsgarten</td><td>Finger 11 × 20 m, Hausgruppe 12 × 12 m</td><td class="n">0,34 / 1,43</td></tr>
+<tr><td>Q3 Wohnen am Wald</td><td>offen, 4 G, zur Erholungsachse</td><td>Reihenhäuser 3 G, Punkthäuser 4 G am Waldrand</td><td>Reihenhaus 6,5 × 11 m, Gruppen à 5, Garten 12 m; Punkthaus 15 × 15 m</td><td class="n">0,27 / 0,96</td></tr>
+<tr><td>Q4 Garten, Gastro, Food</td><td>5 G zur Komturstraße und Sachsenhauser Str.</td><td>Gartenhalle 2 G mit Gewächshausdach, Food-Lab, Gartenhöfe (Winkel offen nach Süden)</td><td>Halle 32 × 18 m, Winkel 30 × 24 m (B: 22 × 18 m, 3 G)</td><td class="n">0,35 / 1,58</td></tr>
+<tr><td>Q5 Kanalquartier</td><td>4–5 G zur Teile- und Sachsenhauser Str.</td><td>Wasserhaus 3 G am Ufer, Uferpark · B: Uferzeilen 4 G</td><td>Wasserhaus 40 × 22 m</td><td class="n">0,27 / 0,99</td></tr>
+</tbody></table>
+<h3 style="margin-top:26px">Größenordnung: fünf Maßregeln</h3>
+<ol class="regel">
+<li><b>Kante:</b> 12–14 m tief, Hausabschnitte 26–30 m (eigene Adresse), geschlossen heißt Brandwand an Brandwand. Ecken +1–2 G.</li>
+<li><b>Offene Kante:</b> Häuser 24–28 m lang. Fuge mindestens 0,8 H (bei 5 G ca. 14 m), damit Durchgang und Blick in den Garten.</li>
+<li><b>Abstand nach hinten:</b> 0,4 H + 0,4 H (BauO Bln), bei 6 G vor 4 G ca. 15 m. Höfe mindestens 21 m.</li>
+<li><b>Körnung hinten:</b> Punkthaus 15–18 m, Reihenhaus 6,5 × 11 m, Winkel 30 × 24 m, Halle bis 15 m tief.</li>
+<li><b>Feldtiefe:</b> Unter ca. 45 m trägt ein Feld nur Kante + Garten. Zwei Schichten (Kante + Hinterhaus) brauchen ab 55 m. Das betrifft 1.3, 2.1, 2.2 und 4.2.</li>
+</ol>
+<div class="pikto breit">
+<figure><img src="web/pikto_1.jpg" alt="Piktogramm Dichte"></figure><figure><img src="web/pikto_2.jpg" alt="Piktogramm Geschossigkeit"></figure>
+<figure><img src="web/pikto_3.jpg" alt="Piktogramm Höhe"></figure><figure><img src="web/pikto_4.jpg" alt="Piktogramm Material"></figure>
+<figure><img src="web/pikto_5.jpg" alt="Piktogramm Quartiere"></figure>
+</div>
+</div></section>
+
+<section class="band" id="regelwerk"><div class="wrap zwei">
+<figure><img src="web/regelwerk_A_2000.jpg" alt="Regelwerk Erschließung und Öffentlichkeit, Variante A"><figcaption>Regelwerk Variante A · Erschließung, öffentlich / halböffentlich / privat</figcaption></figure>
+<div>
+<h2>Regelwerk: Erschließung zuerst</h2>
+<ol class="regel">
+<li><b>Hauptachse Komturstraße</b> ca. 22 m: 2 Fahrspuren, Radwege, Baumstreifen mit Mulde, Gehwege, Tempo 30.</li>
+<li><b>Seitenachsen</b> (West neu, Ost Sachsenhauser Str.): 6,5 m befahrbar + 2,5 m Mulde.</li>
+<li><b>Wohnweg</b> 3,5 m befahrbar für Feuerwehr, Umzug und Müll, sonst Fuß und Rad. Dazu Mulde 3–6 m und 3 m Vorgärten. Das löst „6 m oder 3–4 m“: 3,5 m Belag, 6 m nur, wo Fahrzeuge sich begegnen.</li>
+<li><b>Fußweg</b> 3 m; <b>Grünachse</b> 8 m (4 m Weg + 4 m Regenmulde). Sie ist breiter als ein Wohnweg, aber schmaler als die Komturstraße und konkurriert nicht mit ihr.</li>
+<li><b>Feuerwehr:</b> jeder Eingang ≤ 50 m von befahrbarer Fläche (geprüft: 109 von 109). Ab 5 G Sicherheitstreppenraum oder Aufstellfläche am Wohnweg.</li>
+<li><b>Öffentlichkeit:</b> Straßen, Plätze, Parks und Brücken sind öffentlich. Die Gärten in den Baufeldern sind halböffentlich: tagsüber offen über Wegerecht, Hecken höchstens 1 m. Privat sind nur 3 m Vorgarten bzw. Terrasse und die Reihenhausgärten.</li>
+<li><b>Erdgeschoss:</b> an Kanten zu Plätzen und Komturstraße aktiv (4,2 m, mindestens 60 % Glas). Wohnen im EG nur hinten, mit Hochparterre +0,6 m.</li>
+<li><b>Parken:</b> innen autofrei, zwei Quartiersgaragen mit Mobilitätshub (Nord am Ankunftshaus, Süd an der Teilestraße), ca. 0,3 Stellplätze je Wohnung, Radstation 1.200.</li>
+</ol>
+</div></div></section>
+
+<section class="band" id="wasser"><div class="wrap">
+<h2>Retention zwischen den Baufeldern: ja, als Kette</h2>
+<p class="lead">Die öffentliche Kette (Parks + Mulde der Grünachse) ist das Rückgrat vom Bahnhofsdach zum Kanal. Jedes Baufeld hält zusätzlich sein eigenes Wasser, passend zum Quartiersthema. Überlauf geht in die Kette, Notüberlauf in den Kanal.</p>
+<table class="stack"><thead><tr><th>Quartier</th><th>Retention auf dem Baufeld</th></tr></thead><tbody>
+<tr><td>A Ankunft</td><td>Regendach + Kaskade, Gründach auf der Markthalle</td></tr>
+<tr><td>Q1</td><td>Retentionsdach auf den Werkhallen, Rigole im Werkhof</td></tr>
+<tr><td>Q2</td><td>Regengarten im Gemeinschaftsgarten</td></tr>
+<tr><td>Q3</td><td>Mulden-Rigolen am Wohnweg, Versickerung am Waldrand</td></tr>
+<tr><td>Q4</td><td>Zisternen als Gießwasser für Gärten und Gewächshaus (Food)</td></tr>
+<tr><td>Q5</td><td>Badeteich am Wasserhaus, Uferrenaturierung</td></tr>
+</tbody></table>
+</div></section>
+
+<section class="band" id="schnitte"><div class="wrap">
+<h2>Schnitte durch Erschließung und Freiraum</h2>
+<figure><img src="web/schnitt_AA_500.jpg" alt="Schnitt A–A quer über die Komturstraße"><figcaption>A–A · Q1 Gewerbehof – Grünachse – Komturstraße – Q4 Gartenhof · M 1:500 im PDF</figcaption></figure>
+<figure class="breit"><img src="web/schnitt_CC_500.jpg" alt="Schnitt C–C Stadtwald bis Q2"><figcaption>C–C · Stadtwald – Q3 Reihenhäuser – Erholungsachse – Q2 · M 1:500 im PDF</figcaption></figure>
+</div></section>
+
+<section class="band" id="bilder"><div class="wrap">
+<h2>Perspektiven als Vorlage für Nano Banana</h2>
+<p class="lead">Weißes Arbeitsmodell mit Skizzenlinien. Das Bild in Vectorworks oder Nano Banana laden, den Prompt darunter kopieren und den Stil anpassen. Geometrie und Kamera bleiben gleich.</p>
+<div class="bilder" id="bilderliste"></div>
+</div></section>
+
+<section class="band" id="fragen"><div class="wrap">
+<h2>Rückfragen und Dateien</h2>
+<div class="frage"><b>1. A100-Deckel als Annahme ok?</b> Er macht die Brücken kurz und schafft den Bahnhofsplatz. Er kostet aber viel, das sollte die Begründung nennen.</div>
+<div class="frage"><b>2. Bestand im Stadtwald:</b> Dort stehen heute Hallen und Garagen (13 Gebäude, ca. 8.400 m² Grundfläche). Im Plan entfallen sie. Bitte bestätigen.</div>
+<div class="frage"><b>3. DXF statt DWG:</b> DWG kann ich nicht direkt lesen. Eine DXF der Baufelder aus Vectorworks ersetzt meine Digitalisierung (Genauigkeit jetzt ±3 m).</div>
+<p class="mut">Dateien im Chat: maßstäbliche Pläne als PDF (1:2000, 1:1000, 1:500), DXF für Vectorworks (lokaler Nullpunkt 391250 / 5813550, Gebäude mit Höhe), 3D als FBX/OBJ + .blend. Der Literatur-Ordner ist noch nicht angekommen.</p>
+</div></section>
+
+<script>
+{
+const B=[
+["ankunft","Ankunft vom Feldbalkon","Turn this white massing model into an architectural competition rendering in a hand-drawn style: fine black ink lines, light pencil hatching, soft watercolour washes. Keep the exact geometry and camera. Berlin, late afternoon in autumn. A large timber diagrid station roof glowing like a lantern over a railway cutting, a planted landscape bridge, a busy station square on a motorway lid with trees, cyclists and a water cascade. Muted palette: warm grey, sage green, brick red. No text."],
+["bahnhofsplatz","Bahnhofsplatz und Platzteppich","Hand-drawn architectural perspective, ink line plus watercolour, eye level. Keep geometry and camera. A shared-space street paved like a carpet between two squares, market hall arcade with open shop fronts, a 14-storey timber-hybrid tower marking the end of the avenue, plane trees, people with bikes and children, rain channel in the paving. Soft autumn light, Berlin. No text."],
+["schulpark","Schulpark in Q1","Sketchy competition rendering, ink hatching and light colour. Keep geometry and camera. A small neighbourhood park in front of a primary school and a six-storey mixed-use street wall with workshops on the ground floor, children playing, a rain garden pond, wooden benches, birch and lime trees. Calm morning light. No text."],
+["hauptplatz","Hauptplatz am Komturplatz","Architectural watercolour sketch, eye level. Keep geometry and camera. A green main square with a retention pond and wooden decks, five-storey mixed-use buildings with cafés, an avenue with trees and cyclists behind, people sitting at the water edge, summer evening. Muted greens and brick tones. No text."],
+["gartenplatz","Gartenplatz in Q4 (Food)","Hand-drawn rendering with ink lines and watercolour. Keep geometry and camera. A garden square with raised vegetable beds, a greenhouse market hall with long tables, outdoor kitchen and restaurant terraces, five-storey timber buildings with rooftop greenhouses, neighbours harvesting. Warm late-summer light. No text."],
+["luft","Luftbild von Südwesten","Axonometric-style aerial in a hand-drawn competition style: fine ink lines, grey hatching for existing buildings, white new buildings, soft green parks, blue water chain from the station to the canal. Keep geometry and camera exactly. No text."]];
+const esc=s=>s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const box=document.getElementById("bilderliste");
+box.innerHTML=B.map(([n,t,p],i)=>`<figure><img src="web/k1_${n}.jpg" alt="${esc(t)}" loading="lazy"><figcaption>${esc(t)}</figcaption><div class="prompt" id="p${i}">${esc(p)}</div><button class="copy" data-i="${i}" type="button">Prompt kopieren</button></figure>`).join("");
+box.addEventListener("click",async e=>{const b=e.target.closest("button.copy");if(!b)return;const t=document.getElementById("p"+b.dataset.i).textContent;
+try{await navigator.clipboard.writeText(t);b.textContent="Kopiert"}catch(_){b.textContent="Bitte markieren und kopieren"}setTimeout(()=>b.textContent="Prompt kopieren",1800)});
+}
+</script>
+</body>
+</html>

@@ -18,9 +18,17 @@ Grundlage ist das Handblatt der Entwerferin (Skizze bleibt das Gerüst):
 | V1–V5 | 5 Bebauungsvarianten, Regeln, Phasen, Blender | https://claude.ai/artifact/7XSSdVs4tovei1V22WfnYk |
 | V6–V8 | 3 Varianten ohne Höfe, Nutzungskonzept, Phase 1 im Detail | https://claude.ai/artifact/GSak6PnuiRjjSXa6nLtkD7 |
 | Fünf Quartiere | Neuer Plan (A, Q1–5, Stadtwald): Typologien je Quartier, Achsenschnitte, Wasserkette, Q4-Themen, DXF für Vectorworks (`fuenf_quartiere/`) | https://claude.ai/artifact/HzCV9feEQuiFhYSDUQ6FZs |
+| Konzept I | Euer 5-Quartiere-Plan georeferenziert (±3 m), 18 Baufelder; Varianten A „Kante und Garten“ / B „Nachbarschaften“, S-Bahn (A100-Deckel, Stationsbrücke, 2 Landschaftsbrücken), Regelwerk Erschließung + Öffentlichkeit, Schnitte 1:500, Piktogramme, 6 Perspektiven + Nano-Banana-Prompts (`konzept1/`) | https://claude.ai/artifact/WG3U9dYhMNK6wmKjbAqG6e |
 | S1–S6 | 6 Schwarzpläne (Typologie-Mix), Höhenpläne, Schnitte A–D, 3D-Modell, Luftbilder, Schnittperspektiven, 5 Situationsskizzen | https://claude.ai/artifact/QEXWAqikMT72k4kAQZ23eb |
 
 Dateien zum Weitergeben: `schwarzplaene_S1-S6.pdf`, `situationen_renderings.pdf`, `bergfrieden_3d_FBX.zip`, `bergfrieden_3d_OBJ.zip`, `3d/bergfrieden_typologien_S1-S6.blend`.
+
+## Konzept I (`konzept1/`, Stand 28.11.)
+Reihenfolge: `georef.py` → `digitalisieren.py` → `felder.py` → `bebauung.py` → `geruest.py` → `plaene.py` → `blaetter.py` → `dxf_export.py` → `szene_k1.py` → `blender -b --python blender_k1.py -- --render | --export`.
+Kanten je Baufeld stehen von Hand in `SPEC` (bebauung.py): k = immer geschlossen, s = Seitenachse (A geschlossen, B Kopfbauten), o = offen.
+Ergebnisse in `konzept1/out/`: Pläne maßstäblich als PDF, DXF (lokaler Nullpunkt 391250 / 5813550), FBX/OBJ-Zip, .blend, Seite `index.html`.
+Kennwerte A: ca. 1.150 WE, GFZ 1,51 netto / 0,62 brutto, Feuerwehr 109/109. B: ca. 1.100 WE.
+Offen: Variante wählen; DXF der Baufelder aus Vectorworks; A100-Deckel bestätigen; Hallen im Stadtwald (8.400 m²) entfallen?; Literatur-Ordner fehlt; Konzept II „Höfe“ folgt.
 
 ## Skripte (Reihenfolge)
 1. `entwurf.py` Gerüst (Adern, Baufelder, Phasen) aus `daten/` (Geoportal Berlin, EPSG:25833)
